@@ -1,0 +1,16 @@
+fastapi
+uvicorn
+pydantic
+lightgbm
+shap
+scikit-learn
+pandas
+numpy
+joblib
+optuna
+seaborn
+matplotlib
+nbformat 
+nbconvert
+pytest
+httpx

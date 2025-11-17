@@ -1,0 +1,252 @@
+{
+  "designSystemName": "SoftModernSaaS",
+  "version": "1.0.0",
+  "description": "A high-level design guideline file inspired by the provided UI screenshots. The style is clean, modern, and friendly, using soft shadows, generous spacing, and a muted color palette with purposeful accents. This system prioritizes clarity, approachability, and a layered, 'card-based' interface.",
+
+  "designPrinciples": [
+    {
+      "principle": "Clarity First",
+      "description": "All components and layouts must be intuitive and easy to understand. Labels are clear, hierarchy is obvious, and actions are explicit."
+    },
+    {
+      "principle": "Soft & Approachable",
+      "description": "Avoid sharp edges and jarring colors. Use generous rounded corners, soft diffused shadows, and a friendly, muted color palette to create a welcoming and non-intimidating user experience."
+    },
+    {
+      "principle": "Layered & Contextual",
+      "description": "Use 'cards' and 'modals' as primary content containers. Depth is created with shadows, lifting interactive elements and panels off the light background to establish a clear Z-axis and focus."
+    },
+    {
+      "principle": "Spacious & Focused",
+      "description": "Embrace whitespace. Generous padding and margins prevent cognitive overload and help the user focus on the task at hand, whether it's a form or a simple notification."
+    },
+    {
+      "principle": "Purposeful Color",
+      "description": "Use color strategically. The base UI is neutral (black, white, grays), with color reserved for indicating status (success, warning, danger), selection, or calling attention to primary actions."
+    }
+  ],
+
+  "colorPalette": {
+    "base": {
+      "white": "#FFFFFF",
+      "black": "#1A202C",
+      "offWhite": "#F9FAFB"
+    },
+    "neutral": {
+      "textPrimary": "#1A202C",
+      "textSecondary": "#6B7280",
+      "textPlaceholder": "#A0AEC0",
+      "borderLight": "#E2E8F0",
+      "borderDefault": "#CBD5E0",
+      "background": "#F7FAFC"
+    },
+    "primary": {
+      "main": "#2D3748",
+      "contrastText": "#FFFFFF"
+    },
+    "accent": {
+      "success": "#34D399",
+      "successLight": "#F0FDF4",
+      "warning": "#FBBF24",
+      "warningLight": "#FFFBEB",
+      "danger": "#F87171",
+      "dangerLight": "#FEF2F2",
+      "info": "#818CF8",
+      "infoLight": "#EEF2FF"
+    },
+    "shadow": "rgba(0, 0, 0, 0.05)"
+  },
+
+  "typography": {
+    "fontFamily": "A clean, geometric sans-serif, such as 'Inter', 'Roboto', or a system-default font stack.",
+    "baseFontSize": "16px",
+    "weights": {
+      "regular": 400,
+      "medium": 500,
+      "semiBold": 600,
+      "bold": 700
+    },
+    "styles": [
+      {
+        "name": "Heading (Large)",
+        "description": "For modal titles like 'Connect bank account'.",
+        "fontSize": "1.5rem (24px)",
+        "fontWeight": 700,
+        "color": "neutral.textPrimary"
+      },
+      {
+        "name": "Heading (Medium)",
+        "description": "For section titles.",
+        "fontSize": "1.25rem (20px)",
+        "fontWeight": 600,
+        "color": "neutral.textPrimary"
+      },
+      {
+        "name": "Label",
+        "description": "For form field labels like 'Legal first name*'.",
+        "fontSize": "0.875rem (14px)",
+        "fontWeight": 600,
+        "color": "neutral.textPrimary"
+      },
+      {
+        "name": "Body (Default)",
+        "description": "For descriptive text and form inputs.",
+        "fontSize": "1rem (16px)",
+        "fontWeight": 400,
+        "color": "neutral.textSecondary"
+      },
+      {
+        "name": "Body (Input)",
+        "description": "For text entered into fields.",
+        "fontSize": "1rem (16px)",
+        "fontWeight": 400,
+        "color": "neutral.textPrimary"
+      },
+      {
+        "name": "Caption",
+        "description": "For helper text or secondary info, like 'You can cancel this request...'.",
+        "fontSize": "0.875rem (14px)",
+        "fontWeight": 400,
+        "color": "neutral.textSecondary"
+      }
+    ]
+  },
+
+  "layoutAndSpacing": {
+    "baseUnit": "8px",
+    "grid": "Based on an 8-point grid system.",
+    "spacing": {
+      "xs": "4px",
+      "sm": "8px",
+      "md": "16px",
+      "lg": "24px",
+      "xl": "32px",
+      "xxl": "48px"
+    },
+    "borderRadius": {
+      "sm": "4px",
+      "md": "8px",
+      "lg": "12px",
+      "xl": "16px",
+      "full": "9999px"
+    }
+  },
+
+  "iconography": {
+    "style": "Line-art / Outline",
+    "strokeWidth": "1.5px or 2px",
+    "size": "Default size 20px, smaller size 16px.",
+    "color": "neutral.textSecondary",
+    "commonIcons": ["close (x)", "chevron-down", "calendar", "info", "user", "bank", "check"]
+  },
+
+  "components": {
+    "cardsAndModals": {
+      "description": "The primary container for content and actions.",
+      "background": "base.white",
+      "borderRadius": "borderRadius.xl (16px)",
+      "padding": "layoutAndSpacing.lg (24px) or layoutAndSpacing.xl (32px)",
+      "shadow": "0px 10px 15px -3px ${colorPalette.shadow}, 0px 4px 6px -2px ${colorPalette.shadow}",
+      "header": "Often includes a 'Heading (Large)' and a close 'Icon Button' in the top-right corner."
+    },
+    "buttons": {
+      "primary": {
+        "description": "For main actions like 'Go to Dashboard', 'Connect'.",
+        "background": "primary.main",
+        "color": "primary.contrastText",
+        "fontWeight": 600,
+        "borderRadius": "borderRadius.md (8px)",
+        "padding": "12px 20px",
+        "shadow": "0px 4px 6px -1px ${colorPalette.shadow}"
+      },
+      "secondary": {
+        "description": "For secondary actions like 'Cancel'.",
+        "background": "transparent",
+        "color": "neutral.textSecondary",
+        "fontWeight": 600,
+        "borderRadius": "borderRadius.md (8px)",
+        "padding": "12px 20px",
+        "border": "1px solid ${colorPalette.neutral.borderDefault}"
+      },
+      "text": {
+        "description": "For tertiary actions, often used as a 'Cancel' link.",
+        "background": "transparent",
+        "color": "neutral.textSecondary",
+        "fontWeight": 600,
+        "padding": "12px 20px"
+      },
+      "iconButton": {
+        "description": "For closing modals or dismissing alerts.",
+        "background": "transparent",
+        "color": "neutral.textSecondary",
+        "borderRadius": "borderRadius.full",
+        "hoverBackground": "neutral.background"
+      }
+    },
+    "inputFields": {
+      "description": "Base style for text inputs, textareas, and selects.",
+      "background": "base.white",
+      "color": "neutral.textPrimary",
+      "placeholderColor": "neutral.textPlaceholder",
+      "border": "1px solid ${colorPalette.neutral.borderDefault}",
+      "borderRadius": "borderRadius.md (8px)",
+      "padding": "12px 16px",
+      "focus": "Border color changes to ${colorPalette.accent.info} or ${colorPalette.primary.main}",
+      "label": "Uses 'Label' typography, placed externally above the field."
+    },
+    "selectionControls": {
+      "radio": {
+        "description": "Custom-styled radio buttons.",
+        "border": "1px solid ${colorPalette.neutral.borderDefault}",
+        "checkedBackground": "base.white",
+        "checkedIndicator": "${colorPalette.primary.main}"
+      },
+      "checkbox": {
+        "description": "Custom-styled checkboxes.",
+        "border": "1px solid ${colorPalette.neutral.borderDefault}",
+        "borderRadius": "borderRadius.sm (4px)",
+        "checkedBackground": "${colorPalette.primary.main}",
+        "checkedIndicator": "A white checkmark icon."
+      }
+    },
+    "alerts": {
+      "description": "For persistent, contextual notifications.",
+      "background": "base.white",
+      "borderRadius": "borderRadius.md (8px)",
+      "padding": "layoutAndSpacing.md (16px)",
+      "shadow": "0px 4px 6px -1px ${colorPalette.shadow}",
+      "structure": "Uses a thick (4px) left border, color-coded to the status.",
+      "variants": {
+        "success": "border-left-color: ${colorPalette.accent.success}",
+        "warning": "border-left-color: ${colorPalette.accent.warning}",
+        "danger": "border-left-color: ${colorPalette.accent.danger}"
+      },
+      "content": "Contains a bolded primary message ('Body (Bold)') and a 'Caption' line for secondary text."
+    },
+    "tags": {
+      "description": "Small pills for displaying status or selected items.",
+      "borderRadius": "borderRadius.sm (4px) or borderRadius.full (9999px)",
+      "padding": "4px 10px",
+      "fontSize": "0.875rem (14px)",
+      "fontWeight": 500,
+      "structure": "Contains text and an optional 'x' icon for removal.",
+      "variants": {
+        "status": {
+          "background": "transparent",
+          "border": "1px solid",
+          "color": "Status-specific color (e.g., green for 'Active')"
+        },
+        "selection": {
+          "background": "transparent",
+          "border": "1px solid ${colorPalette.accent.info}",
+          "color": "${colorPalette.accent.info}"
+        }
+      }
+    },
+    "illustrations": {
+      "style": "Modern flat/vector style with minimal strokes and soft gradients.",
+      "colors": "Uses the accent color palette (info, success, warning, danger) in a muted, friendly way.",
+      "purpose": "Used in modals, empty states, or onboarding flows to add visual interest and clarify concepts (e.g., 'Connect bank account')."
+    }
+  }
+}

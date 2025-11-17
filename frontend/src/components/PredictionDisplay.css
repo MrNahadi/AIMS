@@ -1,0 +1,70 @@
+.prediction-display {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.prediction-display h2 {
+    margin-bottom: 20px;
+    color: #1e3c72;
+    font-size: 1.5rem;
+}
+
+.no-data {
+    color: #666;
+    font-style: italic;
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.prediction-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.prediction-label {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 16px;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    border-radius: 8px;
+}
+
+.label-text {
+    font-size: 0.9rem;
+    color: #666;
+    font-weight: 500;
+}
+
+.label-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1e3c72;
+}
+
+.label-value.high-confidence {
+    color: #2e7d32;
+}
+
+.label-value.medium-confidence {
+    color: #f57c00;
+}
+
+.confidence-badge {
+    display: inline-block;
+    padding: 6px 12px;
+    background-color: #1e3c72;
+    color: white;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    align-self: flex-start;
+}
+
+.donut-center-text {
+    pointer-events: none;
+}
