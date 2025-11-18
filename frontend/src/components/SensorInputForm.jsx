@@ -105,21 +105,21 @@ const SensorInputForm = ({ onPredictionReceived }) => {
                     onClick={() => loadScenario(NORMAL_SCENARIO)}
                     className="preset-btn normal"
                 >
-                    Load Scenario: Normal Operation
+                    Normal Operation
                 </button>
                 <button
                     type="button"
                     onClick={() => loadScenario(MINOR_FAULT_SCENARIO)}
                     className="preset-btn minor"
                 >
-                    Load Scenario: Minor Fault
+                    Minor Fault
                 </button>
                 <button
                     type="button"
                     onClick={() => loadScenario(CRITICAL_FAULT_SCENARIO)}
                     className="preset-btn critical"
                 >
-                    Load Scenario: Critical Fault
+                    Critical Fault
                 </button>
             </div>
 

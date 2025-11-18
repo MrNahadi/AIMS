@@ -61,7 +61,11 @@ const ExplainabilityDisplay = ({ shapValues }) => {
                     />
                     <Tooltip
                         formatter={(value) => value.toFixed(4)}
-                        contentStyle={{ borderRadius: '8px', border: '1px solid #ddd' }}
+                        contentStyle={{
+                            borderRadius: 'var(--radius-md)',
+                            border: '1px solid var(--color-border-default)',
+                            backgroundColor: 'var(--color-white)'
+                        }}
                     />
                     <ReferenceLine x={0} stroke="#000" strokeWidth={2} />
                     <Bar dataKey="value" radius={[0, 4, 4, 0]}>

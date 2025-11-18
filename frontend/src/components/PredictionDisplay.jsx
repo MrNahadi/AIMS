@@ -89,7 +89,11 @@ const PredictionDisplay = ({ probabilities, predictionLabel }) => {
                         </Pie>
                         <Tooltip
                             formatter={(value) => `${value}%`}
-                            contentStyle={{ borderRadius: '8px', border: '1px solid #ddd' }}
+                            contentStyle={{
+                                borderRadius: 'var(--radius-md)',
+                                border: '1px solid var(--color-border-default)',
+                                background: 'var(--color-white)'
+                            }}
                         />
                         <Legend
                             verticalAlign="bottom"

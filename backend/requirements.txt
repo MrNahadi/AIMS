@@ -12,5 +12,7 @@ seaborn
 matplotlib
 nbformat 
 nbconvert
+jupyter
+notebook
 pytest
 httpx

@@ -1,70 +1,96 @@
 .prediction-display {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
+    background: var(--color-white);
+    padding: var(--spacing-xl);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-md);
 }
 
 .prediction-display h2 {
-    margin-bottom: 20px;
-    color: #1e3c72;
-    font-size: 1.5rem;
+    font-size: 1.25rem;
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+    margin-bottom: var(--spacing-lg);
 }
 
 .no-data {
-    color: #666;
-    font-style: italic;
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-regular);
     text-align: center;
-    padding: 40px 20px;
+    padding: var(--spacing-xxl) var(--spacing-lg);
 }
 
 .prediction-content {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: var(--spacing-lg);
 }
 
 .prediction-label {
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    padding: 16px;
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-    border-radius: 8px;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
 }
 
 .label-text {
-    font-size: 0.9rem;
-    color: #666;
-    font-weight: 500;
+    font-size: var(--font-size-base);
+    color: var(--color-text-secondary);
+    font-weight: var(--font-weight-regular);
 }
 
 .label-value {
     font-size: 1.5rem;
-    font-weight: 700;
-    color: #1e3c72;
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
 }
 
 .label-value.high-confidence {
-    color: #2e7d32;
+    color: var(--color-text-primary);
 }
 
 .label-value.medium-confidence {
-    color: #f57c00;
+    color: var(--color-text-primary);
 }
 
 .confidence-badge {
     display: inline-block;
-    padding: 6px 12px;
-    background-color: #1e3c72;
-    color: white;
-    border-radius: 20px;
-    font-size: 0.85rem;
-    font-weight: 600;
+    padding: var(--spacing-xs) 10px;
+    background: var(--color-info-light);
+    color: var(--color-info);
+    border: 1px solid var(--color-info);
+    border-radius: var(--radius-sm);
+    font-size: 0.875rem;
+    font-weight: var(--font-weight-medium);
     align-self: flex-start;
 }
 
 .donut-center-text {
     pointer-events: none;
+}
+
+/* Task 7.2: Tablet breakpoint styles (max-width: 1024px) */
+@media (max-width: 1024px) {
+    .prediction-display {
+        padding: var(--spacing-lg);
+        /* Maintain card-based structure with adjusted spacing */
+    }
+}
+
+/* Task 7.1: Mobile breakpoint styles (max-width: 768px) */
+@media (max-width: 768px) {
+    .prediction-display {
+        padding: var(--spacing-md);
+        /* Reduce padding for smaller screens */
+    }
+
+    .prediction-display h2 {
+        font-size: 1.125rem;
+        /* Reduce from 1.25rem (20px) to 1.125rem (18px) */
+    }
+
+    .label-value {
+        font-size: 1.25rem;
+        /* Reduce from 1.5rem (24px) to 1.25rem (20px) */
+    }
 }
