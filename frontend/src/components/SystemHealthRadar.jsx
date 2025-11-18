@@ -110,13 +110,12 @@ const SystemHealthRadar = ({ sensorValues }) => {
             <h2>System Health Overview</h2>
 
             {outOfRangeCount > 0 && (
-                <div className="warning-banner">
-                    <span className="warning-icon">⚠️</span>
-                    <span>{outOfRangeCount} parameter{outOfRangeCount > 1 ? 's' : ''} out of safe range</span>
+                <div className="warning-badge">
+                    ⚠️ {outOfRangeCount} parameter{outOfRangeCount > 1 ? 's' : ''} out of safe range
                 </div>
             )}
 
-            <ResponsiveContainer width="100%" height={400}>
+            <ResponsiveContainer width="100%" height={300}>
                 <RadarChart data={radarData}>
                     <PolarGrid />
                     <PolarAngleAxis dataKey="parameter" tick={{ fontSize: 12 }} />

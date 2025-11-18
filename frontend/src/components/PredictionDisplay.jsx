@@ -1,5 +1,5 @@
 import React from 'react';
-import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 import './PredictionDisplay.css';
 
 const COLORS = [
@@ -17,13 +17,16 @@ const PredictionDisplay = ({ probabilities, predictionLabel }) => {
     if (!probabilities || !predictionLabel) {
         return (
             <div className="prediction-display">
-                <h2>Fault Prediction</h2>
-                <p className="no-data">No prediction available. Please analyze sensor data.</p>
+                <div className="status-section no-prediction">
+                    <div className="status-icon">⏳</div>
+                    <div className="status-message">No prediction available</div>
+                    <p className="status-detail">Please analyze sensor data to detect faults</p>
+                </div>
             </div>
         );
     }
 
-    // Transform probabilities object into array format for Recharts
+    // Transform probabilities object into array format
     const chartData = Object.entries(probabilities).map(([name, value]) => ({
         name,
         value: parseFloat((value * 100).toFixed(2))
@@ -31,78 +34,95 @@ const PredictionDisplay = ({ probabilities, predictionLabel }) => {
 
     // Find the maximum probability
     const maxProb = Math.max(...chartData.map(d => d.value));
+    const isCritical = maxProb > 90 && predictionLabel !== 'Normal';
+    const isNormal = predictionLabel === 'Normal';
+    const timestamp = new Date().toLocaleString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
 
-    // Custom label for center of donut
-    const renderCenterLabel = () => {
-        return (
-            <text
-                x="50%"
-                y="50%"
-                textAnchor="middle"
-                dominantBaseline="middle"
-                className="donut-center-text"
-            >
-                <tspan x="50%" dy="-0.5em" fontSize="18" fontWeight="600" fill="#333">
-                    {predictionLabel}
-                </tspan>
-                <tspan x="50%" dy="1.5em" fontSize="24" fontWeight="700" fill="#1e3c72">
-                    {maxProb.toFixed(1)}%
-                </tspan>
-            </text>
-        );
-    };
+    // Sort data for bar labels (top 5)
+    const sortedData = [...chartData].sort((a, b) => b.value - a.value).slice(0, 5);
 
     return (
-        <div className="prediction-display">
-            <h2>Fault Prediction</h2>
+        <div className={`prediction-display ${isCritical ? 'critical' : ''} ${isNormal ? 'normal' : ''}`}>
+            <div className="status-section">
+                {isCritical && (
+                    <>
+                        <div className="alert-icon">⚠️</div>
+                        <h2 className="alert-title">CRITICAL FAULT DETECTED</h2>
+                    </>
+                )}
+                {isNormal && (
+                    <>
+                        <div className="success-icon">✓</div>
+                        <h2 className="success-title">SYSTEM NORMAL</h2>
+                    </>
+                )}
+                {!isCritical && !isNormal && (
+                    <>
+                        <div className="warning-icon">⚠️</div>
+                        <h2 className="warning-title">FAULT DETECTED</h2>
+                    </>
+                )}
 
-            <div className="prediction-content">
-                <div className="prediction-label">
-                    <span className="label-text">Predicted Fault:</span>
-                    <span className={`label-value ${maxProb > 90 ? 'high-confidence' : 'medium-confidence'}`}>
-                        {predictionLabel}
-                    </span>
-                    <span className="confidence-badge">
-                        Confidence: {maxProb.toFixed(1)}%
-                    </span>
+                <div className="fault-label">{predictionLabel}</div>
+                <div className="confidence-display">
+                    Confidence: <strong>{maxProb.toFixed(1)}%</strong>
+                </div>
+            </div>
+
+            <div className="chart-section">
+                <div className="chart-container">
+                    <ResponsiveContainer width="100%" height={200}>
+                        <PieChart>
+                            <Pie
+                                data={chartData}
+                                cx="50%"
+                                cy="50%"
+                                innerRadius={60}
+                                outerRadius={85}
+                                paddingAngle={2}
+                                dataKey="value"
+                            >
+                                {chartData.map((entry, index) => (
+                                    <Cell
+                                        key={`cell-${index}`}
+                                        fill={COLORS[index % COLORS.length]}
+                                        stroke="none"
+                                    />
+                                ))}
+                            </Pie>
+                            <Tooltip
+                                formatter={(value) => `${value}%`}
+                                contentStyle={{
+                                    background: '#FFFFFF',
+                                    borderRadius: '8px',
+                                    border: '1px solid #E2E8F0',
+                                    boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.05)'
+                                }}
+                            />
+                        </PieChart>
+                    </ResponsiveContainer>
                 </div>
 
-                <ResponsiveContainer width="100%" height={350}>
-                    <PieChart>
-                        <Pie
-                            data={chartData}
-                            cx="50%"
-                            cy="50%"
-                            innerRadius={80}
-                            outerRadius={120}
-                            paddingAngle={2}
-                            dataKey="value"
-                        >
-                            {chartData.map((entry, index) => (
-                                <Cell
-                                    key={`cell-${index}`}
-                                    fill={COLORS[index % COLORS.length]}
-                                    stroke={entry.value === maxProb ? '#000' : 'none'}
-                                    strokeWidth={entry.value === maxProb ? 3 : 0}
-                                />
-                            ))}
-                        </Pie>
-                        <Tooltip
-                            formatter={(value) => `${value}%`}
-                            contentStyle={{
-                                borderRadius: 'var(--radius-md)',
-                                border: '1px solid var(--color-border-default)',
-                                background: 'var(--color-white)'
-                            }}
-                        />
-                        <Legend
-                            verticalAlign="bottom"
-                            height={36}
-                            formatter={(value, entry) => `${value}: ${entry.payload.value}%`}
-                        />
-                        {renderCenterLabel()}
-                    </PieChart>
-                </ResponsiveContainer>
+                <div className="bar-labels">
+                    {sortedData.map((entry, index) => (
+                        <div key={index} className="bar-label-row">
+                            <div className="bar-label-left">
+                                <span
+                                    className="bar-label-color"
+                                    style={{ backgroundColor: COLORS[chartData.findIndex(d => d.name === entry.name)] }}
+                                ></span>
+                                <span className="bar-label-name">{entry.name}</span>
+                            </div>
+                            <span className="bar-label-value">{entry.value.toFixed(1)}%</span>
+                        </div>
+                    ))}
+                </div>
             </div>
         </div>
     );

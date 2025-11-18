@@ -1,0 +1,153 @@
+{
+    "designSystemName": "Soft Data Visualization",
+    "designPrinciples": [
+        {
+            "name": "Soft & Approachable",
+            "description": "No sharp edges. Every primary element, from card containers to data bars and buttons, must use generous rounding. This creates a friendly, non-intimidating feel."
+        },
+        {
+            "name": "Clarity Through Hierarchy",
+            "description": "Guide the user's eye with a strong typographic scale. Key data points should be bold and significantly larger than labels or secondary text. White space is a tool for focus."
+        },
+        {
+            "name": "Focused Color, Not Loud Color",
+            "description": "The palette is minimalist and neutral (whites, greys, dark text) to let the data be the hero. Data itself uses a single, vibrant, warm color for primary representation, creating an energetic but clean look."
+        },
+        {
+            "name": "Data as the Centerpiece",
+            "description": "The visualization (the chart) is the focal point. UI elements like buttons or lists are secondary and should be visually lighter (e.g., grey, smaller text) to avoid competing."
+        }
+    ],
+    "styleProfile": {
+        "aesthetic": "minimalist",
+        "feel": "consumer-friendly",
+        "adjectives": [
+            "soft",
+            "clean",
+            "modern",
+            "approachable",
+            "data-forward"
+        ]
+    },
+    "palette": {
+        "page": {
+            "background": "#F0F2F5",
+            "description": "A very light, subtle grey for the main app background, to make the white cards 'pop'."
+        },
+        "card": {
+            "background": "#FFFFFF",
+            "description": "Pure white for all card containers."
+        },
+        "text": {
+            "primary": "#1A1A1A",
+            "description": "Deep black/dark grey for primary values and titles, ensuring high contrast and readability.",
+            "secondary": "#595959",
+            "secondaryDescription": "A medium grey for secondary labels and subtitles (e.g., 'Today (14:00)', '10 - 17 Sep 2022').",
+            "tertiary": "#A9A9A9",
+            "tertiaryDescription": "A lighter grey for tertiary information like X-axis labels ('Mo', 'Tu') and button text."
+        },
+        "data": {
+            "positive": "#FF5A78",
+            "positiveDescription": "The primary 'watermelon' red/pink. Use this for all positive-driving features in a SHAP plot.",
+            "negative": "#5AA9FF",
+            "negativeDescription": "A complementary 'soft blue' for negative-driving features. This color is not in the image but is derived from the 'soft' principle to contrast the positive color."
+        },
+        "accent": "#F4F4F4",
+        "accentDescription": "The light grey fill for the 'Full stats' button.",
+        "divider": "#EBEBEB",
+        "dividerDescription": "Light grey for all horizontal rules and vertical gridlines.",
+        "tag": {
+            "background": "#1A1A1A",
+            "text": "#FFFFFF",
+            "description": "Opaque, high-contrast tag (like the 'Avg. 57')."
+        }
+    },
+    "typography": {
+        "fontFamily": "system-sans-serif",
+        "description": "Use a modern, clean, geometric or humanist sans-serif font (e.g., Inter, SF Pro, Roboto).",
+        "styles": [
+            {
+                "name": "display",
+                "description": "For the most important data (e.g., '40-189').",
+                "fontWeight": "700",
+                "size": "3.5rem"
+            },
+            {
+                "name": "title",
+                "description": "For card titles (e.g., 'Heart Rate').",
+                "fontWeight": "600",
+                "size": "1.1rem"
+            },
+            {
+                "name": "bodyPrimary",
+                "description": "For primary list text (e.g., '125', '110').",
+                "fontWeight": "600",
+                "size": "0.9rem"
+            },
+            {
+                "name": "bodySecondary",
+                "description": "For secondary list text (e.g., 'Today (14:00)').",
+                "fontWeight": "400",
+                "size": "0.9rem"
+            },
+            {
+                "name": "label",
+                "description": "For axis labels (e.g., 'Mo', 'Tu') and button text.",
+                "fontWeight": "500",
+                "size": "0.75rem"
+            },
+            {
+                "name": "unit",
+                "description": "For units next to a display value (e.g., 'bpm').",
+                "fontWeight": "500",
+                "size": "1.5rem",
+                "color": "palette.text.secondary"
+            }
+        ]
+    },
+    "layout": {
+        "spacing": "Use a 4px or 8px grid. Generous padding is key.",
+        "cardPadding": "16px",
+        "interSectionSpacing": "20px"
+    },
+    "components": {
+        "card": {
+            "description": "The main content container.",
+            "borderRadius": "16px",
+            "boxShadow": "0px 4px 20px rgba(0, 0, 0, 0.05)",
+            "padding": "16px"
+        },
+        "dataBar": {
+            "description": "The core of the SHAP plot visualization.",
+            "shape": "capsule",
+            "borderRadius": "999px",
+            "style": "Solid fill. Use data.positive and data.negative colors."
+        },
+        "buttonSecondary": {
+            "description": "For secondary navigation (e.g., 'Full stats').",
+            "borderRadius": "999px",
+            "backgroundColor": "palette.accent",
+            "textColor": "palette.text.tertiary",
+            "padding": "6px 10px",
+            "icon": "small-arrow-right"
+        },
+        "axis": {
+            "description": "Guidelines for the chart.",
+            "x_axis_labels": "Use 'label' typography style. Color is 'palette.text.tertiary'.",
+            "gridlines": "Vertical lines should be thin, 'palette.divider', and dashed. Horizontal 'zero' or 'average' lines should be solid."
+        },
+        "tag": {
+            "description": "To highlight a specific data point (e.g., 'Avg. 57').",
+            "borderRadius": "999px",
+            "backgroundColor": "palette.tag.background",
+            "textColor": "palette.tag.text",
+            "padding": "4px 8px",
+            "font": "label"
+        },
+        "list": {
+            "description": "For displaying supplementary data items.",
+            "divider": "Use a thin, 1px solid line with 'palette.divider' color.",
+            "itemPadding": "12px 0px"
+        }
+    }
+}

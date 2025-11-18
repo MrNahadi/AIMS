@@ -72,12 +72,14 @@ function App() {
                 </div>
 
                 <div className="app-right">
-                    <PredictionDisplay
-                        probabilities={probabilities}
-                        predictionLabel={predictionLabel}
-                    />
+                    <div className="charts-row">
+                        <PredictionDisplay
+                            probabilities={probabilities}
+                            predictionLabel={predictionLabel}
+                        />
+                        <SystemHealthRadar sensorValues={sensorValues} />
+                    </div>
                     <ExplainabilityDisplay shapValues={shapValues} />
-                    <SystemHealthRadar sensorValues={sensorValues} />
                 </div>
             </div>
 

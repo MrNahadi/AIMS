@@ -1,9 +1,9 @@
 /* Task 3.1: Card container styling */
 .sensor-input-form {
-    background: var(--color-white);
-    padding: var(--spacing-xl);
-    border-radius: var(--radius-xl);
-    box-shadow: var(--shadow-md);
+    background: var(--color-card-background);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-card);
     display: flex;
     flex-direction: column;
 }
@@ -15,10 +15,8 @@
 
 /* Task 3.2: Form heading typography */
 .sensor-input-form h2 {
-    font-size: 1.25rem;
-    /* 20px */
-    font-weight: var(--font-weight-semibold);
-    /* 600 */
+    font-size: var(--font-title-size);
+    font-weight: var(--font-title-weight);
     color: var(--color-text-primary);
     margin-bottom: var(--spacing-lg);
 }
@@ -33,9 +31,9 @@
 .preset-btn {
     background: var(--color-text-primary);
     border: none;
-    border-radius: var(--radius-full);
+    border-radius: var(--radius-bar);
     padding: 10px var(--spacing-lg);
-    font-size: 0.875rem;
+    font-size: var(--font-body-secondary-size);
     font-weight: var(--font-weight-semibold);
     color: var(--color-white);
     cursor: pointer;
@@ -72,15 +70,15 @@
 
 /* Task 3.4: Update field labels */
 .input-group label {
-    font-size: 0.8125rem;
-    font-weight: var(--font-weight-semibold);
+    font-size: var(--font-label-size);
+    font-weight: var(--font-label-weight);
     color: var(--color-text-primary);
     margin-bottom: var(--spacing-xs);
     display: block;
 }
 
 .input-group .unit {
-    font-size: 0.8rem;
+    font-size: var(--font-label-size);
     color: var(--color-text-secondary);
     font-weight: var(--font-weight-regular);
     margin-left: var(--spacing-xs);
@@ -88,12 +86,12 @@
 
 /* Task 3.3: Redesign input fields */
 .input-group input {
-    background: var(--color-white);
+    background: var(--color-card-background);
     border: 1px solid var(--color-border-default);
     border-radius: var(--radius-md);
     padding: 10px var(--spacing-sm);
     color: var(--color-text-primary);
-    font-size: 0.9375rem;
+    font-size: var(--font-body-secondary-size);
     transition: border-color 0.2s, box-shadow 0.2s;
     min-height: 40px;
     width: 100%;
@@ -117,7 +115,7 @@
     padding: var(--spacing-md);
     color: var(--color-danger);
     margin-bottom: var(--spacing-md);
-    font-size: 0.9rem;
+    font-size: var(--font-body-secondary-size);
 }
 
 /* Task 3.6: Redesign analyze button (primary action) */

@@ -1,23 +1,34 @@
-/* Design System CSS Variables */
+/* Design System CSS Variables - Based on chart-design.json */
 :root {
   /* Base Colors */
   --color-white: #FFFFFF;
   --color-black: #1A202C;
   --color-off-white: #F9FAFB;
 
-  /* Neutral Colors */
-  --color-text-primary: #1A202C;
-  --color-text-secondary: #6B7280;
+  /* Page & Card Colors (from chart-design.json) */
+  --color-page-background: #F0F2F5;
+  --color-card-background: #FFFFFF;
+
+  /* Neutral Colors (from chart-design.json) */
+  --color-text-primary: #1A1A1A;
+  --color-text-secondary: #595959;
+  --color-text-tertiary: #A9A9A9;
   --color-text-placeholder: #A0AEC0;
   --color-border-light: #E2E8F0;
   --color-border-default: #CBD5E0;
   --color-background: #F7FAFC;
+  --color-divider: #EBEBEB;
 
   /* Primary Colors */
   --color-primary-main: #2D3748;
   --color-primary-contrast: #FFFFFF;
 
+  /* Data Colors (from chart-design.json) */
+  --color-data-positive: #FF5A78;
+  --color-data-negative: #5AA9FF;
+
   /* Accent Colors */
+  --color-accent: #F4F4F4;
   --color-success: #34D399;
   --color-success-light: #F0FDF4;
   --color-warning: #FBBF24;
@@ -27,32 +38,54 @@
   --color-info: #818CF8;
   --color-info-light: #EEF2FF;
 
-  /* Shadows */
-  --shadow-sm: 0px 4px 6px -1px rgba(0, 0, 0, 0.05);
-  --shadow-md: 0px 10px 15px -3px rgba(0, 0, 0, 0.05), 0px 4px 6px -2px rgba(0, 0, 0, 0.05);
+  /* Tag Colors (from chart-design.json) */
+  --color-tag-background: #1A1A1A;
+  --color-tag-text: #FFFFFF;
 
-  /* Spacing (8-point grid) */
+  /* Shadows (from chart-design.json) */
+  --shadow-sm: 0px 4px 6px -1px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0px 4px 20px rgba(0, 0, 0, 0.05);
+  --shadow-card: 0px 4px 20px rgba(0, 0, 0, 0.05);
+
+  /* Spacing (4px/8px grid from chart-design.json) */
   --spacing-xs: 4px;
   --spacing-sm: 8px;
   --spacing-md: 16px;
-  --spacing-lg: 24px;
+  --spacing-lg: 20px;
   --spacing-xl: 32px;
   --spacing-xxl: 48px;
 
-  /* Border Radius */
+  /* Border Radius (from chart-design.json) */
   --radius-sm: 4px;
   --radius-md: 8px;
   --radius-lg: 12px;
   --radius-xl: 16px;
+  --radius-card: 16px;
+  --radius-bar: 999px;
+  --radius-tooltip: 8px;
   --radius-full: 9999px;
 
-  /* Typography */
+  /* Typography (from chart-design.json) */
   --font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Roboto', 'Segoe UI', sans-serif;
   --font-size-base: 16px;
   --font-weight-regular: 400;
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
   --font-weight-bold: 700;
+
+  /* Typography Styles (from chart-design.json) */
+  --font-display-size: 3.5rem;
+  --font-display-weight: 700;
+  --font-title-size: 1.1rem;
+  --font-title-weight: 600;
+  --font-body-primary-size: 0.9rem;
+  --font-body-primary-weight: 600;
+  --font-body-secondary-size: 0.9rem;
+  --font-body-secondary-weight: 400;
+  --font-label-size: 0.75rem;
+  --font-label-weight: 500;
+  --font-unit-size: 1.5rem;
+  --font-unit-weight: 500;
 }
 
 * {
@@ -67,7 +100,7 @@ body {
   font-weight: var(--font-weight-regular);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #f5f5f5;
+  background-color: var(--color-page-background);
 }
 
 code {

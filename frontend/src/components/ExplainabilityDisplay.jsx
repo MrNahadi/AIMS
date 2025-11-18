@@ -1,8 +1,10 @@
 import React from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine, Cell } from 'recharts';
 import './ExplainabilityDisplay.css';
 
 const ExplainabilityDisplay = ({ shapValues }) => {
+    // React hooks must be called before any early returns
+    const [tooltip, setTooltip] = React.useState({ visible: false, feature: '', value: 0, x: 0, y: 0 });
+
     if (!shapValues || Object.keys(shapValues).length === 0) {
         return (
             <div className="explainability-display">
@@ -20,11 +22,46 @@ const ExplainabilityDisplay = ({ shapValues }) => {
             absValue: Math.abs(parseFloat(value))
         }))
         // Sort by absolute value (descending) to show most influential features first
-        .sort((a, b) => b.absValue - a.absValue);
+        .sort((a, b) => b.absValue - a.absValue)
+        // Limit to top 8 features
+        .slice(0, 8);
 
-    // Custom bar color based on positive/negative
-    const getBarColor = (value) => {
-        return value >= 0 ? '#f44336' : '#2196f3'; // Red for positive, blue for negative
+    // Find max absolute value for scaling
+    const maxAbsValue = Math.max(...chartData.map(d => d.absValue));
+
+    // Render custom tooltip with design system styling
+    const renderTooltip = () => {
+        if (!tooltip.visible) return null;
+        return (
+            <div
+                className="shap-tooltip"
+                style={{
+                    position: 'fixed',
+                    left: `${tooltip.x}px`,
+                    top: `${tooltip.y}px`,
+                    transform: 'translate(-50%, -120%)',
+                    pointerEvents: 'none',
+                    zIndex: 1000
+                }}
+            >
+                <p className="tooltip-feature">{tooltip.feature}</p>
+                <p className="tooltip-value">SHAP Value: {tooltip.value.toFixed(4)}</p>
+            </div>
+        );
+    };
+
+    const handleMouseEnter = (entry, event) => {
+        setTooltip({
+            visible: true,
+            feature: entry.feature,
+            value: entry.value,
+            x: event.clientX,
+            y: event.clientY
+        });
+    };
+
+    const handleMouseLeave = () => {
+        setTooltip({ visible: false, feature: '', value: 0, x: 0, y: 0 });
     };
 
     return (
@@ -42,39 +79,53 @@ const ExplainabilityDisplay = ({ shapValues }) => {
                 </div>
             </div>
 
-            <ResponsiveContainer width="100%" height={500}>
-                <BarChart
-                    data={chartData}
-                    layout="vertical"
-                    margin={{ top: 5, right: 30, left: 150, bottom: 5 }}
-                >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis
-                        type="number"
-                        label={{ value: 'SHAP Value', position: 'insideBottom', offset: -5 }}
-                    />
-                    <YAxis
-                        type="category"
-                        dataKey="feature"
-                        width={140}
-                        tick={{ fontSize: 12 }}
-                    />
-                    <Tooltip
-                        formatter={(value) => value.toFixed(4)}
-                        contentStyle={{
-                            borderRadius: 'var(--radius-md)',
-                            border: '1px solid var(--color-border-default)',
-                            backgroundColor: 'var(--color-white)'
-                        }}
-                    />
-                    <ReferenceLine x={0} stroke="#000" strokeWidth={2} />
-                    <Bar dataKey="value" radius={[0, 4, 4, 0]}>
-                        {chartData.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={getBarColor(entry.value)} />
-                        ))}
-                    </Bar>
-                </BarChart>
-            </ResponsiveContainer>
+            <div className="shap-chart-container">
+                <div className="shap-bars">
+                    {chartData.map((entry, index) => {
+                        const widthPercent = (entry.absValue / maxAbsValue) * 50; // 50% max for diverging chart
+                        const isPositive = entry.value >= 0;
+
+                        return (
+                            <div key={index} className="bar-row">
+                                <div className="bar-wrapper-diverging">
+                                    {/* Left side - negative values */}
+                                    <div className="bar-side left">
+                                        {!isPositive && (
+                                            <div
+                                                className="bar negative"
+                                                style={{ width: `${widthPercent}%` }}
+                                                onMouseEnter={(e) => handleMouseEnter(entry, e)}
+                                                onMouseMove={(e) => setTooltip(prev => ({ ...prev, x: e.clientX, y: e.clientY }))}
+                                                onMouseLeave={handleMouseLeave}
+                                            >
+                                                <div className="bar-fill"></div>
+                                            </div>
+                                        )}
+                                    </div>
+                                    {/* Center line */}
+                                    <div className="center-line"></div>
+                                    {/* Right side - positive values */}
+                                    <div className="bar-side right">
+                                        {isPositive && (
+                                            <div
+                                                className="bar positive"
+                                                style={{ width: `${widthPercent}%` }}
+                                                onMouseEnter={(e) => handleMouseEnter(entry, e)}
+                                                onMouseMove={(e) => setTooltip(prev => ({ ...prev, x: e.clientX, y: e.clientY }))}
+                                                onMouseLeave={handleMouseLeave}
+                                            >
+                                                <div className="bar-fill"></div>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                        );
+                    })}
+                </div>
+            </div>
+
+            {renderTooltip()}
 
             <div className="shap-explanation">
                 <p>

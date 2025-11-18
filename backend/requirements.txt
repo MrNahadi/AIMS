@@ -16,3 +16,4 @@ jupyter
 notebook
 pytest
 httpx
+imbalanced-learn
