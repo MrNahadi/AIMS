@@ -36,13 +36,6 @@ const PredictionDisplay = ({ probabilities, predictionLabel }) => {
     const maxProb = Math.max(...chartData.map(d => d.value));
     const isCritical = maxProb > 90 && predictionLabel !== 'Normal';
     const isNormal = predictionLabel === 'Normal';
-    const timestamp = new Date().toLocaleString('en-US', {
-        month: 'short',
-        day: 'numeric',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-    });
 
     // Sort data for bar labels (top 5)
     const sortedData = [...chartData].sort((a, b) => b.value - a.value).slice(0, 5);

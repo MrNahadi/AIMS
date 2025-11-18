@@ -72,7 +72,7 @@ frontend/dist/
 
 # IDE / Editor
 .vscode/
-.kiro/
+.kiro/specs
 .idea/
 *.swp
 *.swo
