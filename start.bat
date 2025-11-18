@@ -29,9 +29,9 @@ if not exist venv (
         pause
         exit /b 1
     )
-    echo    ✓ Virtual environment created
+    echo    ✅ Virtual environment created
 ) else (
-    echo    ✓ Virtual environment already exists
+    echo    ✅ Virtual environment already exists
 )
 
 echo [2/5] Installing backend dependencies...
@@ -44,7 +44,7 @@ if errorlevel 1 (
     pause
     exit /b 1
 )
-echo    ✓ Backend dependencies installed
+echo    ✅ Backend dependencies installed
 
 echo [3/5] Installing frontend dependencies...
 cd frontend
@@ -58,7 +58,7 @@ if not exist node_modules (
         exit /b 1
     )
 ) else (
-    echo    ✓ Dependencies already installed
+    echo    ✅ Dependencies already installed
 )
 cd ..
 
@@ -76,7 +76,7 @@ if not exist backend\artifacts\lgbm_model.pkl (
     )
     cd ..
 ) else (
-    echo    ✓ ML artifacts already exist (skipping notebook execution)
+    echo    ✅ ML artifacts already exist (skipping notebook execution)
     echo    To regenerate artifacts, delete backend\artifacts\ and restart
 )
 

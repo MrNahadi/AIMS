@@ -14,39 +14,61 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: var(--spacing-lg);
     max-width: 1600px;
     margin: 0 auto;
 }
 
+.header-title {
+    flex: 1;
+}
+
 .app-header h1 {
     margin: 0;
-    font-size: 2rem;
-    font-weight: var(--font-weight-semibold);
+    font-size: 1.75rem;
+    font-weight: var(--font-weight-bold);
 }
 
 .app-header p {
-    margin: var(--spacing-xs) 0 0 0;
-    font-size: 1rem;
+    margin: 0.25rem 0 0 0;
+    font-size: 0.95rem;
     opacity: 0.9;
 }
 
-.glossary-btn {
-    background: rgba(255, 255, 255, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    color: var(--color-white);
-    padding: 10px var(--spacing-lg);
-    border-radius: var(--radius-md);
-    font-size: 0.95rem;
-    font-weight: var(--font-weight-semibold);
+.info-icon-btn {
+    background: transparent;
+    border: none;
+    color: var(--color-text-secondary);
+    padding: var(--spacing-sm);
+    border-radius: var(--radius-full);
     cursor: pointer;
-    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    min-width: 44px;
     min-height: 44px;
-    white-space: nowrap;
 }
 
-.glossary-btn:hover {
-    background: rgba(255, 255, 255, 0.25);
-    border-color: rgba(255, 255, 255, 0.5);
+.info-icon-btn:hover {
+    background: var(--color-background);
+    color: var(--color-text-primary);
+}
+
+.info-icon-btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--color-info-light);
+    border: 2px solid var(--color-info);
+}
+
+.info-icon-btn:active {
+    background: var(--color-border-light);
+}
+
+.info-icon-btn svg {
+    width: 20px;
+    height: 20px;
+    stroke-width: 2px;
 }
 
 .app-error {
@@ -98,16 +120,6 @@
         grid-template-columns: 1fr;
         gap: var(--spacing-md);
     }
-
-    .header-content {
-        flex-direction: column;
-        gap: var(--spacing-md);
-        text-align: center;
-    }
-
-    .glossary-btn {
-        width: 100%;
-    }
 }
 
 /* Task 7.1: Mobile breakpoint styles (max-width: 768px) */
@@ -118,6 +130,10 @@
 
     .app-header {
         padding: var(--spacing-md);
+    }
+
+    .header-content {
+        gap: var(--spacing-md);
     }
 
     .app-header h1 {

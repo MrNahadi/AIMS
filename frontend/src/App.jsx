@@ -31,16 +31,30 @@ function App() {
         <div className="app">
             <header className="app-header">
                 <div className="header-content">
-                    <div>
+                    <div className="header-title">
                         <h1>AIMS - AI Marine Engineering System</h1>
                         <p>Engineer's Dashboard</p>
                     </div>
                     <button
-                        className="glossary-btn"
+                        className="info-icon-btn"
                         onClick={() => setIsGlossaryOpen(true)}
                         aria-label="Open glossary"
+                        title="View glossary"
                     >
-                        📖 Glossary
+                        <svg
+                            width="20"
+                            height="20"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        >
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                        </svg>
                     </button>
                 </div>
             </header>

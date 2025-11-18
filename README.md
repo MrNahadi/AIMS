@@ -19,44 +19,44 @@ AIMS moves beyond simple threshold-based alarms to provide root cause diagnostic
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                     Data Science Layer                       │
+│                     Data Science Layer                      │
 │  ┌────────────────────────────────────────────────────────┐ │
-│  │  Jupyter Notebooks                                      │ │
+│  │  Jupyter Notebooks                                     │ │
 │  │  • 01_Data_Exploration_Cleaning.ipynb                  │ │
 │  │  • 02_Feature_Engineering_Preprocessing.ipynb          │ │
 │  │  • 03_Model_Training_Tuning.ipynb                      │ │
 │  │  • 04_Model_Explainability_Export.ipynb                │ │
 │  └────────────────────────────────────────────────────────┘ │
-│                           ↓                                  │
+│                           ↓                                 │
 │  ┌────────────────────────────────────────────────────────┐ │
-│  │  Serialized Artifacts                                   │ │
-│  │  • lgbm_model.pkl                                       │ │
-│  │  • preprocessor.pkl                                     │ │
-│  │  • shap_explainer.pkl                                   │ │
+│  │  Serialized Artifacts                                  │ │
+│  │  • lgbm_model.pkl                                      │ │
+│  │  • preprocessor.pkl                                    │ │
+│  │  • shap_explainer.pkl                                  │ │
 │  └────────────────────────────────────────────────────────┘ │
 └─────────────────────────────────────────────────────────────┘
                            ↓
 ┌─────────────────────────────────────────────────────────────┐
-│                      Backend Layer                           │
+│                      Backend Layer                          │
 │  ┌────────────────────────────────────────────────────────┐ │
-│  │  FastAPI Application                                    │ │
-│  │  • POST /predict endpoint                               │ │
-│  │  • Pydantic validation models                           │ │
-│  │  • Model loading and inference                          │ │
-│  │  • SHAP value computation                               │ │
+│  │  FastAPI Application                                   │ │
+│  │  • POST /predict endpoint                              │ │
+│  │  • Pydantic validation models                          │ │
+│  │  • Model loading and inference                         │ │
+│  │  • SHAP value computation                              │ │
 │  └────────────────────────────────────────────────────────┘ │
 └─────────────────────────────────────────────────────────────┘
                            ↑
                       HTTP/JSON
                            ↓
 ┌─────────────────────────────────────────────────────────────┐
-│                     Frontend Layer                           │
+│                     Frontend Layer                          │
 │  ┌────────────────────────────────────────────────────────┐ │
-│  │  React Application                                      │ │
-│  │  • SensorInputForm component                            │ │
-│  │  • PredictionDisplay component (Donut Chart)            │ │
-│  │  • ExplainabilityDisplay component (SHAP Bar Chart)     │ │
-│  │  • SystemHealthRadar component (Spider Chart)           │ │
+│  │  React Application                                     │ │
+│  │  • SensorInputForm component                           │ │
+│  │  • PredictionDisplay component (Donut Chart)           │ │
+│  │  • ExplainabilityDisplay component (SHAP Bar Chart)    │ │
+│  │  • SystemHealthRadar component (Spider Chart)          │ │
 │  └────────────────────────────────────────────────────────┘ │
 └─────────────────────────────────────────────────────────────┘
 ```
