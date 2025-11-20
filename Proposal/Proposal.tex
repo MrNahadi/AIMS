@@ -1,0 +1,474 @@
+% ======================================================================
+% AIMS - Technical Proposal
+% ======================================================================
+
+% 1. Document Class & Geometry
+\documentclass[12pt, a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+% \geometry{a4paper, margin=1in}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\baselinestretch}{1.15}
+
+% 2. Graphics and Formatting
+\usepackage{graphicx}
+\usepackage{titlesec}
+\usepackage{setspace} % For line spacing
+\usepackage{pgfgantt} % For the Work Plan Gantt Chart
+\usepackage{listings} % For code snippets in Appendix
+\usepackage{xcolor}   % For code highlighting
+
+% 3. Table Packages
+\usepackage{booktabs}   % For professional table lines
+\usepackage{longtable}  % For tables that may span multiple pages
+\usepackage{array}      % For custom column types
+\usepackage{capt-of}    % To create captions for non-float elements
+\usepackage{float}      % For figure placement
+
+% 4. Styling Settings
+\renewcommand{\baselinestretch}{1.15} % Line spacing
+\setlength{\parskip}{6pt} % Space between paragraphs
+
+\definecolor{codegreen}{rgb}{0.2, 0.6, 0.2}
+\definecolor{codegray}{rgb}{0.5, 0.5, 0.5}
+\definecolor{codepurple}{rgb}{0.58, 0, 0.82}
+\definecolor{backcolour}{HTML}{F5F5F5} % A cool, very light gray
+\definecolor{bordercolor}{HTML}{E0E0E0} % Subtle border
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\itshape\color{codegreen}, % Italic comments look professional
+    keywordstyle=\bfseries\color{magenta},  % Bold keywords
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize, % Uses Inconsolata if package is loaded
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=10pt, % slightly more padding
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+    frame=single, % Adds a frame
+    rulecolor=\color{bordercolor}, % Frame color
+    framesep=5pt, % Padding between frame and code
+    frameround=ffff % Sharp corners (change to tttt for rounded)
+}
+\lstset{style=mystyle}
+
+\begin{document}
+
+%----------------------------------------------------------------------------------------
+%	TITLE PAGE (Matches EMR 2437 Section 2.1.1)
+%----------------------------------------------------------------------------------------
+
+\thispagestyle{empty}
+\begin{center}
+  
+{\setstretch{1.8}
+
+\textbf{PROJECT PROPOSAL}
+
+\textbf{AI MARINE ENGINEERING SYSTEM (AIMS)}
+\vspace{0.5cm}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.3\linewidth]{media/deep-learning.png}
+    \label{fig:logo}
+\end{figure}
+
+\vspace{0.5cm}
+
+\textbf{AIMS TEAM}
+\vspace{0.5cm}
+
+\begin{table}[htbp]
+\centering % This centers the table on the page
+\begin{tabular}{@{} p{7cm} p{7cm}@{}}
+\toprule % Top rule (from booktabs)
+\textbf{Name} & \textbf{Course of study}  \\
+\midrule 
+MOSONIK Zadock Kiprono & BSc. Marine Engineering  \\
+\addlinespace % Adds a little extra vertical space for readability
+NAHADI Farid Muigu  & BSc. Marine Engineering  \\
+\bottomrule % Bottom rule (from booktabs)
+\end{tabular}
+\end{table}
+\vspace{1.5em}
+\textbf{Built In Partial Fulfillment For The Award Of The Degree Of Bachelor Of Science In Marine Engineering.}
+}
+\end{center}
+
+\clearpage
+
+
+%----------------------------------------------------------------------------------------
+%	PREAMBLE PAGES (Matches EMR 2437 Section 2.1.2)
+%----------------------------------------------------------------------------------------
+
+\pagenumbering{roman} % Roman numerals for preamble
+
+% 1. Declaration
+\section*{DECLARATION}
+\addcontentsline{toc}{section}{Declaration}
+
+We hereby declare that this project proposal is our original work and has not been presented for a degree in any other university or for any other award.
+
+\vspace{1cm}
+\noindent
+\textbf{Name:} MOSONIK Zadock Kiprono \hfill \textbf{REG NUMBER:} ENM241-0139/2021\\
+\vspace{0.5cm}
+
+\noindent
+\textbf{Signature:} \underline{\hspace{5cm}} \hfill \textbf{Date:} \underline{\hspace{4cm}} \\
+
+
+\vspace{1cm}
+\noindent
+\textbf{Name:} NAHADI Farid Muigu \hfill \textbf{REG NUMBER:}ENM241-0143/2021\\
+\vspace{0.5cm}
+
+\noindent
+\textbf{Signature:} \underline{\hspace{5cm}} \hfill \textbf{Date:} \underline{\hspace{4cm}} \\
+
+
+\vspace{1cm}
+\noindent
+\textbf{Supervisor Declaration:} \\
+
+\noindent
+This proposal has been submitted for examination with my approval as the University Supervisor.
+
+\vspace{1cm}
+
+\noindent
+\textbf{Name:} Dr. CHRISTIAAN Adika Adenya
+\vspace{1cm}
+
+\noindent
+\textbf{Signature:} \underline{\hspace{5cm}} \hfill \textbf{Date:} \underline{\hspace{4cm}} \\
+
+\newpage
+
+% 2. Table of Contents
+\tableofcontents
+\newpage
+
+% 5. Symbols and Abbreviations
+\section*{LIST OF SYMBOLS AND ABBREVIATIONS}
+\addcontentsline{toc}{section}{List of Symbols and Abbreviations}
+
+\begin{longtable}{p{3cm} p{10cm}}
+    \textbf{AI} & Artificial Intelligence \\
+    \textbf{AIMS} & AI Marine Engineering System \\
+    \textbf{IoT} & Internet of Things \\
+    \textbf{IMO} & International Maritime Organization \\
+    \textbf{LightGBM} & Light Gradient Boosting Machine \\
+    \textbf{ML} & Machine Learning \\
+    \textbf{RCA} & Root Cause Analysis \\
+    \textbf{RPM} & Revolutions Per Minute \\
+    \textbf{SHAP} & SHapley Additive exPlanations \\
+    \textbf{SMOTE} & Synthetic Minority Over-sampling Technique \\
+    \textbf{API} & Application Programming Interface \\
+    \textbf{UI} & User Interface \\
+    $\eta$ & Learning Rate \\
+    $\mu$ & Mean value of sensor data \\
+    $\sigma$ & Standard deviation of sensor data \\
+\end{longtable}
+\newpage
+
+%----------------------------------------------------------------------------------------
+%	ABSTRACT (Matches EMR 2437 Section 2.1.3)
+%----------------------------------------------------------------------------------------
+
+\section*{ABSTRACT}
+\addcontentsline{toc}{section}{Abstract}
+
+The maritime industry is currently facing significant operational challenges due to unexpected marine engine failures, which result in safety risks, environmental hazards, and annual financial losses estimated between \$50,000 and \$500,000 per incident. Traditional maintenance strategies, such as reactive repairs and fixed-interval scheduling, are inefficient and fail to address developing faults in real-time. Furthermore, previous attempts to digitize maintenance have relied on simple threshold alarms or "black box" algorithms that lack the transparency required for safety-critical maritime operations.
+
+This project proposes the development of the \textbf{AI Marine Engineering System (AIMS)}, an intelligent predictive maintenance platform designed to diagnose faults 24 to 72 hours before failure. The study utilizes a high-fidelity dataset comprising 10,000 observations from 18 sensor parameters (including vibration, temperature, and pressure) to classify 8 distinct fault types. To address the challenge of class imbalance inherent in failure data, the Synthetic Minority Over-sampling Technique (SMOTE) is employed. The core methodology leverages the LightGBM gradient boosting algorithm to achieve high predictive performance, while the integration of SHAP (SHapley Additive exPlanations) values ensures that every diagnosis is accompanied by a transparent root-cause analysis.
+
+The expected results indicate that the system achieves 94\% overall accuracy and a 91\% macro F1-score. By deploying this solution as an edge-computing application, the project aims to reduce unplanned downtime by 60-80\% and decrease maintenance costs by 30-40\%, thereby offering a scalable solution for modernizing fleet reliability and safety.
+
+\newpage
+
+%----------------------------------------------------------------------------------------
+%	SECTION 1: INTRODUCTION (Matches EMR 2437 Section 2.1.4)
+%----------------------------------------------------------------------------------------
+
+\pagenumbering{arabic} % Switch to standard numbering (1, 2, 3...)
+
+\section{INTRODUCTION}
+\label{sec:introduction}
+
+\subsection{Background of the Study}
+Marine engines serve as the critical prime movers for the global shipping industry, which is responsible for transporting approximately 90\% of world trade. The operational reliability of these engines is paramount, not only to ensure supply chain efficiency but also to guarantee the safety of crew and vessels at sea. Traditionally, the maritime industry has relied on two primary maintenance strategies: reactive maintenance, where repairs are performed only after failure occurs, and preventive (scheduled) maintenance, where components are replaced at fixed intervals regardless of their actual condition.
+
+While scheduled maintenance reduces catastrophic failures compared to reactive approaches, it is inherently inefficient, often leading to the premature replacement of functional parts and high operational costs. Conversely, reactive maintenance poses severe financial risks, with engine failures costing ship operators between \$50,000 and \$500,000 per incident in repairs and off-hire penalties.
+
+In recent years, the industry has begun shifting toward predictive maintenance, leveraging Internet of Things (IoT) sensor networks to monitor engine parameters such as temperature, pressure, and vibration. However, the sheer volume of high-frequency sensor data generated by modern vessels—often exceeding gigabytes per day—overwhelms human analysts, creating a need for automated, intelligent diagnostic systems.
+
+\subsection{Statement of the Problem}
+\textbf{General Problem:}
+The maritime sector continues to suffer from excessive unplanned downtime and inflated maintenance budgets due to a reliance on inefficient maintenance strategies. Current monitoring systems, which primarily utilize static threshold alarms (e.g., alerting only when temperature exceeds a fixed limit), fail to detect the subtle, non-linear correlations between sensor variables that precede complex mechanical failures. Consequently, developing faults often go unnoticed until they result in critical breakdown.
+
+\textbf{Specific Problem:}
+While Artificial Intelligence (AI) offers a solution to complex fault detection, existing implementations in the maritime domain often function as "black boxes." These Deep Learning or complex ensemble models provide a risk alert without explaining the underlying logic or identifying the root cause. In a safety-critical environment like a ship's engine room, marine engineers are hesitant to trust or act upon automated alerts they cannot verify. There is currently a lack of predictive maintenance systems that combine high-accuracy fault diagnosis with \textit{explainability}—the ability to transparently articulate which specific sensor readings (e.g., high vibration combined with low oil pressure) led to a specific fault diagnosis.
+
+\subsection{Objectives}
+
+\subsubsection{General Objective}
+The primary aim of this project is to develop and validate an Explainable Artificial Intelligence (XAI) system, named AIMS (AI Marine Engineering System), capable of predicting and diagnosing faults in marine diesel engines with high accuracy and transparency.
+
+\subsubsection{Specific Objectives}
+To achieve the general aim, the project will pursue the following specific objectives:
+\begin{enumerate}
+    \item \textbf{To design a robust data preprocessing pipeline} that utilizes the Synthetic Minority Over-sampling Technique (SMOTE) to balance sensor data, ensuring accurate detection of rare fault events such as bearing wear.
+    \item \textbf{To develop a multi-class classification model} using the Light Gradient Boosting Machine (LightGBM) algorithm to predict eight distinct engine health states with a target accuracy of at least 90\%.
+    \item \textbf{To integrate SHapley Additive exPlanations (SHAP)} into the model architecture to quantify the contribution of each sensor variable to a prediction, thereby providing transparent root-cause analysis for every fault alert.
+    \item \textbf{To implement a full-stack edge computing prototype} using a FastAPI backend and React frontend, demonstrating the system's capability to perform real-time inference with sub-second latency.
+\end{enumerate}
+
+\newpage
+
+%----------------------------------------------------------------------------------------
+%	SECTION 2: LITERATURE REVIEW (Matches EMR 2437 Section 2.1.5)
+%----------------------------------------------------------------------------------------
+
+\section{LITERATURE REVIEW}
+\label{sec:lit_review}
+
+\subsection{Theoretical Framework}
+The maintenance of marine machinery has evolved significantly over the last century. Initially, operators relied on \textbf{Corrective Maintenance} (Run-to-Failure), which maximizes asset utilization but incurs high failure costs. This was succeeded by \textbf{Preventive Maintenance} (Time-Based), grounded in the "Bathtub Curve" theory of reliability, which assumes failure probability increases with time. However, modern studies indicate that up to 80\% of failures are random and not age-related, necessitating a shift to \textbf{Predictive Maintenance (PdM)} [1].
+
+PdM is founded on the principle that equipment displays measurable precursors to failure (e.g., heat, vibration, pressure changes) long before functional failure occurs. In the domain of Artificial Intelligence, \textbf{Gradient Boosting Decision Trees (GBDT)} have emerged as a leading theoretical approach for tabular sensor data. Algorithms like LightGBM build models sequentially, where each new tree corrects the errors of the previous ones, allowing for the modeling of highly complex, non-linear relationships between engine sensors [2]. Furthermore, the integration of \textbf{Game Theory}, specifically Shapley values, provides a theoretical basis for model explainability, allowing complex algorithmic decisions to be decomposed into understandable feature contributions [3].
+
+\subsection{Review of Related Literature}
+Historically, marine engine monitoring has been dominated by Original Equipment Manufacturers (OEMs) such as Wärtsilä and MAN Energy Solutions, who provide systems based on static threshold alarms. While effective for simple faults (e.g., overheating), Jardine et al. [4] note that these systems suffer from high false-positive rates as they cannot account for dynamic operating contexts (e.g., high load vs. idle).
+
+Recent academic efforts have applied Deep Learning techniques, such as Long Short-Term Memory (LSTM) networks, to marine engine data. While these models achieve high accuracy, they operate as "black boxes." Lundberg and Lee [3] argue that in safety-critical industries, the lack of interpretability effectively bars deployment, as operators cannot distinguish between a genuine fault and a sensor error.
+
+\subsection{Research Gaps}
+Despite the advancements in both maritime monitoring and machine learning, a critical intersection remains underexplored. Existing solutions generally fall into two categories:
+\begin{enumerate}
+    \item \textbf{Transparent but Inaccurate:} Threshold-based alarms that are easy to understand but miss complex faults.
+    \item \textbf{Accurate but Opaque:} Advanced AI models that detect faults but cannot explain *why*.
+\end{enumerate}
+There is a distinct lack of research focusing on \textbf{Explainable AI (XAI)} specifically tailored for the marine environment, where a prediction must be accompanied by a root-cause diagnosis (e.g., "Vibration is high due to Bearing Wear") to be actionable. This project seeks to fill this gap by combining high-performance Gradient Boosting with SHAP-based explanations.
+
+\subsection{Variables}
+In the development of the AIMS predictive maintenance system, the following variables have been identified and categorized based on their role in the experimental design:
+
+\subsubsection{Independent Variables (Inputs)}
+These are the manipulated or measured variables that are analyzed to determine the engine's health. In this study, they comprise the real-time readings from the engine sensor network:
+\begin{itemize}
+    \item \textbf{Mechanical Parameters:} Shaft RPM, Vibration (X, Y, Z axes).
+    \item \textbf{Thermal Parameters:} Oil Temperature, Ambient Temperature, Exhaust Temperatures (Cylinders 1-4).
+    \item \textbf{Pressure Parameters:} Air Pressure, Oil Pressure, Cylinder Pressures (1-4).
+    \item \textbf{Flow Parameters:} Fuel Flow Rate, Engine Load.
+\end{itemize}
+
+\subsubsection{Dependent Variable (Output)}
+This is the variable of primary interest that changes in response to the independent variables.
+\begin{itemize}
+    \item \textbf{Engine Health Status:} A categorical variable representing the diagnostic result, classified into 8 classes: Normal Operation, Fuel Injection Fault, Cooling System Fault, Turbocharger Fault, Bearing Wear, Lubrication Oil Degradation, Air Intake Restriction, and Vibration Anomaly.
+\end{itemize}
+
+\subsubsection{Confounding Variables}
+These are extraneous variables that correlates with both the dependent variable and the independent variable, potentially obscuring the true relationship.
+\begin{itemize}
+    \item \textbf{Ambient Conditions:} Variations in ambient temperature and humidity can alter engine thermal baselines (e.g., higher exhaust temps in tropical waters) without indicating a fault.
+    \item \textbf{Sea State:} Rough seas may introduce external vibrations that could be mistaken for mechanical bearing wear.
+\end{itemize}
+
+\subsubsection{Background Variables}
+These variables describe the specific context of the study but are not manipulated.
+\begin{itemize}
+    \item \textbf{Engine Architecture:} The specific design (4-cylinder marine diesel) and age of the engine being simulated.
+    \item \textbf{Fuel Quality:} The grade of marine diesel oil used, which affects combustion efficiency.
+\end{itemize}
+
+\newpage
+
+%----------------------------------------------------------------------------------------
+%	SECTION 3: METHODOLOGY (Matches EMR 2437 Section 2.1.6)
+%----------------------------------------------------------------------------------------
+
+\section{METHODOLOGY}
+\label{sec:methodology}
+
+This section outlines the systematic approach employed to develop the AIMS predictive maintenance system. The methodology is designed to ensure that the study produces valid, reliable, and replicable results consistent with the stated specific objectives.
+
+\subsection{Research Design}
+The project adopts a \textbf{quantitative, experimental research design}. This strategy is appropriate as it involves the manipulation of computational variables (model hyperparameters, data balancing techniques) to observe their effect on the dependent variable (predictive accuracy). The study is structured into four distinct phases: Data Preparation, Model Development, Explainability Integration, and Prototype Deployment.
+
+\subsection{Data Source and Instrumentation}
+\textbf{Study Instruments:}
+The primary source of data for this study is a high-fidelity digital simulation of a 4-cylinder marine diesel engine. The simulation generates a comprehensive dataset comprising 10,000 timestamped observations sampled at a frequency of 1 Hz.
+
+The engine system is instrumented with 18 virtual sensors, which serve as the data collection points:
+\begin{itemize}
+    \item \textbf{Thermocouples:} Measuring oil temperature and cylinder exhaust gas temperatures.
+    \item \textbf{Pressure Transducers:} Monitoring intake air pressure, lubrication oil pressure, and peak cylinder combustion pressures.
+    \item \textbf{Tri-axial Accelerometers:} Measuring vibration amplitude in the X, Y, and Z axes to detect mechanical imbalances.
+    \item \textbf{Flow Meters:} Recording instantaneous fuel flow rates.
+\end{itemize}
+
+\subsection{Data Collection Procedure}
+Data collection involves the simulation of the engine under diverse operating conditions, including idle, maneuvering, and full cruise load. To ensure the model can detect failures, specific fault conditions (e.g., restricted air intake, bearing wear) are injected into the simulation at controlled intervals. The resulting dataset is labeled with one of eight classes (0-7), where Class 0 represents normal operation and Classes 1-7 represent specific fault types.
+
+\subsection{Data Processing and Analysis}
+The data analysis pipeline is implemented using Python and follows these steps:
+
+\subsubsection{Preprocessing and Balancing}
+Raw sensor data is first cleaned to ensure integrity. A critical challenge in maintenance data is \textbf{class imbalance}, where normal operation samples vastly outnumber fault samples (approximate ratio of 13:1). To address this, the \textbf{Synthetic Minority Over-sampling Technique (SMOTE)} is applied to the training data. SMOTE synthesizes new examples for the minority fault classes by interpolating between existing samples, ensuring the model does not become biased toward predicting "Normal" operation. Additionally, a \textbf{StandardScaler} is applied to normalize sensor values to a standard distribution ($\mu=0, \sigma=1$).
+
+\subsubsection{Model Development}
+The core predictive engine utilizes the \textbf{LightGBM (Light Gradient Boosting Machine)} algorithm. LightGBM is selected for its leaf-wise tree growth strategy, which offers faster training speeds and higher accuracy on tabular data compared to traditional Random Forests. Hyperparameters (such as learning rate $\eta$ and number of leaves) are optimized using the \textbf{Optuna} Bayesian optimization framework to maximize the F1-score.
+
+\subsubsection{Gradient Boosting Formulation}
+The core classification engine of AIMS is built upon the Gradient Boosting Decision Tree (GBDT) framework. Unlike independent ensemble methods such as Random Forests, Gradient Boosting builds an ensemble of weak learners (decision trees) in a sequential manner, where each new tree attempts to correct the errors made by the previous trees.
+
+Mathematically, the model initializes with a constant value $F_0(x)$ that minimizes the loss function:
+\begin{equation}
+    F_0(x) = \arg\min_{\gamma} \sum_{i=1}^{n} L(y_i, \gamma)
+\end{equation}
+For a multi-class classification problem with $K$ fault classes (where $K=8$), the algorithm iterates through $M$ stages. At each stage $m$ ($1 \leq m \leq M$), the model computes the pseudo-residuals $r_{im}$ for each observation $i$, which represent the negative gradient of the loss function with respect to the model's current prediction:
+\begin{equation}
+    r_{im} = - \left[ \frac{\partial L(y_i, F(x_i))}{\partial F(x_i)} \right]_{F(x) = F_{m-1}(x)}
+\end{equation}
+A new decision tree $h_m(x)$ is then fitted to these residuals. The model is updated by adding this new tree, scaled by a learning rate $\eta$ (set to 0.08 in this study) to prevent overfitting:
+\begin{equation}
+    F_m(x) = F_{m-1}(x) + \eta \sum_{j=1}^{J_m} \gamma_{jm} I(x \in R_{jm})
+\end{equation}
+where $J_m$ is the number of leaves and $R_{jm}$ represents the disjoint regions (leaves) of the tree.
+
+\subsubsection{LightGBM Optimization: Leaf-wise Growth}
+While traditional GBDT implementations (like XGBoost) utilize a level-wise tree growth strategy, this project utilizes LightGBM, which employs a \textit{leaf-wise} growth strategy . In leaf-wise growth, the algorithm splits the leaf with the maximum delta loss (highest error reduction), regardless of the tree's depth.
+\begin{equation}
+    \text{Gain} = \frac{1}{2} \left[ \frac{G_L^2}{H_L + \lambda} + \frac{G_R^2}{H_R + \lambda} - \frac{(G_L + G_R)^2}{H_L + H_R + \lambda} \right] - \gamma
+\end{equation}
+This approach allows LightGBM to converge faster and achieve higher accuracy on the complex, non-linear sensor data patterns inherent in marine engine faults, although it requires careful tuning of the \texttt{max\_depth} parameter to prevent overfitting.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\linewidth]{media/Gradient Boosting.png}
+    \caption{Gradient Boosting}
+    \label{fig:lightgbm_leafwise}
+\end{figure}
+
+\subsubsection{Explainability (SHAP)}
+To satisfy the requirement for transparency, the trained model is analyzed using \textbf{SHapley Additive exPlanations (SHAP)}. For every prediction made by the model, SHAP values are computed to quantify the marginal contribution of each sensor feature. This allows the system to generate natural language explanations, such as "Prediction: Bearing Wear. Reason: Vibration\_X is elevated (+0.14 impact) and Oil Pressure is low (+0.09 impact)."
+
+\subsubsection{Prototype Implementation}
+The final validated model is serialized and deployed as an API using the \textbf{FastAPI} framework. A frontend dashboard is developed using \textbf{React} to visualize real-time sensor streams, fault alerts, and SHAP explanation plots for the end-user (marine engineer).
+
+\newpage
+%----------------------------------------------------------------------------------------
+%	SECTION 4: EXPECTED RESULTS (Matches EMR 2437 Section 2.1.7)
+%----------------------------------------------------------------------------------------
+
+\section{EXPECTED RESULTS}
+\label{sec:expected_results}
+
+Based on the experimental design and the capabilities of the selected algorithms, the study anticipates the following outcomes, which are directly aligned with the specific objectives:
+
+\begin{itemize}
+    \item \textbf{High Predictive Accuracy:} It is expected that the LightGBM model, trained on the balanced dataset, will achieve an overall classification accuracy of approximately 94\% and a macro F1-score exceeding 91\%. This performance will demonstrate a significant improvement over traditional threshold-based monitoring systems.
+    
+    \item \textbf{Early Fault Detection Capability:} The system is expected to identify subtle degradation patterns (such as initial bearing wear or oil degradation) 24 to 72 hours before they escalate into critical failures, thereby validating the efficacy of the predictive maintenance approach.
+    
+    \item \textbf{Transparent Decision Support:} Through the integration of SHAP, the system will output quantifiable explanations for every fault prediction. It is expected that these explanations will align with established marine engineering principles (e.g., correlating high vibration with mechanical looseness), thereby fostering trust among human operators.
+    
+    \item \textbf{Operational Viability:} The prototype is expected to demonstrate sub-second inference latency (<100ms) on standard edge hardware, confirming the feasibility of real-time deployment on onboard vessels.
+\end{itemize}
+
+\newpage
+
+%----------------------------------------------------------------------------------------
+%	SECTION 5: BUDGET (Matches EMR 2437 Section 2.1.8)
+%----------------------------------------------------------------------------------------
+
+\section{BUDGET}
+\label{sec:budget}
+
+Currently, there are no budget requirements for this project.
+The only thing we need is Open Source Data 
+\newpage
+
+%----------------------------------------------------------------------------------------
+%	BIBLIOGRAPHY (Matches EMR 2437 Section 2.1.10)
+%----------------------------------------------------------------------------------------
+
+\section*{REFERENCES}
+\addcontentsline{toc}{section}{References}
+
+\begin{enumerate}
+    \item[{[1]}] J. Lee, F. Wu, W. Zhao, M. Ghaffari, L. Liao, and D. Siegel, "Prognostics and health management design for rotary machinery systems—Reviews, methodology and applications," \textit{Mechanical Systems and Signal Processing}, vol. 42, no. 1–2, pp. 314–334, 2014.
+    
+    \item[{[2]}] G. Ke et al., "LightGBM: A Highly Efficient Gradient Boosting Decision Tree," in \textit{Advances in Neural Information Processing Systems}, vol. 30, 2017.
+    
+    \item[{[3]}] S. M. Lundberg and S. I. Lee, "A Unified Approach to Interpreting Model Predictions," in \textit{Advances in Neural Information Processing Systems}, 2017.
+    
+    \item[{[4]}] A. K. Jardine, D. Lin, and D. Banjevic, "A review on machinery diagnostics and prognostics implementing condition-based maintenance," \textit{Mechanical Systems and Signal Processing}, vol. 20, no. 7, pp. 1483–1510, 2006.
+    
+    \item[{[5]}] N. V. Chawla, K. W. Bowyer, L. O. Hall, and W. P. Kegelmeyer, "SMOTE: Synthetic Minority Over-sampling Technique," \textit{Journal of Artificial Intelligence Research}, vol. 16, pp. 321–357, 2002.
+    
+    \item[{[6]}] D. Woodyard, \textit{Pounder's Marine Diesel Engines and Gas Turbines}, 9th ed. Oxford: Butterworth-Heinemann, 2009.
+    
+    \item[{[7]}] International Maritime Organization (IMO), \textit{Fourth IMO GHG Study 2020}. London: IMO, 2020.
+\end{enumerate}
+
+\newpage
+%----------------------------------------------------------------------------------------
+%	APPENDIX
+%----------------------------------------------------------------------------------------
+\section*{APPENDICES}
+\addcontentsline{toc}{section}{Appendices}
+\subsection*{Appendix A: Proposed Algorithm Implementation}
+The following Python snippet demonstrates the core logic for training the Explainable AI model using LightGBM and SMOTE.
+
+\begin{lstlisting}[language=Python]
+import lightgbm as lgb
+from imblearn.over_sampling import SMOTE
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+
+# 1. Prepare Data
+# Separate 18 sensor features (X) and fault labels (y)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, stratify=y, random_state=42
+)
+
+# 2. Normalization
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)
+
+# 3. Handle Imbalance (SMOTE)
+# Synthesize minority fault samples to balance dataset
+smote = SMOTE(random_state=42)
+X_resampled, y_resampled = smote.fit_resample(X_train_scaled, y_train)
+
+# 4. Train LightGBM Model
+model = lgb.LGBMClassifier(
+    n_estimators=350,
+    learning_rate=0.08,
+    num_leaves=55,
+    objective='multiclass'
+)
+model.fit(X_resampled, y_resampled)
+
+# 5. Explainability (SHAP)
+import shap
+explainer = shap.TreeExplainer(model)
+shap_values = explainer.shap_values(X_test)
+\end{lstlisting}
+
+\end{document}
