@@ -82,6 +82,14 @@ frontend/dist/
 # Logs
 logs/
 *.log
+# LaTeX auxiliary and log files
+*.aux
+*.log
+*.toc
+*.out
+*.fls
+*.fdb_latexmk
+proposal.synctex.gz/
 
 # OS
 Thumbs.db
