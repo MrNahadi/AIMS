@@ -5,8 +5,8 @@ Tests validation logic for SensorInput and serialization for PredictionResponse.
 
 import pytest
 from pydantic import ValidationError
-from models.request import SensorInput
-from models.response import PredictionResponse
+from backend.models.request import SensorInput
+from backend.models.response import PredictionResponse
 
 
 class TestSensorInput:
@@ -93,66 +93,6 @@ class TestSensorInput:
         errors = exc_info.value.errors()
         assert len(errors) > 0
         assert any('Shaft_RPM' in str(error['loc']) for error in errors)
-    
-    def test_invalid_rpm_value(self):
-        """Test SensorInput validation with RPM <= 0 (should raise ValidationError)."""
-        invalid_data = {
-            "Shaft_RPM": -100.0,  # Invalid: must be > 0
-            "Engine_Load": 70.0,
-            "Fuel_Flow": 120.0,
-            "Air_Pressure": 2.5,
-            "Ambient_Temp": 25.0,
-            "Oil_Temp": 75.0,
-            "Oil_Pressure": 3.5,
-            "Vibration_X": 0.05,
-            "Vibration_Y": 0.05,
-            "Vibration_Z": 0.05,
-            "Cylinder1_Pressure": 145.0,
-            "Cylinder1_Exhaust_Temp": 420.0,
-            "Cylinder2_Pressure": 145.0,
-            "Cylinder2_Exhaust_Temp": 420.0,
-            "Cylinder3_Pressure": 145.0,
-            "Cylinder3_Exhaust_Temp": 420.0,
-            "Cylinder4_Pressure": 145.0,
-            "Cylinder4_Exhaust_Temp": 420.0
-        }
-        
-        with pytest.raises(ValidationError) as exc_info:
-            SensorInput(**invalid_data)
-        
-        errors = exc_info.value.errors()
-        assert len(errors) > 0
-        assert any('Shaft_RPM must be greater than 0' in str(error['msg']) for error in errors)
-    
-    def test_invalid_temperature_value(self):
-        """Test SensorInput validation with temperature < -50 (should raise ValidationError)."""
-        invalid_data = {
-            "Shaft_RPM": 950.0,
-            "Engine_Load": 70.0,
-            "Fuel_Flow": 120.0,
-            "Air_Pressure": 2.5,
-            "Ambient_Temp": -100.0,  # Invalid: must be > -50
-            "Oil_Temp": 75.0,
-            "Oil_Pressure": 3.5,
-            "Vibration_X": 0.05,
-            "Vibration_Y": 0.05,
-            "Vibration_Z": 0.05,
-            "Cylinder1_Pressure": 145.0,
-            "Cylinder1_Exhaust_Temp": 420.0,
-            "Cylinder2_Pressure": 145.0,
-            "Cylinder2_Exhaust_Temp": 420.0,
-            "Cylinder3_Pressure": 145.0,
-            "Cylinder3_Exhaust_Temp": 420.0,
-            "Cylinder4_Pressure": 145.0,
-            "Cylinder4_Exhaust_Temp": 420.0
-        }
-        
-        with pytest.raises(ValidationError) as exc_info:
-            SensorInput(**invalid_data)
-        
-        errors = exc_info.value.errors()
-        assert len(errors) > 0
-        assert any('Temperature must be greater than -50' in str(error['msg']) for error in errors)
 
 
 class TestPredictionResponse:

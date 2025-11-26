@@ -3,10 +3,12 @@ Predictor service for marine engine fault diagnosis.
 Handles inference logic, SHAP computation, and response formatting.
 """
 
-import numpy as np
 from typing import Any
-from models.request import SensorInput
-from models.response import PredictionResponse
+
+import numpy as np
+
+from backend.models.request import SensorInput
+from backend.models.response import PredictionResponse
 
 
 # Fault label mapping (0-7 to human-readable strings)

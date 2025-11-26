@@ -1,11 +1,13 @@
-import joblib
 import os
+from contextlib import asynccontextmanager
+
+import joblib
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from contextlib import asynccontextmanager
-from models.request import SensorInput
-from models.response import PredictionResponse
-from services.predictor import predict_fault
+
+from backend.models.request import SensorInput
+from backend.models.response import PredictionResponse
+from backend.services.predictor import predict_fault
 
 
 @asynccontextmanager

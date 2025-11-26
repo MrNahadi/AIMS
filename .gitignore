@@ -48,7 +48,7 @@ htmlcov/
 *.model
 *.weights
 artifacts/
-models/
+# models/
 checkpoints/
 
 # Node / React Frontend

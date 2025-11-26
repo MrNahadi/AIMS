@@ -6,9 +6,10 @@ Tests the predict_fault function with mocked model artifacts.
 import pytest
 import numpy as np
 from unittest.mock import Mock
-from models.request import SensorInput
-from models.response import PredictionResponse
-from services.predictor import predict_fault, FAULT_LABELS, FEATURE_NAMES
+
+from backend.models.request import SensorInput
+from backend.models.response import PredictionResponse
+from backend.services.predictor import predict_fault, FAULT_LABELS, FEATURE_NAMES
 
 
 class TestFaultLabels:

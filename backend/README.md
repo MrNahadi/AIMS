@@ -190,20 +190,22 @@ FAULT_LABELS = {
 pip install -r requirements.txt
 ```
 
-2. Ensure model artifacts exist in `artifacts/` directory
+2. Ensure model artifacts exist in `backend/artifacts/` directory
 
-3. Start the server:
+3. Start the server from the **project root directory**:
 ```bash
-uvicorn main:app --reload --port 8000
+uvicorn backend.main:app --reload --port 8000
 ```
+
+**Important**: The server must be started from the project root directory (the directory containing both `backend/` and `frontend/` folders), not from within the `backend/` directory. This is required for Python to correctly resolve the absolute imports used throughout the backend package.
 
 ## Development
 
 ### Running with Auto-Reload
 
-For development, use the `--reload` flag:
+For development, use the `--reload` flag (run from project root):
 ```bash
-uvicorn main:app --reload
+uvicorn backend.main:app --reload
 ```
 
 The server will automatically restart when code changes are detected.
@@ -211,26 +213,26 @@ The server will automatically restart when code changes are detected.
 ### Running on a Different Port
 
 ```bash
-uvicorn main:app --port 8001
+uvicorn backend.main:app --port 8001
 ```
 
 ### Running in Production
 
 For production deployment, remove the `--reload` flag and consider using multiple workers:
 ```bash
-uvicorn main:app --host 0.0.0.0 --port 8000 --workers 4
+uvicorn backend.main:app --host 0.0.0.0 --port 8000 --workers 4
 ```
 
 ## Testing
 
-Run backend tests with pytest:
+Run backend tests with pytest (from project root):
 ```bash
-pytest tests/
+pytest backend/tests/
 ```
 
 Run with coverage:
 ```bash
-pytest tests/ --cov=. --cov-report=html
+pytest backend/tests/ --cov=backend --cov-report=html
 ```
 
 ## Project Structure
@@ -384,6 +386,25 @@ fetch(url, {
 
 ## Troubleshooting
 
+### ModuleNotFoundError: No module named 'models' or 'backend'
+
+This error occurs when the server is started from the wrong directory or with the wrong command.
+
+**Solution**: Always run the server from the **project root directory** (the directory containing both `backend/` and `frontend/` folders) using:
+```bash
+uvicorn backend.main:app --reload
+```
+
+**Why this is required**: The backend uses absolute imports (e.g., `from backend.models.request import SensorInput`) to ensure consistent module resolution across all execution contexts (development server, tests, production). Absolute imports require that:
+1. The `backend/` directory is treated as a Python package
+2. The command is run from a directory where Python can find the `backend` package
+3. The uvicorn command references the module path as `backend.main:app`
+
+**Common mistakes**:
+- ❌ Running `uvicorn main:app` from the `backend/` directory
+- ❌ Running `uvicorn backend.main:app` from inside the `backend/` directory
+- ✅ Running `uvicorn backend.main:app` from the project root directory
+
 ### Model artifacts not found
 
 Ensure you've run all Jupyter notebooks in order to generate the required .pkl files:
@@ -392,16 +413,20 @@ Ensure you've run all Jupyter notebooks in order to generate the required .pkl f
 3. `03_Model_Training_Tuning.ipynb`
 4. `04_Model_Explainability_Export.ipynb`
 
-### Import errors
+The server will start even if artifacts are missing, but predictions will fail. Check the console output for warnings about missing artifacts.
+
+### Import errors (dependencies)
 
 Make sure all dependencies are installed:
 ```bash
-pip install -r requirements.txt
+pip install -r backend/requirements.txt
 ```
+
+If using a virtual environment, ensure it's activated before installing dependencies and starting the server.
 
 ### CORS errors
 
-If the frontend can't connect, verify the CORS middleware configuration allows requests from your frontend URL.
+If the frontend can't connect, verify the CORS middleware configuration allows requests from your frontend URL. The default configuration allows requests from `http://localhost:3000`.
 
 ## Interactive Documentation
 

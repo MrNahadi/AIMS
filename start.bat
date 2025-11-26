@@ -81,7 +81,7 @@ if not exist backend\artifacts\lgbm_model.pkl (
 )
 
 echo [5/5] Starting backend server...
-start "AIMS Backend" cmd /k "call venv\Scripts\activate.bat && cd backend && python -m uvicorn main:app --reload --host 0.0.0.0 --port 8000"
+start "AIMS Backend" cmd /k "call venv\Scripts\activate.bat && python -m uvicorn backend.main:app --reload --host 0.0.0.0 --port 8000"
 timeout /t 3 /nobreak >nul
 
 echo [6/6] Starting frontend development server...
