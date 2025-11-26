@@ -87,6 +87,7 @@ const ExplainabilityDisplay = ({ shapValues }) => {
 
                         return (
                             <div key={index} className="bar-row">
+                                <div className="feature-label">{entry.feature}</div>
                                 <div className="bar-wrapper-diverging">
                                     {/* Left side - negative values */}
                                     <div className="bar-side left">
@@ -119,6 +120,7 @@ const ExplainabilityDisplay = ({ shapValues }) => {
                                         )}
                                     </div>
                                 </div>
+                                <div className="value-label">{entry.value.toFixed(3)}</div>
                             </div>
                         );
                     })}
