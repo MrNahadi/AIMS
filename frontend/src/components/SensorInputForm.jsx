@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './SensorInputForm.css';
 
-// Preset scenarios
-const NORMAL_SCENARIO = {
+// Base normal scenario
+const BASE_NORMAL = {
     Shaft_RPM: 950,
     Engine_Load: 70,
     Fuel_Flow: 120,
@@ -24,35 +24,95 @@ const NORMAL_SCENARIO = {
     Cylinder4_Exhaust_Temp: 420
 };
 
-const MINOR_FAULT_SCENARIO = {
-    ...NORMAL_SCENARIO,
-    Oil_Temp: 110
-};
-
-const CRITICAL_FAULT_SCENARIO = {
-    ...NORMAL_SCENARIO,
-    Vibration_X: 0.45,
-    Vibration_Y: 0.35,
-    Cylinder1_Exhaust_Temp: 550,
-    Cylinder2_Exhaust_Temp: 550,
-    Cylinder3_Exhaust_Temp: 550,
-    Cylinder4_Exhaust_Temp: 550
+// Preset scenarios organized by category
+const PRESET_SCENARIOS = {
+    normal: [
+        {
+            name: 'Normal - Idle',
+            description: 'Low load operation',
+            values: { ...BASE_NORMAL, Engine_Load: 45, Shaft_RPM: 850 }
+        },
+        {
+            name: 'Normal - Cruise',
+            description: 'Standard operation',
+            values: BASE_NORMAL
+        },
+        {
+            name: 'Normal - High Load',
+            description: 'Heavy load operation',
+            values: { ...BASE_NORMAL, Engine_Load: 95, Shaft_RPM: 1050, Fuel_Flow: 145 }
+        }
+    ],
+    minor: [
+        {
+            name: 'Oil Degradation',
+            description: 'Elevated oil temp & low pressure',
+            values: { ...BASE_NORMAL, Oil_Temp: 102, Oil_Pressure: 2.8 }
+        },
+        {
+            name: 'Cooling Issue',
+            description: 'Slightly elevated temperatures',
+            values: { ...BASE_NORMAL, Oil_Temp: 92, Ambient_Temp: 32, Cylinder1_Exhaust_Temp: 460, Cylinder2_Exhaust_Temp: 460, Cylinder3_Exhaust_Temp: 460, Cylinder4_Exhaust_Temp: 460 }
+        },
+        {
+            name: 'Fuel Injection',
+            description: 'Low fuel flow',
+            values: { ...BASE_NORMAL, Fuel_Flow: 85, Engine_Load: 75 }
+        },
+        {
+            name: 'Air Intake',
+            description: 'Reduced air pressure',
+            values: { ...BASE_NORMAL, Air_Pressure: 2.0, Engine_Load: 75 }
+        }
+    ],
+    critical: [
+        {
+            name: 'Bearing Wear',
+            description: 'High vibration levels',
+            values: { ...BASE_NORMAL, Vibration_X: 0.45, Vibration_Y: 0.35, Vibration_Z: 0.30 }
+        },
+        {
+            name: 'Turbocharger Fault',
+            description: 'Very high exhaust temps',
+            values: { ...BASE_NORMAL, Cylinder1_Exhaust_Temp: 550, Cylinder2_Exhaust_Temp: 550, Cylinder3_Exhaust_Temp: 550, Cylinder4_Exhaust_Temp: 550, Air_Pressure: 2.0 }
+        },
+        {
+            name: 'Severe Vibration',
+            description: 'Critical vibration anomaly',
+            values: { ...BASE_NORMAL, Vibration_X: 0.40, Vibration_Y: 0.38, Vibration_Z: 0.35, Cylinder1_Exhaust_Temp: 480, Cylinder2_Exhaust_Temp: 480, Cylinder3_Exhaust_Temp: 480, Cylinder4_Exhaust_Temp: 480 }
+        },
+        {
+            name: 'Multiple Faults',
+            description: 'Combined critical conditions',
+            values: { ...BASE_NORMAL, Vibration_X: 0.35, Oil_Temp: 105, Oil_Pressure: 2.3, Cylinder1_Exhaust_Temp: 530, Cylinder2_Exhaust_Temp: 530, Cylinder3_Exhaust_Temp: 530, Cylinder4_Exhaust_Temp: 530 }
+        }
+    ]
 };
 
 const SensorInputForm = ({ onPredictionReceived }) => {
-    const [sensorValues, setSensorValues] = useState(NORMAL_SCENARIO);
+    const [sensorValues, setSensorValues] = useState(BASE_NORMAL);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [currentScenarioIndex, setCurrentScenarioIndex] = useState({ normal: 0, minor: 0, critical: 0 });
+    const [currentScenarioName, setCurrentScenarioName] = useState('Normal - Cruise');
 
     const handleInputChange = (field, value) => {
         setSensorValues(prev => ({
             ...prev,
             [field]: parseFloat(value) || 0
         }));
+        setCurrentScenarioName('Custom');
     };
 
-    const loadScenario = (scenario) => {
-        setSensorValues(scenario);
+    const loadScenario = (category) => {
+        const scenarios = PRESET_SCENARIOS[category];
+        const currentIndex = currentScenarioIndex[category];
+        const nextIndex = (currentIndex + 1) % scenarios.length;
+
+        const scenario = scenarios[nextIndex];
+        setSensorValues(scenario.values);
+        setCurrentScenarioName(scenario.name);
+        setCurrentScenarioIndex(prev => ({ ...prev, [category]: nextIndex }));
         setError(null);
     };
 
@@ -99,28 +159,38 @@ const SensorInputForm = ({ onPredictionReceived }) => {
         <div className="sensor-input-form">
             <h2>Sensor Readings</h2>
 
-            <div className="preset-buttons">
-                <button
-                    type="button"
-                    onClick={() => loadScenario(NORMAL_SCENARIO)}
-                    className="preset-btn normal"
-                >
-                    Normal Operation
-                </button>
-                <button
-                    type="button"
-                    onClick={() => loadScenario(MINOR_FAULT_SCENARIO)}
-                    className="preset-btn minor"
-                >
-                    Minor Fault
-                </button>
-                <button
-                    type="button"
-                    onClick={() => loadScenario(CRITICAL_FAULT_SCENARIO)}
-                    className="preset-btn critical"
-                >
-                    Critical Fault
-                </button>
+            <div className="preset-section">
+                <div className="current-scenario">
+                    <span className="scenario-label">Current Scenario:</span>
+                    <span className="scenario-name">{currentScenarioName}</span>
+                </div>
+
+                <div className="preset-buttons">
+                    <button
+                        type="button"
+                        onClick={() => loadScenario('normal')}
+                        className="preset-btn normal"
+                        title="Click to cycle through normal scenarios"
+                    >
+                        Normal Operation
+                    </button>
+                    <button
+                        type="button"
+                        onClick={() => loadScenario('minor')}
+                        className="preset-btn minor"
+                        title="Click to cycle through minor fault scenarios"
+                    >
+                        Minor Fault
+                    </button>
+                    <button
+                        type="button"
+                        onClick={() => loadScenario('critical')}
+                        className="preset-btn critical"
+                        title="Click to cycle through critical fault scenarios"
+                    >
+                        Critical Fault
+                    </button>
+                </div>
             </div>
 
             <form onSubmit={handleSubmit}>

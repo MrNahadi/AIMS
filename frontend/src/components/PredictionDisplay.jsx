@@ -34,7 +34,15 @@ const PredictionDisplay = ({ probabilities, predictionLabel }) => {
 
     // Find the maximum probability
     const maxProb = Math.max(...chartData.map(d => d.value));
-    const isCritical = maxProb > 90 && predictionLabel !== 'Normal';
+
+    // Define which fault types are critical based on severity
+    const criticalFaults = [
+        'Bearing Wear',
+        'Turbocharger Fault',
+        'Vibration Anomaly'
+    ];
+
+    const isCritical = criticalFaults.includes(predictionLabel) || (maxProb >= 98 && predictionLabel !== 'Normal');
     const isNormal = predictionLabel === 'Normal';
 
     // Sort data for bar labels (top 5)

@@ -1,6 +1,6 @@
 .explainability-display {
     background: var(--color-card-background);
-    padding: var(--spacing-md);
+    padding: var(--spacing-xl);
     border-radius: var(--radius-card);
     box-shadow: var(--shadow-card);
 }
