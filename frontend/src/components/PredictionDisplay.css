@@ -10,13 +10,17 @@
     gap: var(--spacing-md);
 }
 
-/* Critical state styling */
+/* State-based border styling */
 .prediction-display.critical {
-    border: 2px solid var(--color-danger);
+    border: 3px solid var(--color-danger);
 }
 
 .prediction-display.normal {
-    border: 2px solid var(--color-success);
+    border: 3px solid var(--color-success);
+}
+
+.prediction-display:not(.critical):not(.normal) {
+    border: 3px solid var(--color-warning);
 }
 
 /* Status Section */
@@ -180,4 +184,31 @@
     .fault-label {
         font-size: 1.1rem;
     }
+}
+
+.view-details-btn {
+    width: 100%;
+    padding: 12px var(--spacing-lg);
+    background: #1a202c;
+    color: var(--color-primary-contrast);
+    border: none;
+    border-radius: var(--radius-bar);
+    font-size: var(--font-body-secondary-size);
+    font-weight: var(--font-weight-semibold);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    margin-top: var(--spacing-md);
+    min-height: 44px;
+}
+
+.view-details-btn:hover {
+    background: var(--color-primary-main);
+    box-shadow: var(--shadow-md);
+}
+
+.view-details-btn:active {
+    transform: translateY(1px);
 }

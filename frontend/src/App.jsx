@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import SensorInputForm from './components/SensorInputForm';
 import PredictionDisplay from './components/PredictionDisplay';
-import ExplainabilityDisplay from './components/ExplainabilityDisplay';
 import SystemHealthRadar from './components/SystemHealthRadar';
+import MaintenanceRecommendations from './components/MaintenanceRecommendations';
 import GlossaryModal from './components/GlossaryModal';
+import ExplainabilityModal from './components/ExplainabilityModal';
 import './App.css';
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
     const [sensorValues, setSensorValues] = useState(null);
     const [error, setError] = useState(null);
     const [isGlossaryOpen, setIsGlossaryOpen] = useState(false);
+    const [isExplainabilityOpen, setIsExplainabilityOpen] = useState(false);
 
     const handlePredictionReceived = (predictionData, inputSensorValues) => {
         try {
@@ -76,16 +78,24 @@ function App() {
                         <PredictionDisplay
                             probabilities={probabilities}
                             predictionLabel={predictionLabel}
+                            onViewDetails={() => setIsExplainabilityOpen(true)}
+                            hasShapValues={!!shapValues}
                         />
                         <SystemHealthRadar sensorValues={sensorValues} />
                     </div>
-                    <ExplainabilityDisplay shapValues={shapValues} />
+                    <MaintenanceRecommendations predictionLabel={predictionLabel} />
                 </div>
             </div>
 
             <GlossaryModal
                 isOpen={isGlossaryOpen}
                 onClose={() => setIsGlossaryOpen(false)}
+            />
+
+            <ExplainabilityModal
+                isOpen={isExplainabilityOpen}
+                onClose={() => setIsExplainabilityOpen(false)}
+                shapValues={shapValues}
             />
         </div>
     );

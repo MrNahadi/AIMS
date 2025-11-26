@@ -13,7 +13,7 @@ const COLORS = [
     '#e91e63'  // Vibration Anomaly - pink
 ];
 
-const PredictionDisplay = ({ probabilities, predictionLabel }) => {
+const PredictionDisplay = ({ probabilities, predictionLabel, onViewDetails, hasShapValues }) => {
     if (!probabilities || !predictionLabel) {
         return (
             <div className="prediction-display">
@@ -125,6 +125,12 @@ const PredictionDisplay = ({ probabilities, predictionLabel }) => {
                     ))}
                 </div>
             </div>
+
+            {hasShapValues && (
+                <button className="view-details-btn" onClick={onViewDetails}>
+                    View Feature Importance
+                </button>
+            )}
         </div>
     );
 };

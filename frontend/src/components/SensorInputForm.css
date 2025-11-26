@@ -146,10 +146,10 @@
     min-height: 44px;
     /* Touch target size */
     padding: 12px var(--spacing-lg);
-    background: var(--color-primary-main);
+    background: #1a202c;
     color: var(--color-primary-contrast);
     border: none;
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-bar);
     font-size: 1rem;
     font-weight: var(--font-weight-semibold);
     /* 600 */
@@ -159,8 +159,8 @@
 }
 
 .analyze-btn:hover:not(:disabled) {
-    background-color: #1a202c;
-    /* Slightly darker */
+    background-color: var(--color-primary-main);
+    /* Slightly lighter */
 }
 
 .analyze-btn:disabled {

@@ -1,0 +1,100 @@
+.maintenance-recommendations {
+    background: var(--color-card-background);
+    padding: var(--spacing-xl);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-card);
+    border: 3px solid var(--color-border-default);
+}
+
+.maintenance-recommendations.priority-critical {
+    border-color: var(--color-danger);
+}
+
+.maintenance-recommendations.priority-medium {
+    border-color: var(--color-warning);
+}
+
+.maintenance-recommendations.priority-low {
+    border-color: var(--color-success);
+}
+
+.recommendations-header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-lg);
+}
+
+.recommendation-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.recommendations-header h3 {
+    margin: 0;
+    font-size: var(--font-title-size);
+    font-weight: var(--font-title-weight);
+    color: var(--color-text-primary);
+}
+
+.recommendations-content h4 {
+    margin: 0 0 var(--spacing-md) 0;
+    font-size: var(--font-body-secondary-size);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-secondary);
+}
+
+.action-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.action-item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-sm);
+    font-size: var(--font-body-secondary-size);
+    color: var(--color-text-primary);
+    line-height: 1.5;
+}
+
+.action-bullet {
+    color: var(--color-primary-main);
+    font-weight: var(--font-weight-bold);
+    flex-shrink: 0;
+}
+
+.action-text {
+    flex: 1;
+}
+
+.no-recommendations {
+    text-align: center;
+    padding: var(--spacing-xl) 0;
+    color: var(--color-text-secondary);
+    font-style: italic;
+}
+
+@media (max-width: 1024px) {
+    .maintenance-recommendations {
+        padding: var(--spacing-lg);
+    }
+}
+
+@media (max-width: 768px) {
+    .maintenance-recommendations {
+        padding: var(--spacing-md);
+    }
+
+    .recommendations-header h3 {
+        font-size: 1rem;
+    }
+
+    .action-item {
+        font-size: 0.875rem;
+    }
+}
