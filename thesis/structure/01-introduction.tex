@@ -1,0 +1,40 @@
+\chapter{Introduction}
+\label{chap:introduction}
+
+\section{Background}
+Marine diesel engines form the backbone of the global maritime industry, powering over 90\% of commercial vessels responsible for transporting global trade. The reliability of these engines is paramount; any failure can lead to severe operational disruptions, financial losses, and safety hazards. Traditional maintenance strategies, such as corrective (run-to-failure) and preventive (schedule-based) maintenance, often prove inefficient or costly. Corrective maintenance results in unpredictable downtime, while preventive maintenance can lead to unnecessary replacement of healthy components.
+
+\section{Problem Statement}
+Current engine monitoring systems largely rely on static threshold alarms. These systems trigger alerts only when a parameter exceeds a pre-defined limit. This approach has significant limitations:
+\begin{enumerate}
+    \item \textbf{High False Positive Rate:} Transient operational changes can trigger false alarms.
+    \item \textbf{Lack of Prognostics:} Alarms occur after degradation has reached a critical level, offering little time for proactive intervention.
+    \item \textbf{No Root Cause Analysis:} A generic ``high temperature'' alarm does not specify whether the cause is a cooling system failure, lubrication issue, or bearing wear.
+\end{enumerate}
+There is a critical need for a system that can not only predict faults before they occur but also explain the reasoning behind its predictions to engine operators.
+
+\section{Objectives}
+The primary objective of this project is to design and simulate an Explainable AI (XAI) based predictive maintenance system for marine diesel engines. Specific objectives include:
+\begin{enumerate}
+    \item To simulate a realistic dataset for a 4-cylinder marine diesel engine covering normal operation and eight specific fault conditions.
+    \item To design a predictive model using the Light Gradient Boosting Machine (LightGBM) algorithm to classify engine health states.
+    \item To implement SHAP (SHapley Additive exPlanations) to provide interpretable explanations for model predictions, identifying key contributing sensors.
+    \item To develop a real-time engineering dashboard using React and FastAPI to visualize engine health and diagnostic insights.
+\end{enumerate}
+
+\section{Significance}
+This research contributes to the maritime industry's transition towards ``Intelligent Vessels.'' By moving from reactive to predictive maintenance, ship operators can:
+\begin{itemize}
+    \item Reduce operational expenditure (OPEX) by optimizing maintenance schedules.
+    \item Enhance safety by preventing catastrophic engine failures at sea.
+    \item improve decision-making confidence through transparent, explainable AI diagnostics.
+\end{itemize}
+
+\section{Scope}
+The scope of this project is limited to:
+\begin{itemize}
+    \item \textbf{Target System:} A simulated 4-cylinder marine diesel engine.
+    \item \textbf{Fault Classes:} Normal operation and seven fault types including Fuel Injection Fault, Cooling System Fault, Turbocharger Fault, Bearing Wear, Lubrication Oil Degradation, Air Intake Restriction, and Vibration Anomaly.
+    \item \textbf{Data:} Synthetic data generated to mimic real-world sensor behavior (18 parameters).
+    \item \textbf{Verification:} Validation is performed via simulation scenarios; physical engine testing is outside the scope.
+\end{itemize}

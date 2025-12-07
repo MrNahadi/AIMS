@@ -1,0 +1,9 @@
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {3.1}{\ignorespaces Monitored Engine Parameters}}{9}{table.caption.8}%
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {4.1}{\ignorespaces Classification Report (LightGBM)}}{23}{table.caption.9}%
+\contentsline {table}{\numberline {4.2}{\ignorespaces Feature-to-Fault Mapping Based on SHAP Analysis}}{26}{table.caption.12}%
+\contentsline {table}{\numberline {4.3}{\ignorespaces Performance Comparison with State-of-the-Art}}{28}{table.caption.14}%
+\addvspace {10\p@ }

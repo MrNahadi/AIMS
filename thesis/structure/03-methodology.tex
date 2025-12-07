@@ -1,0 +1,479 @@
+\chapter{Methodology}
+\label{chap:methodology}
+
+\section{Introduction}
+This chapter delineates the engineering framework designed to develop the Explainable Predictive Maintenance (XPM) system. The methodology follows a rigorous data science usage lifecycle, tailored specifically for the distinctive thermodynamic characteristics of marine propulsion. It encompasses data acquisition, advanced preprocessing using synthetic oversampling, model development via gradient boosting, and the integration of game-theoretic explainability. Figure \ref{fig:methodology_flow} illustrates the high-level architecture.
+
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}[node distance=0.5cm]
+        % Nodes
+        \node (start) [startstop] {Sensor Data Acquisition};
+        \node (pro1) [process, below=of start] {Data Preprocessing (Min-Max)};
+        \node (pro2) [process, below=of pro1] {Feature Engineering};
+        \node (dec) [decision, below=of pro2] {Class Balancing (SMOTE)};
+        
+        % Split paths for decision
+        \node (pro3) [process, below=of dec, yshift=-1.0cm] {Model Training (LightGBM)};
+        \node (opt) [process, right=of dec, xshift=2.5cm] {Hyperparameter Tuning};
+        
+        \node (eval) [process, below=of pro3] {Model Evaluation};
+        \node (xai) [process, below=of eval] {Explainability (SHAP)};
+        \node (end) [startstop, below=of xai] {Dashboard Deployment};
+
+        % Arrows
+        \draw [arrow] (start) -- (pro1);
+        \draw [arrow] (pro1) -- (pro2);
+        \draw [arrow] (pro2) -- (dec);
+        
+        % SMOTE loop
+        \draw [arrow] (dec) -- node[anchor=east] {Balanced} (pro3);
+        \draw [arrow] (dec) -- node[anchor=south] {Tuning} (opt);
+        \draw [arrow] (opt) |- (pro3);
+        
+        \draw [arrow] (pro3) -- (eval);
+        \draw [arrow] (eval) -- (xai);
+        \draw [arrow] (xai) -- (end);
+    \end{tikzpicture}
+    \caption{Proposed XPM Methodology Workflow}
+    \label{fig:methodology_flow}
+\end{figure}
+
+\section{Data Acquisition and Marine Engineering Context}
+The research utilizes a high-fidelity synthetic dataset representative of a **Medium-Speed 4-Stroke Marine Diesel Engine** (operating range 800-1200 RPM). This engine class is ubiquitous in maritime auxiliary power generation and coastal propulsion.
+
+\subsection{Thermodynamic Cycle and Fault Correlation}
+The monitored parameters are not merely statistical features but direct indicators of the Diesel operational cycle. 
+\begin{enumerate}
+    \item \textbf{Combustion Health (Exhaust Temperatures):} In a 4-stroke cycle, deviation in exhaust gas temperature ($T_{exh}$) is the primary indicator of combustion efficiency.
+    \begin{itemize}
+        \item \textit{High $T_{exh}$:} Indicates "after-burning" typically caused by late injection timing or leaky exhaust valves.
+        \item \textit{Low $T_{exh}$ + White Smoke:} Correlates with water ingress (Cooling Fault) or incomplete combustion due to low compression.
+    \end{itemize}
+    \item \textbf{Mechanical Integrity (Vibration):} The 4-stroke cycle introduces specific vibration orders ($0.5 \times RPM$, $1 \times RPM$). Elevated lateral (X-axis) vibration often signals piston slap or crosshead wear, while axial (Z-axis) vibration points to thrust bearing degradation.
+    \item \textbf{Scavenging Efficiency (Air Pressure):} Turbocharger performance is critical. A drop in manifold air pressure ($P_{air}$) directly results in a rich fuel mixture, leading to high thermal stress and potential "Black Smoke" emissions.
+\end{enumerate}
+
+\subsection{Feature Space Definition}
+The 18-parameter feature space (Table \ref{tab:feature_space}) captures these physical phenomena.
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{lll}
+    \toprule
+    \textbf{Category} & \textbf{Sensors} & \textbf{Unit} \\ \midrule
+    Mechanical & Shaft RPM, Vibration (X, Y, Z) & RPM, mm/s \\
+    Thermodynamic & Exhaust Temp (Cyl 1-4), Oil Temp & $^\circ$C \\
+    Pressure & Air Pressure, Oil Pressure, Cyl Pressure (1-4) & Bar \\
+    Performance & Engine Load, Fuel Flow & \%, L/hr \\ \bottomrule
+    \end{tabular}
+    \caption{Monitored Engine Parameters}
+    \label{tab:feature_space}
+\end{table}
+
+\section{Advanced Preprocessing}
+\subsection{Data Splitting}
+To ensure rigorous evaluation and prevent \textit{data leakage} (where information from the test set inadvertently influences the training process), the dataset is split into training (80\%) and testing (20\%) sets using a \textbf{stratified sampling strategy}. 
+
+\textbf{What is Stratified Sampling?} In a standard random split, minority classes (e.g., Bearing Wear at 4.8\% of the dataset) might be underrepresented or even absent in one of the subsets. Stratified sampling ensures that the proportion of each fault class remains consistent across both training and test sets. For example, if Bearing Wear constitutes 4.8\% of the full dataset, it will also constitute approximately 4.8\% of both the training and test sets.
+
+\textbf{Why 80/20?} This ratio is a standard practice in machine learning that balances two competing needs:
+\begin{itemize}
+    \item \textbf{Training Set (80\%):} Provides sufficient data for the model to learn complex patterns and relationships between sensor readings and fault types.
+    \item \textbf{Test Set (20\%):} Reserves enough unseen data to reliably evaluate the model's generalization performance on new, real-world scenarios.
+\end{itemize}
+
+\subsection{Normalization (Feature Scaling)}
+\textbf{The Problem:} Marine engine sensors measure vastly different physical quantities with incompatible scales:
+\begin{itemize}
+    \item Cylinder Pressure: $\approx$ 140 bar (large magnitude)
+    \item Vibration X-axis: $\approx$ 0.1 mm/s (small magnitude)
+    \item Shaft RPM: $\approx$ 1000 RPM (medium magnitude)
+\end{itemize}
+
+Without normalization, machine learning algorithms would treat features with larger numerical ranges as more important, even if they're less relevant for fault detection. For instance, a 1-unit change in cylinder pressure (140 → 141 bar) would be weighted 1400 times more heavily than a 1-unit change in vibration (0.1 → 1.1 mm/s), despite vibration being a critical fault indicator.
+
+\textbf{Solution: Standard Scaling (Z-score Normalization)}
+
+We apply the following transformation to each feature:
+\begin{equation}
+    z = \frac{x - \mu_{train}}{\sigma_{train}}
+\end{equation}
+
+\textbf{Breaking Down the Equation:}
+\begin{itemize}
+    \item $x$: The original sensor value (e.g., 142 bar for cylinder pressure)
+    \item $\mu_{train}$: The \textit{mean} (average) of that sensor's values in the training set
+    \item $\sigma_{train}$: The \textit{standard deviation} (measure of spread) of that sensor's values in the training set
+    \item $z$: The normalized value (typically between -3 and +3)
+\end{itemize}
+
+\textbf{Example Calculation:}
+Suppose for Oil Pressure in the training set:
+\begin{itemize}
+    \item Mean ($\mu_{train}$) = 3.5 bar
+    \item Standard Deviation ($\sigma_{train}$) = 0.5 bar
+    \item New test sample: $x = 4.0$ bar
+\end{itemize}
+Then: $z = \frac{4.0 - 3.5}{0.5} = \frac{0.5}{0.5} = 1.0$
+
+This means the oil pressure is 1 standard deviation above the training average—a standardized measure that can be compared across all sensors.
+
+\textbf{Critical Implementation Detail:} The scaler is fit \textit{only} on the training set ($\mu_{train}$, $\sigma_{train}$) and then applied to the test set. This mimics real-world deployment where future data statistics are unknown. If we calculated $\mu$ and $\sigma$ on the test set, we would be "peeking" at future data, leading to overly optimistic performance estimates.
+
+\subsection{Synthetic Minority Over-sampling Technique (SMOTE)}
+\textbf{The Class Imbalance Problem:}
+In maritime operations, engines spend most of their time in healthy states. Our dataset reflects this reality:
+\begin{itemize}
+    \item Normal Operation ($C_0$): 60\% of samples
+    \item Bearing Wear ($C_4$): 4.8\% of samples
+    \item Fuel Injection Fault ($C_1$): 5.2\% of samples
+\end{itemize}
+
+This creates a "Normalcy Bias" where the model learns to predict "Normal" most of the time, achieving high overall accuracy (e.g., 60\%) while completely failing to detect critical faults.
+
+\textbf{SMOTE Algorithm Explained:}
+SMOTE (Synthetic Minority Over-sampling Technique) addresses this by creating \textit{synthetic} (artificial but realistic) samples of minority classes. It does NOT simply duplicate existing fault samples (which would lead to overfitting), but instead generates new, plausible fault scenarios.
+
+\textbf{How SMOTE Works (Step-by-Step):}
+\begin{enumerate}
+    \item \textbf{Select a minority sample:} Choose a random sample $x_i$ from a minority class (e.g., a Bearing Wear instance).
+    \item \textbf{Find nearest neighbors:} Identify the $k$ nearest neighbors of $x_i$ within the same class (typically $k=5$). "Nearest" is measured using Euclidean distance in the feature space.
+    \item \textbf{Choose a neighbor:} Randomly select one of these neighbors, call it $x_{zi}$.
+    \item \textbf{Generate synthetic sample:} Create a new sample $x_{new}$ by interpolating between $x_i$ and $x_{zi}$:
+\end{enumerate}
+
+\begin{equation}
+    x_{new} = x_i + \lambda \times (x_{zi} - x_i)
+\end{equation}
+
+\textbf{Understanding the Equation:}
+\begin{itemize}
+    \item $x_i$: The original minority sample (e.g., a Bearing Wear instance with specific sensor readings)
+    \item $x_{zi}$: A nearby sample from the same class
+    \item $\lambda$: A random number between 0 and 1 (e.g., 0.3, 0.7, 0.5)
+    \item $(x_{zi} - x_i)$: The "direction vector" from $x_i$ to $x_{zi}$
+    \item $\lambda \times (x_{zi} - x_i)$: A fraction of that direction (e.g., 30\% of the way from $x_i$ to $x_{zi}$)
+    \item $x_{new}$: The new synthetic sample, positioned somewhere along the line connecting $x_i$ and $x_{zi}$
+\end{itemize}
+
+\textbf{Geometric Interpretation:} If you imagine the feature space as a map, SMOTE draws a line between two similar fault instances and places a new synthetic instance somewhere along that line. This expands the "decision boundary" (the region the model associates with that fault) without simply copying existing data.
+
+\textbf{Example:}
+Suppose we have two Bearing Wear samples:
+\begin{itemize}
+    \item $x_i$: Vibration Z = 2.5 mm/s, Oil Temp = 85°C
+    \item $x_{zi}$: Vibration Z = 3.0 mm/s, Oil Temp = 90°C
+    \item Random $\lambda = 0.4$
+\end{itemize}
+
+Then:
+\begin{align*}
+x_{new}(\text{Vibration Z}) &= 2.5 + 0.4 \times (3.0 - 2.5) = 2.5 + 0.2 = 2.7 \text{ mm/s} \\
+x_{new}(\text{Oil Temp}) &= 85 + 0.4 \times (90 - 85) = 85 + 2 = 87°\text{C}
+\end{align*}
+
+This creates a realistic new Bearing Wear instance with intermediate sensor values.
+
+\newpage
+\textbf{Code Implementation:}
+\begin{lstlisting}[language=Python, caption=SMOTE Implementation with Detailed Comments]
+from imblearn.over_sampling import SMOTE
+
+# Initialize SMOTE with automatic balancing strategy
+# 'auto' means: balance all minority classes to match the majority class count
+# random_state=42 ensures reproducibility (same synthetic samples each run)
+smote = SMOTE(sampling_strategy='auto', random_state=42)
+
+# Apply SMOTE ONLY to training data to prevent data leakage
+# fit_resample() performs two operations:
+#   1. fit: Learns the structure of minority classes (finds neighbors)
+#   2. resample: Generates synthetic samples and returns balanced dataset
+X_train_resampled, y_train_resampled = smote.fit_resample(X_train, y_train)
+
+# After SMOTE:
+# - X_train_resampled: Training features with added synthetic minority samples
+# - y_train_resampled: Corresponding labels (now balanced across all classes)
+# - Test set (X_test, y_test) remains unchanged (no synthetic data in evaluation)
+\end{lstlisting}
+
+\textbf{Why Only Train on Resampled Data?}
+We apply SMOTE exclusively to the training set because:
+\begin{enumerate}
+    \item \textbf{Realistic Evaluation:} The test set should reflect real-world class imbalance. If we balanced the test set, we'd get an overly optimistic performance estimate.
+    \item \textbf{No Data Leakage:} Generating synthetic test samples using training data information would contaminate the evaluation.
+\end{enumerate}
+
+
+\section{Model Algorithm: LightGBM}
+Light Gradient Boosting Machine (LightGBM) is selected for its superior efficiency over traditional algorithms like Support Vector Machines (SVM) and Random Forests. LightGBM is an \textit{ensemble method}, meaning it combines multiple weak learners (simple decision trees) to create a strong predictive model.
+
+\textbf{What is Gradient Boosting?}
+Gradient Boosting builds trees sequentially, where each new tree attempts to correct the errors made by the previous trees. Think of it as a team of specialists where each new member focuses on the cases that the team currently struggles with. Mathematically, if we have predictions $F_{m-1}(x)$ from the first $m-1$ trees, the next tree $h_m(x)$ is trained to predict the residual error:
+\begin{equation}
+    F_m(x) = F_{m-1}(x) + \eta \cdot h_m(x)
+\end{equation}
+where $\eta$ is the learning rate (how much we trust each new tree's contribution).
+
+\subsection{Leaf-wise Tree Growth}
+\textbf{Traditional Approach (Level-wise):}
+Standard Gradient Boosting Decision Trees (GBDT) grow trees level-by-level, like building a pyramid. At each level, \textit{all} nodes are split simultaneously, regardless of whether the split provides significant improvement. This is computationally wasteful.
+
+\textbf{LightGBM's Innovation (Leaf-wise):}
+LightGBM uses a "best-first" strategy, choosing to split the single leaf that will provide the maximum reduction in loss (error). This is formulated as:
+
+\begin{equation}
+    (p_L, p_R) = \arg \min_{(p_L, p_R)} \left( L(p_L) + L(p_R) \right)
+\end{equation}
+
+\textbf{Breaking Down the Equation:}
+\begin{itemize}
+    \item $p_L$: The left child node after splitting (e.g., samples where "Oil Pressure $<$ 3.2 bar")
+    \item $p_R$: The right child node after splitting (e.g., samples where "Oil Pressure $\geq$ 3.2 bar")
+    \item $L(p)$: The loss function (measure of prediction error) for partition $p$
+    \item $\arg \min$: "Find the split that minimizes..." (choose the best split point)
+    \item $(p_L, p_R)$: The optimal left-right partition
+\end{itemize}
+
+\textbf{Intuitive Example:}
+Imagine you have a leaf containing 100 engine samples with mixed fault types. LightGBM evaluates all possible splits:
+\begin{itemize}
+    \item Split A: "If Vibration Z $>$ 2.0 mm/s" → Reduces loss by 15 units
+    \item Split B: "If Oil Pressure $<$ 3.5 bar" → Reduces loss by 8 units
+    \item Split C: "If RPM $>$ 1050" → Reduces loss by 2 units
+\end{itemize}
+
+LightGBM chooses Split A because it provides the maximum loss reduction (15 units). This strategy drastically reduces training time while achieving lower overall loss for the same number of terminal nodes.
+
+\textbf{Advantage:} For our marine engine dataset with 18 features and 8 fault classes, leaf-wise growth focuses computational resources on the most informative splits (e.g., distinguishing Bearing Wear from Normal based on vibration), rather than wasting time on uninformative splits (e.g., splitting based on Engine Load, which is similar across fault types).
+
+\subsection{Hyperparameter Optimization}
+The model hyperparameters were optimized using \textbf{Optuna}, an automated hyperparameter tuning framework that employs a Tree-structured Parzen Estimator (TPE) to intelligently search the configuration space. After 50 trials targeting the maximization of the Macro F1-Score (our primary evaluation metric), the optimal parameters were identified as:
+
+\begin{itemize}
+    \item \textbf{Number of Estimators (n\_estimators = 323):} 
+    \begin{itemize}
+        \item \textit{What it means:} The total number of decision trees in the ensemble.
+        \item \textit{Why 323?} More trees generally improve performance, but with diminishing returns. Optuna found that 323 trees provide the best balance between accuracy and training time. Beyond this, additional trees provide minimal improvement.
+        \item \textit{Analogy:} Like having 323 expert mechanics each examining the engine from a different angle.
+    \end{itemize}
+    
+    \item \textbf{Learning Rate ($\eta$ = 0.0685):}
+    \begin{itemize}
+        \item \textit{What it means:} Controls how much each tree contributes to the final prediction (see Equation 3.3).
+        \item \textit{Why 0.0685?} A smaller learning rate (closer to 0) makes the model learn more slowly but more accurately. 0.0685 is relatively small, meaning each tree makes a modest contribution, requiring more trees (323) to reach optimal performance.
+        \item \textit{Trade-off:} Low learning rate + many trees = better generalization but longer training time.
+    \end{itemize}
+    
+    \item \textbf{Num Leaves (num\_leaves = 90):}
+    \begin{itemize}
+        \item \textit{What it means:} Maximum number of terminal nodes (leaves) in each tree.
+        \item \textit{Why 90?} More leaves allow the tree to capture more complex patterns. With 90 leaves, each tree can create up to 90 distinct "rules" for classifying faults.
+        \item \textit{Example:} A tree might have leaves like: "If Vibration Z $>$ 2.5 AND Oil Temp $>$ 85°C → Bearing Wear"
+    \end{itemize}
+    
+    \item \textbf{Max Depth (max\_depth = 5):}
+    \begin{itemize}
+        \item \textit{What it means:} Maximum number of splits from root to leaf (tree height).
+        \item \textit{Why 5?} Limits tree complexity to prevent overfitting. A depth of 5 means at most 5 sequential "if-then" decisions.
+        \item \textit{Constraint:} Works with num\_leaves to control model complexity. Even with 90 allowed leaves, depth is capped at 5 levels.
+    \end{itemize}
+    
+    \item \textbf{Subsample (subsample = 0.8137):}
+    \begin{itemize}
+        \item \textit{What it means:} Fraction of training samples used to build each tree.
+        \item \textit{Why 0.8137?} Each tree is trained on a random 81.37\% of the data. This introduces diversity among trees (different trees see slightly different data), improving generalization.
+        \item \textit{Benefit:} Reduces overfitting and speeds up training (smaller dataset per tree).
+    \end{itemize}
+\end{itemize}
+
+\textbf{How Optuna Found These Values:}
+Optuna uses Bayesian optimization to intelligently explore the hyperparameter space. Instead of trying random combinations, it learns from previous trials. For example, if trials with high learning rates performed poorly, Optuna focuses subsequent trials on lower learning rates. After 50 trials, it converged on the configuration above, which achieved the highest Macro F1-Score (0.80) on the validation set.
+
+\subsection{Gradient-based One-Side Sampling (GOSS)}
+To further accelerate training, LightGBM employs GOSS, a novel sampling technique that prioritizes informative instances.
+
+\textbf{The Problem:} In traditional gradient boosting, all training samples are used to compute each split, which is computationally expensive for large datasets.
+
+\textbf{GOSS Solution:} GOSS recognizes that not all samples are equally informative:
+\begin{itemize}
+    \item \textbf{Large gradient samples:} Instances with large prediction errors (e.g., a Bearing Wear case misclassified as Normal). These are \textit{highly informative} and should be retained.
+    \item \textbf{Small gradient samples:} Instances already well-predicted (e.g., a Normal case correctly classified). These are \textit{less informative} and can be downsampled.
+\end{itemize}
+
+\textbf{GOSS Algorithm:}
+\begin{enumerate}
+    \item Sort all samples by the absolute value of their gradients (prediction errors).
+    \item Keep the top $a\%$ samples with the largest gradients (set $A$).
+    \item Randomly sample $b\%$ of the remaining samples (set $B$).
+    \item Discard the rest.
+\end{enumerate}
+
+The information gain for a split is then approximated as:
+\begin{equation}
+    Gain \approx \frac{1}{n} \left( \sum_{x_i \in A} g_i + \frac{1-a}{b} \sum_{x_i \in B} g_i \right)
+\end{equation}
+
+\textbf{Understanding the Equation:}
+\begin{itemize}
+    \item $n$: Total number of samples (before sampling)
+    \item $A$: Set of samples with large gradients (kept with 100\% probability)
+    \item $B$: Set of randomly sampled small-gradient samples
+    \item $g_i$: Gradient (prediction error) for sample $i$
+    \item $\sum_{x_i \in A} g_i$: Total error from high-error samples (weighted normally)
+    \item $\frac{1-a}{b} \sum_{x_i \in B} g_i$: Total error from low-error samples (upweighted to compensate for sampling)
+    \item $\frac{1-a}{b}$: Amplification factor to account for discarded samples
+\end{itemize}
+
+\textbf{Why This Works:}
+The term $\frac{1-a}{b}$ upweights the contribution of sampled small-gradient instances to approximate the contribution of all small-gradient instances. For example, if we keep 10\% ($a=0.1$) of large-gradient samples and randomly sample 10\% ($b=0.1$) of small-gradient samples, the amplification factor is $\frac{1-0.1}{0.1} = 9$. This means each sampled small-gradient instance represents approximately 9 similar instances.
+
+\textbf{Benefit for Marine Engine Fault Detection:}
+In our dataset, GOSS allows the model to focus computational resources on difficult-to-classify faults (e.g., Fuel Injection faults that resemble Normal operation) while maintaining accurate estimates of the overall data distribution. This is particularly valuable for imbalanced datasets where minority classes (faults) often have larger gradients.
+
+
+\section{Explainability Framework (SHAP)}
+To meet the "Explainable" objective of this research, SHAP (SHapley Additive exPlanations) values are computed to attribute each prediction output to specific sensors. SHAP is grounded in \textit{cooperative game theory}, a branch of mathematics that studies how to fairly distribute rewards among players in a coalition.
+
+\subsection{The Explainability Problem}
+Machine learning models, especially ensemble methods like LightGBM with 323 trees and 90 leaves each, are inherently "black boxes." While they can accurately predict "Bearing Wear," they don't naturally explain \textit{why}. For maritime engineers, knowing that "Oil Pressure = 2.8 bar and Vibration Z = 3.2 mm/s caused this prediction" is critical for:
+\begin{itemize}
+    \item \textbf{Trust:} Engineers won't act on predictions they don't understand.
+    \item \textbf{Root Cause Analysis:} Identifying which sensor triggered the fault helps target maintenance.
+    \item \textbf{Model Debugging:} Detecting if the model is making predictions for the wrong reasons (e.g., using Engine Load instead of Vibration).
+\end{itemize}
+
+\subsection{Game Theory Foundation}
+\textbf{The Analogy:} Imagine the 18 engine sensors as players in a cooperative game. Their "goal" is to correctly predict the engine fault. Each sensor contributes differently:
+\begin{itemize}
+    \item Vibration Z might contribute heavily to predicting Bearing Wear.
+    \item Oil Pressure might contribute heavily to predicting Lubrication faults.
+    \item Engine Load might contribute very little to any fault prediction.
+\end{itemize}
+
+The question is: \textit{How much credit should each sensor receive for a specific prediction?}
+
+\textbf{Shapley Values:} Named after Nobel laureate Lloyd Shapley, Shapley values provide a mathematically rigorous answer by considering all possible coalitions (subsets) of sensors and measuring each sensor's marginal contribution.
+
+\subsection{The SHAP Value Equation}
+The SHAP value $\phi_i$ for feature (sensor) $i$ is defined as:
+
+\begin{equation}
+    \phi_i(f, x) = \sum_{z' \subseteq x'} \frac{|z'|! (M - |z'| - 1)!}{M!} [f_x(z') - f_x(z' \setminus i)]
+\end{equation}
+
+\textbf{This equation looks intimidating, but let's break it down step-by-step:}
+
+\textbf{Notation:}
+\begin{itemize}
+    \item $\phi_i$: The SHAP value (contribution) of feature $i$ (e.g., Oil Pressure)
+    \item $f$: The prediction function (our LightGBM model)
+    \item $x$: The specific engine sample we're explaining (e.g., a Bearing Wear instance)
+    \item $M$: Total number of features (18 in our case)
+    \item $z'$: A subset (coalition) of features
+    \item $x'$: All features except feature $i$
+    \item $z' \subseteq x'$: All possible subsets of features that don't include feature $i$
+    \item $|z'|$: Size of subset $z'$ (number of features in the coalition)
+    \item $!$: Factorial (e.g., $3! = 3 \times 2 \times 1 = 6$)
+\end{itemize}
+
+\textbf{Breaking Down the Components:}
+
+\begin{enumerate}
+    \item \textbf{$\sum_{z' \subseteq x'}$: Sum over all possible coalitions}
+    
+    We consider every possible subset of features. For 18 features, there are $2^{18} = 262,144$ possible subsets. For each subset, we ask: "What happens if we add feature $i$ to this coalition?"
+    
+    \textbf{Example:} For Oil Pressure ($i$), we might consider coalitions like:
+    \begin{itemize}
+        \item Empty coalition: $z' = \{\}$ (no features)
+        \item Single feature: $z' = \{\text{Vibration Z}\}$
+        \item Two features: $z' = \{\text{Vibration Z, Oil Temp}\}$
+        \item ... all the way up to 17 features (all except Oil Pressure)
+    \end{itemize}
+    
+    \item \textbf{$[f_x(z') - f_x(z' \setminus i)]$: Marginal contribution}
+    
+    This measures how much the prediction changes when we add feature $i$ to coalition $z'$:
+    \begin{itemize}
+        \item $f_x(z')$: Model's prediction using coalition $z'$ (with feature $i$)
+        \item $f_x(z' \setminus i)$: Model's prediction using coalition $z'$ without feature $i$
+        \item Difference: How much feature $i$ improved (or worsened) the prediction
+    \end{itemize}
+    
+    \textbf{Example:} Suppose we're predicting Bearing Wear (probability = 0.85):
+    \begin{itemize}
+        \item With coalition $\{\text{Vibration Z}\}$ only: Prediction = 0.60
+        \item Adding Oil Pressure to get $\{\text{Vibration Z, Oil Pressure}\}$: Prediction = 0.75
+        \item Marginal contribution of Oil Pressure = $0.75 - 0.60 = 0.15$
+    \end{itemize}
+    
+    \item \textbf{$\frac{|z'|! (M - |z'| - 1)!}{M!}$: Weighting factor}
+    
+    Not all coalitions are equally likely in practice. This term weights each coalition by its probability. The formula ensures:
+    \begin{itemize}
+        \item \textbf{Smaller coalitions get higher weight:} It's more common to have a few sensors active than all 18.
+        \item \textbf{Symmetry:} Features are treated fairly regardless of order.
+    \end{itemize}
+    
+    \textbf{Intuition:} If we have $M=18$ features and a coalition of size $|z'|=5$:
+    \begin{align*}
+    \text{Weight} &= \frac{5! \times (18-5-1)!}{18!} \\
+    &= \frac{5! \times 12!}{18!} \\
+    &= \frac{120 \times 479,001,600}{6,402,373,705,728,000} \\
+    &\approx 0.000009
+    \end{align*}
+    
+    This small weight reflects that this specific coalition (5 features) is just one of many possible coalitions.
+\end{enumerate}
+
+\subsection{Practical Interpretation}
+After computing SHAP values for all 18 features, we get a vector like:
+\begin{itemize}
+    \item $\phi_{\text{Vibration Z}} = +0.35$ (strongly pushes toward Bearing Wear)
+    \item $\phi_{\text{Oil Pressure}} = +0.12$ (moderately pushes toward Bearing Wear)
+    \item $\phi_{\text{Engine Load}} = -0.02$ (slightly pushes away from Bearing Wear)
+    \item ... (15 more features)
+\end{itemize}
+
+\textbf{What This Means:}
+\begin{itemize}
+    \item \textbf{Positive SHAP value:} The feature's value increases the probability of the predicted class (e.g., high Vibration Z increases Bearing Wear probability).
+    \item \textbf{Negative SHAP value:} The feature's value decreases the probability of the predicted class (e.g., normal Engine Load decreases Bearing Wear probability).
+    \item \textbf{Magnitude:} Larger absolute values indicate stronger influence.
+\end{itemize}
+
+\textbf{Base Value:} The sum of all SHAP values plus a base value (average model output) equals the final prediction:
+\begin{equation}
+    f(x) = \phi_0 + \sum_{i=1}^{M} \phi_i(f, x)
+\end{equation}
+where $\phi_0$ is the expected model output (e.g., 0.125 for 8 balanced classes).
+
+\subsection{Why SHAP for Marine Engines?}
+SHAP is particularly well-suited for this application because:
+\begin{enumerate}
+    \item \textbf{Local Fidelity:} Explains individual predictions (e.g., "Why was this specific engine reading classified as Bearing Wear?").
+    \item \textbf{Consistency:} If Oil Pressure is more important than RPM for one prediction, SHAP guarantees it will be weighted more heavily.
+    \item \textbf{Additivity:} The sum of feature contributions equals the total prediction, providing a complete explanation.
+    \item \textbf{Physical Interpretability:} Engineers can validate that the model is using physically meaningful sensors (Vibration, Oil Pressure) rather than spurious correlations (Timestamp, Engine Load).
+\end{enumerate}
+
+\textbf{Example Use Case:}
+An engineer receives an alert: "Turbocharger Failure predicted with 92\% confidence." The SHAP explanation shows:
+\begin{itemize}
+    \item Air Pressure (2.1 bar, normally 3.5 bar): $\phi = +0.45$ → \textit{Primary cause}
+    \item Exhaust Temp (520°C, normally 480°C): $\phi = +0.15$ → \textit{Secondary indicator}
+    \item All other sensors: $\phi \approx 0$ → \textit{Not contributing}
+\end{itemize}
+
+The engineer immediately knows to inspect the turbocharger and air intake system, rather than wasting time on unrelated components.
+
+
+
+\section{Software Implementation}
+The system is implemented using the following stack:
+\begin{itemize}
+    \item \textbf{Backend:} Python 3.9, FastAPI for inference endpoints.
+    \item \textbf{Frontend:} React.js for the dashboard visualization.
+    \item \textbf{ML Libraries:} Scikit-learn, LightGBM, SHAP.
+\end{itemize}

@@ -1,0 +1,265 @@
+\documentclass[12pt, a4paper]{report}
+
+% ==============================================================================
+% UPRO THESIS TEMPLATE - MAIN FILE
+% ==============================================================================
+
+% Recommended Packages
+\usepackage{graphicx}       % For handling images
+\usepackage{amsmath, amssymb} % For mathematical symbols
+\usepackage{geometry}       % For page layout
+\usepackage{setspace}       % For line spacing
+\usepackage{cite}           % For IEEE citations
+\usepackage{hyperref}       % For hyperlinks in PDF
+\usepackage{titlesec}       % For custom chapter/section formatting
+\usepackage{caption}        % For better caption formatting
+\usepackage{listings}       % For code listings
+\usepackage{booktabs}       % For professional table formatting
+\usepackage{xcolor}         % For code highlighting
+\usepackage{tikz}           % For flowcharts
+\usetikzlibrary{shapes.geometric, arrows, positioning}
+
+% TikZ Styles - Mermaid-like Theme
+\tikzstyle{startstop} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm, text centered, draw=blue!60!black, fill=blue!5, thick]
+\tikzstyle{process} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm, text centered, draw=blue!60!black, fill=blue!5, thick]
+\tikzstyle{decision} = [diamond, aspect=2, minimum width=3cm, minimum height=1cm, text centered, draw=blue!60!black, fill=blue!5, thick]
+\tikzstyle{arrow} = [thick,->,>=stealth, draw=blue!60!black]
+
+% Code Listing Settings
+\lstset{
+  basicstyle=\ttfamily\small,
+  breaklines=true,
+  frame=single,
+  keywordstyle=\color{blue},
+  stringstyle=\color{red},
+  commentstyle=\color{green!50!black},
+  showstringspaces=false,
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  captionpos=b
+}
+
+% Page Layout Settings (UPRO Standard)
+\geometry{
+    top=2.5cm,
+    bottom=2.5cm,
+    left=3.5cm, % Binding margin
+    right=2.5cm
+}
+\onehalfspacing % Standard 1.5 line spacing
+
+% Hyperlink Setup
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    filecolor=magenta,      
+    urlcolor=blue,
+    citecolor=black
+}
+
+\begin{document}
+
+% ==============================================================================
+% METADATA - TO BE FILLED
+% ==============================================================================
+\title{DESIGN AND SIMULATION OF AN EXPLAINABLE AI-BASED PREDICTIVE MAINTENANCE SYSTEM FOR MARINE DIESEL ENGINES}
+\author{Nahadi Farid Muigu \\ Mosonik Zadock Kiprono}
+\date{\today}
+
+% ==============================================================================
+% FRONT MATTER
+% ==============================================================================
+
+% Custom Title Page
+\begin{titlepage}
+\thispagestyle{empty}
+\begin{center}
+
+{\setstretch{1.8}
+
+\vspace*{1cm}
+
+\textbf{JOMO KENYATTA UNIVERSITY OF AGRICULTURE AND TECHNOLOGY}\\[0.5cm]
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.3\textwidth]{./media/JKUAT-LOGO.png}
+\end{figure}
+
+\vspace{0.5cm}
+
+\textbf {School of Mechanical Manufacturing and Materials Engineering}\\
+\textbf{Department of Marine Engineering Maritime Operations}\\
+\textbf{Bachelor of Science in Marine Engineering}\\
+\textbf{Design and Simulation of an Explainable AI-based Predictive Maintenance System for Marine Diesel Engines}\\
+
+\textbf{By:}
+
+MOSONIK Zadock Kiprono : ENM241-0139/2021  \\
+NAHADI Farid Muigu  : ENM241-0143/2021  \\
+
+
+\vspace{0.5cm}
+
+\textbf{SUPERVISOR}\\[0.3cm]
+Dr. CHRISTIAAN Adika Adenya
+
+\vspace{0.5cm}
+
+A Thesis Submitted In Partial Fulfillment For The Award Of The Degree Of Bachelor Of Science In Marine Engineering}
+
+\end{center}
+\end{titlepage}
+
+\clearpage
+
+%----------------------------------------------------------------------------------------
+%	PREAMBLE PAGES (Matches EMR 2437 Section 2.1.2)
+%----------------------------------------------------------------------------------------
+
+\pagenumbering{roman} % Roman numerals for preamble
+
+% 1. Declaration
+\section*{DECLARATION}
+\addcontentsline{toc}{section}{Declaration}
+
+We hereby declare that this thesis is our original work and has not been presented for a degree in any other university or for any other award.
+
+\vspace{1cm}
+\noindent
+\textbf{Name:} MOSONIK Zadock Kiprono \hfill \textbf{REG NUMBER:} ENM241-0139/2021\\
+\vspace{0.5cm}
+
+\noindent
+\textbf{Signature:} \underline{\hspace{5cm}} \hfill \textbf{Date:} \underline{\hspace{4cm}} \\
+
+\vspace{1cm}
+\noindent
+\textbf{Name:} NAHADI Farid Muigu \hfill \textbf{REG NUMBER:} ENM241-0143/2021\\
+\vspace{0.5cm}
+
+\noindent
+\textbf{Signature:} \underline{\hspace{5cm}} \hfill \textbf{Date:} \underline{\hspace{4cm}} \\
+
+\vspace{1cm}
+\noindent
+\textbf{Supervisor Declaration:} \\
+
+\noindent
+This thesis has been submitted for examination with my approval as the University Supervisor.
+
+\vspace{1cm}
+
+\noindent
+\textbf{Name:} Dr. CHRISTIAAN Adika Adenya
+\vspace{1cm}
+
+\noindent
+\textbf{Signature:} \underline{\hspace{5cm}} \hfill \textbf{Date:} \underline{\hspace{4cm}} \\
+
+\newpage
+
+% 2. List of Abbreviations and Symbols
+\section*{LIST OF ABBREVIATIONS AND SYMBOLS}
+\addcontentsline{toc}{section}{List of Abbreviations and Symbols}
+
+\subsection*{Abbreviations}
+\begin{tabular}{ll}
+\textbf{AI} & Artificial Intelligence \\
+\textbf{API} & Application Programming Interface \\
+\textbf{GBDT} & Gradient Boosting Decision Trees \\
+\textbf{GOSS} & Gradient-based One-Side Sampling \\
+\textbf{LightGBM} & Light Gradient Boosting Machine \\
+\textbf{ML} & Machine Learning \\
+\textbf{PdM} & Predictive Maintenance \\
+\textbf{RBF} & Radial Basis Function \\
+\textbf{RPM} & Revolutions Per Minute \\
+\textbf{SHAP} & SHapley Additive exPlanations \\
+\textbf{SMOTE} & Synthetic Minority Over-sampling Technique \\
+\textbf{SVM} & Support Vector Machine \\
+\textbf{TPE} & Tree-structured Parzen Estimator \\
+\textbf{XAI} & Explainable Artificial Intelligence \\
+\textbf{XPM} & Explainable Predictive Maintenance \\
+\end{tabular}
+
+\vspace{1cm}
+
+\subsection*{Symbols}
+\begin{tabular}{ll}
+$C_0$ & Normal Operation (Fault Class 0) \\
+$C_1$ & Fuel Injection Fault (Fault Class 1) \\
+$C_2$ & Cooling System Fault (Fault Class 2) \\
+$C_3$ & Turbocharger Fault (Fault Class 3) \\
+$C_4$ & Bearing Wear (Fault Class 4) \\
+$C_5$ & Lubrication Oil Degradation (Fault Class 5) \\
+$C_6$ & Air Intake Blockage (Fault Class 6) \\
+$C_7$ & Vibration Anomaly (Fault Class 7) \\
+$\eta$ & Learning Rate \\
+$\lambda$ & Random interpolation factor (SMOTE) \\
+$\mu_{train}$ & Mean of training set features \\
+$\sigma_{train}$ & Standard deviation of training set features \\
+$\phi_i$ & SHAP value for feature $i$ \\
+$F_m(x)$ & Ensemble prediction after $m$ trees \\
+$h_m(x)$ & Prediction of the $m$-th tree \\
+$L(p)$ & Loss function for partition $p$ \\
+$M$ & Total number of features \\
+$P_{air}$ & Air Pressure (bar) \\
+$P_{cyl}$ & Cylinder Pressure (bar) \\
+$P_{oil}$ & Oil Pressure (bar) \\
+$T_{exh}$ & Exhaust Temperature (°C) \\
+$Vib_x$ & Vibration X-axis (mm/s) \\
+$Vib_y$ & Vibration Y-axis (mm/s) \\
+$Vib_z$ & Vibration Z-axis (mm/s) \\
+$z$ & Normalized feature value (Z-score) \\
+\end{tabular}
+
+\newpage
+
+\chapter*{Abstract}
+\addcontentsline{toc}{chapter}{Abstract}
+Metric-driven maintenance strategies are evolving towards predictive approaches to enhance reliability and safety in the maritime industry. This thesis presents the design and simulation of an Explainable AI (XAI)-based predictive maintenance system for marine diesel engines. Using a synthetic dataset of 10,000 operational samples from a 4-cylinder engine, a Light Gradient Boosting Machine (LightGBM) model was developed to classify 8 distinct engine states, including cooling, lubrication, and turbocharger faults. The model achieved a Macro F1-Score of 0.80, demonstrating exceptional performance on mechanical faults (100\% F1 for Bearing Wear) while revealing challenges in detecting subtle thermodynamic anomalies (30\% F1 for Fuel Injection). To address the opacity of machine learning models, SHapley Additive exPlanations (SHAP) were integrated, enabling transparent root-cause analysis by quantifying the contribution of individual sensors to each diagnosis. A full-stack prototype, featuring a FastAPI backend and React.js dashboard, was deployed to demonstrate real-time inference capabilities ($<$2ms latency) suitable for edge computing on vessels. The findings indicate that while the system excels at detecting critical mechanical failures, future work should explore ensemble methods to improve thermodynamic fault classification.
+
+\chapter*{Acknowledgements}
+\addcontentsline{toc}{chapter}{Acknowledgements}
+
+We would like to express our sincere gratitude to all those who contributed to the successful completion of this thesis.
+
+First and foremost, we extend our deepest appreciation to our supervisor, \textbf{Dr. CHRISTIAAN Adika Adenya}, for his invaluable guidance, constructive feedback, and unwavering support throughout this research project. His expertise in marine engineering and commitment to academic excellence have been instrumental in shaping this work.
+
+Our sincere thanks go to all the lecturers and staff members who have imparted knowledge and skills throughout our undergraduate studies, laying the foundation for this research endeavor.
+
+We acknowledge the open-source community for developing and maintaining the machine learning libraries (LightGBM, SHAP, Scikit-learn) and web development frameworks (FastAPI, React.js) that made this project possible.
+
+Finally, we thank the Almighty God for granting us the health, wisdom, and perseverance to complete this thesis.
+
+\tableofcontents
+\listoffigures
+\listoftables
+\newpage
+
+% ==============================================================================
+% MAIN CONTENT
+% ==============================================================================
+% Arabic numerals for main content
+\pagenumbering{arabic}
+% Chapters will be included here
+
+\input{structure/01-introduction}
+\input{structure/02-literature-review}
+\input{structure/03-methodology}
+\input{structure/04-results}
+\input{structure/05-conclusion}
+
+% ==============================================================================
+% REFERENCES
+% ==============================================================================
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+
+% ==============================================================================
+% APPENDICES
+% ==============================================================================
+\appendix
+% \chapter{First Appendix}
+
+\end{document}

@@ -1,0 +1,38 @@
+\chapter{Conclusion and Recommendations}
+\label{chap:conclusion}
+
+\section{Conclusion}
+This study successfully designed, simulated, and evaluated an Explainable Predictive Maintenance (XPM) system tailored for marine diesel engines. Addressing the critical industry need to transition from reactive to predictive maintenance strategies, the developed system leverages Light Gradient Boosting Machine (LightGBM) and SHAP (SHapley Additive exPlanations) to provide accurate fault diagnosis with transparent decision-making support.
+
+The empirical results demonstrate that the proposed model achieves a Macro F1-Score of \textbf{0.8019} across 8 distinct engine operating conditions. While this reveals challenges in distinguishing subtle injection faults, the system achieves perfect accuracy (100\%) on critical mechanical failures like Bearing Wear, proving its utility as a safety-critical early warning system. The optimized model maintains an inference latency of less than 2 milliseconds per sample, making it highly suitable for real-time edge deployment on vessels.
+
+Crucially, the integration of SHAP values resolves the "black-box" limitation of advanced machine learning models. By quantifying the contribution of individual sensors (e.g., Exhaust Temperature, Vibration) to specific predictions, the system enhances trust and enables marine engineers to validate AI diagnoses against physical principles.
+
+\section{Summary of Contributions}
+The key contributions of this research include:
+\begin{enumerate}
+    \item \textbf{High-Fidelity Simulation Dataset}: Creation of a 10,000-sample synthetic dataset replicating 4-cylinder marine diesel engine dynamics, including normal operation and 7 specific fault classes (e.g., Turbocharger Failure, Bearing Wear).
+    \item \textbf{Optimized XAI Framework}: Implementation of a LightGBM model tuned via Optuna, coupled with a SHAP-based interpretability layer that isolates root causes of failures.
+    \item \textbf{Edge-Ready Architecture}: Design of a full-stack deployment prototype (FastAPI + React) demonstrated to function in low-connectivity maritime environments.
+\end{enumerate}
+
+\section{Recommendations}
+Based on the findings, the following recommendations are proposed for industry stakeholders and future developers:
+\begin{itemize}
+    \item \textbf{Ensemble Modeling for Robustness}: The disparate performance between mechanical (100\% F1) and thermodynamic (30\% F1) faults suggests that a single LightGBM model is insufficient. A \textit{Voting Classifier} combining Gradient Boosting with Neural Networks could capture the subtle thermal transients missed by decision trees.
+    \item \textbf{Adoption of Hybrid Architectures}: Maritime operators should prioritize "Edge-Cloud" architectures where critical inference happens locally on the vessel to ensure safety, while long-term aggregated data is synced to the cloud for fleet-wide analytics.
+    \item \textbf{Sensor Quality Standards}: The high feature importance of vibration sensors ($>14\%$) suggests that investing in high-fidelity accelerometers yields the highest return on investment for predictive maintenance accuracy.
+    \item \textbf{Regulatory Sandboxes}: Classification societies should establish frameworks for certifying AI systems that include "Explainability" as a mandatory acceptance criterion, ensuring human operators remain in the loop.
+\end{itemize}
+
+\section{Future Work}
+While this specific implementation shows promise, several avenues for future research remain:
+
+\subsection{Remaining Useful Life (RUL) Prediction}
+The current system classifies \textit{current} faults. Future iterations should incorporate Long Short-Term Memory (LSTM) networks or Survival Analysis to predict the time-to-failure, answering "When will it fail?" rather than just "Is it failing?".
+
+\subsection{Federated Learning}
+To address data privacy concerns in a competitive industry, Federated Learning could be explored to train models across fleets from different owners without sharing raw operational data, improving model robustness.
+
+\subsection{Digital Twin Integration}
+Ideally, the XAI predictions should be fed into a physics-based Digital Twin. This would allow engineers to simulate the downstream effects of a predicted fault (e.g., "If I delay this bearing change by 24 hours, what is the risk of shaft misalignment?").

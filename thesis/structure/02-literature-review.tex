@@ -1,0 +1,47 @@
+\chapter{Literature Review}
+\label{chap:literature_review}
+
+\section{Introduction}
+The maritime industry stands on the precipice of a digital transformation, moving from traditional reactive maintenance to intelligent, data-driven strategies. This chapter provides a critical analysis of the current state of predictive maintenance (PdM) for marine diesel engines, evaluating the strengths and limitations of contemporary Machine Learning (ML) algorithms and the emerging necessity for Explainable AI (XAI) to ensure trustworthiness in autonomous systems.
+
+\section{Evolution of Maintenance Strategies in Maritime}
+Historically, marine machinery maintenance has followed a "Run-to-Failure" (Corrective) or "Time-Based" (Preventive) approach. \cite{marine_engine_maintenance} notes that while preventive maintenance reduces catastrophic failures, it often leads to the premature replacement of healthy components, inflating Operational Expenditure (OPEX). 
+
+Condition-Based Maintenance (CBM), and subsequently Predictive Maintenance (PdM), offer a solution by utilizing real-time sensor data to forecast equipment health. A framework proposed by \cite{ml_framework_marine_2024} demonstrates that integrating IoT sensors with predictive analytics can extend engine useful life by up to 15\% and reduce downtime by 30\%. However, the implementation of such systems faces significant hurdles. \cite{maritime_data_challenges} highlights that data heterogeneity and intermittent satellite connectivity remain primary bottlenecks, often following the "Garbage In, Garbage Out" principle where poor sensor quality leads to unreliable predictions.
+
+\section{Comparative Analysis of Machine Learning Algorithms}
+The core of any PdM system is the diagnostic algorithm. Recent literature has extensively compared various approaches for marine engine fault detection.
+
+\subsection{Support Vector Machines (SVM) vs. Random Forest (RF)}
+SVMs have long been favored for their robustness in high-dimensional spaces. \cite{svm_vs_rf_marine} found SVMs to be highly effective for binary classification of specific faults but noted their scalability issues with large, continuous sensor streams. In contrast, Random Forest (RF) ensembles offer better generalizability and resistance to overfitting. However, \cite{pdm_diesel_gen_2025} argues that RF models can become computationally heavy for edge deployment on vessels with limited hardware resources.
+
+\subsection{The Rise of LightGBM}
+Light Gradient Boosting Machine (LightGBM), introduced by \cite{ke2017lightgbm}, represents the state-of-the-art in gradient boosting frameworks. It utilizes a leaf-wise tree growth strategy and histogram-based algorithms, offering significant advantages over SVM and RF:
+\begin{enumerate}
+    \item \textbf{Training Speed:} LightGBM fits 10-20x faster than traditional Gradient Boosting Decision Trees (GBDT).
+    \item \textbf{Accuracy:} It consistently achieves higher classification accuracy in tabular sensor data.
+    \item \textbf{Memory Efficiency:} Its bucket-based logic reduces memory consumption, making it ideal for the constrained computing environments found on ships.
+\end{enumerate}
+Despite these advantages, gradient boosting models are inherently "black boxes," lacking the transparency required for critical safety systems.
+
+\section{Explainable AI (XAI): Bridging the Trust Gap}
+As AI systems become more complex, their decision-making opacity becomes a liability. In safety-critical marine environments, an operator cannot trust a "Check Engine" alert without understanding the underlying cause. \cite{survey_xpm_2024} defines Explainable Predictive Maintenance (XPM) as the integration of interpretability techniques into diagnostic workflows.
+
+\subsection{LIME vs. SHAP}
+Two dominant post-hoc explanation methods were evaluated by \cite{shap_vs_lime_pdm}:
+\begin{itemize}
+    \item \textbf{LIME (Local Interpretable Model-agnostic Explanations):} Perturbs local inputs to approximate linear explanations. While fast, it suffers from instability where similar inputs can yield different explanations.
+    \item \textbf{SHAP (SHapley Additive exPlanations):} Proposed by \cite{lundberg2017unified}, SHAP is grounded in cooperative game theory. It guarantees consistency and local accuracy, ensuring that the sum of feature contributions equals the model's prediction deviation.
+\end{itemize}
+\cite{framework_lstm_xai_2024} successfully applied SHAP to LSTM models for main engines, proving that SHAP provides more reliable engineering insights (e.g., identifying that "High Exhaust Temp" + "Low RPM" = "Injector Fault") compared to LIME.
+
+\section{Research Gaps and Proposed Contribution}
+While the literature establishes the efficacy of LightGBM and the necessity of XAI, few studies combine them specifically for 4-cylinder marine diesel engines using a comprehensive sensor suite. Existing frameworks often focus on auxiliary generators \cite{pdm_diesel_gen_2025} or utilize computationally expensive Deep Learning models \cite{framework_lstm_xai_2024}.
+
+This thesis bridges this gap by designing a system that:
+\begin{enumerate}
+    \item Leverages the speed and accuracy of \textbf{LightGBM} for real-time classification.
+    \item Integrates \textbf{SHAP} values to distinctively diagnose 8 specific fault classes (Scope Match).
+    \item Addresses the \textbf{data imbalance} challenge using SMOTE, a critical preprocessing step often overlooked in general maritime surveys.
+\end{enumerate}
+By validating this approach on a simulated 18-parameter dataset, this research contributes a verified, explainable framework for modern smart vessels.
