@@ -283,8 +283,9 @@ For information on training the machine learning model, see `notebooks/README.md
 
 ## License
 
-[Add your license information here]
+None
 
 ## Contributors
 
-[Add contributor information here]
+- Zadock Mosonik Kiprono
+- Farid Nahadi Muigu
