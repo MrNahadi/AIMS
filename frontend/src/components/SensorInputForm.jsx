@@ -2,18 +2,18 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './SensorInputForm.css';
 
-// Base normal scenario
+// Base normal scenario (aligned with dataset statistics for Fault_Label=0)
 const BASE_NORMAL = {
     Shaft_RPM: 950,
     Engine_Load: 70,
-    Fuel_Flow: 120,
-    Air_Pressure: 2.5,
-    Ambient_Temp: 25,
-    Oil_Temp: 75,
+    Fuel_Flow: 130,
+    Air_Pressure: 1.2,
+    Ambient_Temp: 28,
+    Oil_Temp: 80,
     Oil_Pressure: 3.5,
     Vibration_X: 0.05,
     Vibration_Y: 0.05,
-    Vibration_Z: 0.05,
+    Vibration_Z: 0.06,
     Cylinder1_Pressure: 145,
     Cylinder1_Exhaust_Temp: 420,
     Cylinder2_Pressure: 145,
@@ -24,13 +24,13 @@ const BASE_NORMAL = {
     Cylinder4_Exhaust_Temp: 420
 };
 
-// Preset scenarios organized by category
+// Preset scenarios organized by category (aligned with actual dataset statistics)
 const PRESET_SCENARIOS = {
     normal: [
         {
             name: 'Normal - Idle',
             description: 'Low load operation',
-            values: { ...BASE_NORMAL, Engine_Load: 45, Shaft_RPM: 850 }
+            values: { ...BASE_NORMAL, Engine_Load: 50, Shaft_RPM: 900, Fuel_Flow: 115 }
         },
         {
             name: 'Normal - Cruise',
@@ -40,51 +40,51 @@ const PRESET_SCENARIOS = {
         {
             name: 'Normal - High Load',
             description: 'Heavy load operation',
-            values: { ...BASE_NORMAL, Engine_Load: 95, Shaft_RPM: 1050, Fuel_Flow: 145 }
+            values: { ...BASE_NORMAL, Engine_Load: 90, Shaft_RPM: 1000, Fuel_Flow: 155 }
         }
     ],
     minor: [
         {
-            name: 'Oil Degradation',
-            description: 'Elevated oil temp & low pressure',
-            values: { ...BASE_NORMAL, Oil_Temp: 102, Oil_Pressure: 2.8 }
+            name: 'Fuel Injection Issue',
+            description: 'Reduced fuel flow',
+            values: { ...BASE_NORMAL, Fuel_Flow: 82 }
         },
         {
-            name: 'Cooling Issue',
-            description: 'Slightly elevated temperatures',
-            values: { ...BASE_NORMAL, Oil_Temp: 92, Ambient_Temp: 32, Cylinder1_Exhaust_Temp: 460, Cylinder2_Exhaust_Temp: 460, Cylinder3_Exhaust_Temp: 460, Cylinder4_Exhaust_Temp: 460 }
+            name: 'Cooling System Issue',
+            description: 'Low cylinder pressures',
+            values: { ...BASE_NORMAL, Cylinder1_Pressure: 118, Cylinder2_Pressure: 118, Cylinder3_Pressure: 118, Cylinder4_Pressure: 118 }
         },
         {
-            name: 'Fuel Injection',
-            description: 'Low fuel flow',
-            values: { ...BASE_NORMAL, Fuel_Flow: 85, Engine_Load: 75 }
+            name: 'Oil Degradation Early',
+            description: 'Elevated oil temp & reduced pressure',
+            values: { ...BASE_NORMAL, Oil_Temp: 90, Oil_Pressure: 2.6 }
         },
         {
-            name: 'Air Intake',
+            name: 'Air Intake Restriction',
             description: 'Reduced air pressure',
-            values: { ...BASE_NORMAL, Air_Pressure: 2.0, Engine_Load: 75 }
+            values: { ...BASE_NORMAL, Air_Pressure: 0.91 }
         }
     ],
     critical: [
         {
             name: 'Bearing Wear',
-            description: 'High vibration levels',
-            values: { ...BASE_NORMAL, Vibration_X: 0.45, Vibration_Y: 0.35, Vibration_Z: 0.30 }
+            description: 'High X/Y vibration levels',
+            values: { ...BASE_NORMAL, Vibration_X: 0.38, Vibration_Y: 0.36, Vibration_Z: 0.06 }
         },
         {
-            name: 'Turbocharger Fault',
-            description: 'Very high exhaust temps',
-            values: { ...BASE_NORMAL, Cylinder1_Exhaust_Temp: 550, Cylinder2_Exhaust_Temp: 550, Cylinder3_Exhaust_Temp: 550, Cylinder4_Exhaust_Temp: 550, Air_Pressure: 2.0 }
+            name: 'Vibration Anomaly',
+            description: 'Critical Z-axis vibration with low oil pressure',
+            values: { ...BASE_NORMAL, Vibration_Z: 0.45, Oil_Pressure: 2.0, Cylinder1_Exhaust_Temp: 480, Cylinder2_Exhaust_Temp: 475, Cylinder3_Exhaust_Temp: 470, Cylinder4_Exhaust_Temp: 475 }
         },
         {
-            name: 'Severe Vibration',
-            description: 'Critical vibration anomaly',
-            values: { ...BASE_NORMAL, Vibration_X: 0.40, Vibration_Y: 0.38, Vibration_Z: 0.35, Cylinder1_Exhaust_Temp: 480, Cylinder2_Exhaust_Temp: 480, Cylinder3_Exhaust_Temp: 480, Cylinder4_Exhaust_Temp: 480 }
+            name: 'Oil Degradation',
+            description: 'High oil temp & critically low pressure',
+            values: { ...BASE_NORMAL, Oil_Temp: 100, Oil_Pressure: 1.8 }
         },
         {
             name: 'Multiple Faults',
             description: 'Combined critical conditions',
-            values: { ...BASE_NORMAL, Vibration_X: 0.35, Oil_Temp: 105, Oil_Pressure: 2.3, Cylinder1_Exhaust_Temp: 530, Cylinder2_Exhaust_Temp: 530, Cylinder3_Exhaust_Temp: 530, Cylinder4_Exhaust_Temp: 530 }
+            values: { ...BASE_NORMAL, Vibration_X: 0.30, Vibration_Y: 0.28, Oil_Temp: 98, Oil_Pressure: 2.0, Cylinder1_Exhaust_Temp: 520, Cylinder2_Exhaust_Temp: 515, Cylinder3_Exhaust_Temp: 510, Cylinder4_Exhaust_Temp: 515 }
         }
     ]
 };

@@ -6,6 +6,7 @@ Handles inference logic, SHAP computation, and response formatting.
 from typing import Any
 
 import numpy as np
+import pandas as pd
 
 from backend.models.request import SensorInput
 from backend.models.response import PredictionResponse
@@ -64,8 +65,8 @@ def predict_fault(
     Returns:
         PredictionResponse containing prediction label, probabilities, and SHAP values
     """
-    # Convert SensorInput to numpy array in correct feature order
-    input_array = np.array([[
+    # Convert SensorInput to pandas DataFrame with feature names
+    input_df = pd.DataFrame([[
         sensor_input.Shaft_RPM,
         sensor_input.Engine_Load,
         sensor_input.Fuel_Flow,
@@ -84,10 +85,13 @@ def predict_fault(
         sensor_input.Cylinder3_Exhaust_Temp,
         sensor_input.Cylinder4_Pressure,
         sensor_input.Cylinder4_Exhaust_Temp
-    ]])
+    ]], columns=FEATURE_NAMES)
     
     # Transform input using preprocessor (StandardScaler)
-    input_scaled = preprocessor.transform(input_array)
+    input_scaled_array = preprocessor.transform(input_df)
+    
+    # Convert back to DataFrame to preserve feature names for model and SHAP
+    input_scaled = pd.DataFrame(input_scaled_array, columns=FEATURE_NAMES)
     
     # Generate prediction and probabilities
     prediction = model.predict(input_scaled)[0]  # Single prediction (0-7)

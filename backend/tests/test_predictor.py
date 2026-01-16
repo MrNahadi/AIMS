@@ -255,3 +255,68 @@ class TestPredictFault:
         
         # Verify no extra keys
         assert set(result.shap_values.keys()) == set(FEATURE_NAMES)
+    
+    def test_predict_fault_with_real_data(self):
+        """
+        Test predict_fault with real sensor data from the dataset.
+        Verifies predictions remain unchanged after DataFrame fix.
+        
+        Validates: Requirements 3.1
+        """
+        import joblib
+        from pathlib import Path
+        
+        # Load actual model artifacts
+        artifacts_dir = Path(__file__).parent.parent / "artifacts"
+        preprocessor = joblib.load(artifacts_dir / "preprocessor.pkl")
+        model = joblib.load(artifacts_dir / "lgbm_model.pkl")
+        shap_explainer = joblib.load(artifacts_dir / "shap_explainer.pkl")
+        
+        # Use real sensor data from the dataset (first row)
+        sensor_input = SensorInput(
+            Shaft_RPM=965.414073,
+            Engine_Load=72.397307,
+            Fuel_Flow=114.665107,
+            Air_Pressure=1.025896,
+            Ambient_Temp=27.055404,
+            Oil_Temp=73.000474,
+            Oil_Pressure=3.407503,
+            Vibration_X=0.087248,
+            Vibration_Y=0.076305,
+            Vibration_Z=0.069988,
+            Cylinder1_Pressure=157.710104,
+            Cylinder1_Exhaust_Temp=418.761079,
+            Cylinder2_Pressure=139.335694,
+            Cylinder2_Exhaust_Temp=449.428109,
+            Cylinder3_Pressure=151.140472,
+            Cylinder3_Exhaust_Temp=400.142839,
+            Cylinder4_Pressure=138.194303,
+            Cylinder4_Exhaust_Temp=469.788241
+        )
+        
+        # Execute prediction
+        result = predict_fault(sensor_input, model, preprocessor, shap_explainer)
+        
+        # Verify result structure
+        assert isinstance(result, PredictionResponse)
+        assert isinstance(result.prediction_label, str)
+        assert result.prediction_label in FAULT_LABELS.values()
+        
+        # Verify probabilities structure
+        assert len(result.probabilities) == 8
+        assert all(label in result.probabilities for label in FAULT_LABELS.values())
+        
+        # Verify SHAP values structure
+        assert len(result.shap_values) == 18
+        assert all(feature in result.shap_values for feature in FEATURE_NAMES)
+        
+        # The actual prediction should be "Normal" (class 0) for this sample
+        assert result.prediction_label == "Normal"
+        
+        # Verify probabilities are valid (sum to 1.0, all in [0, 1])
+        prob_sum = sum(result.probabilities.values())
+        assert abs(prob_sum - 1.0) < 1e-6, f"Probabilities sum to {prob_sum}, expected 1.0"
+        assert all(0.0 <= p <= 1.0 for p in result.probabilities.values())
+        
+        # Verify SHAP values are finite numbers
+        assert all(np.isfinite(v) for v in result.shap_values.values())
