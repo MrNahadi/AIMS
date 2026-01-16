@@ -21,7 +21,26 @@
 
 AIMS (AI Marine Engineering System) is an intelligent predictive maintenance platform that leverages machine learning to diagnose marine engine faults before catastrophic failures occur. The system analyzes real-time sensor data from 18 monitoring points to predict 8 different fault categories with over 92% accuracy.
 
-**Key Achievements:**
+### Key Achievements at a Glance
+
+```mermaid
+mindmap
+  root((AIMS<br/>Achievements))
+    Performance
+      94% Accuracy
+      91% F1-Score
+      Sub-second latency
+    Technology
+      LightGBM Model
+      SHAP Explainability
+      Full-stack Solution
+    Business Impact
+      60-80% Less Downtime
+      30-40% Cost Reduction
+      Extended Equipment Life
+```
+
+**Key Metrics:**
 - **Accuracy**: 94% overall accuracy, 91% macro F1-score
 - **Algorithm**: LightGBM gradient boosting with SMOTE balancing
 - **Explainability**: SHAP values for transparent decision-making
@@ -34,79 +53,119 @@ AIMS (AI Marine Engineering System) is an intelligent predictive maintenance pla
 - Prevents catastrophic failures and safety incidents
 - Extends equipment lifespan through proactive care
 
+
 ---
 
 ## 2. Project Overview and Relevance
 
 ### 2.1 The Problem: Marine Engine Failures
 
-Marine engines are critical assets in maritime operations, powering vessels that transport 90% of global trade.
-Engine failures lead to:
+Marine engines are critical assets in maritime operations, powering vessels that transport 90% of global trade. Engine failures lead to severe consequences:
 
-**Operational Consequences:**
-- **Downtime**: Vessels stranded at sea or in port, disrupting schedules
-- **Safety Risks**: Crew and cargo endangerment in critical situations
-- **Financial Losses**: Repair costs ($50K-$500K per incident), missed schedules, contractual penalties
-- **Environmental Impact**: Oil spills, increased emissions from inefficient operation
-- **Reputation Damage**: Loss of customer trust and future business
+```mermaid
+flowchart TD
+    FAILURE["Engine Failure"] --> OP["Operational Impact"]
+    FAILURE --> FIN["Financial Impact"]
+    FAILURE --> SAFE["Safety Impact"]
+    FAILURE --> ENV["Environmental Impact"]
+    
+    OP --> OP1["Vessel stranded at sea"]
+    OP --> OP2["Schedule disruptions"]
+    OP --> OP3["Cascading failures"]
+    
+    FIN --> FIN1["$50K-$500K repair costs"]
+    FIN --> FIN2["Lost revenue"]
+    FIN --> FIN3["Contractual penalties"]
+    
+    SAFE --> SAFE1["Crew endangerment"]
+    SAFE --> SAFE2["Cargo at risk"]
+    SAFE --> SAFE3["Emergency situations"]
+    
+    ENV --> ENV1["Oil spills"]
+    ENV --> ENV2["Increased emissions"]
+    ENV --> ENV3["Regulatory violations"]
+```
 
-**Current Maintenance Approaches:**
+This diagram illustrates the cascading consequences of engine failures across operational, financial, safety, and environmental dimensions.
 
-1. **Reactive Maintenance** (Fix after failure)
-   - Highest cost and risk
-   - Unpredictable downtime
-   - Potential for cascading failures
+### 2.2 Maintenance Approaches Comparison
 
-2. **Scheduled Maintenance** (Fixed intervals)
-   - Inefficient (replacing parts that still work)
-   - Misses developing faults between intervals
-   - High labor and parts costs
+```mermaid
+graph LR
+    subgraph Reactive["Reactive Maintenance"]
+        R1["Fix after failure"]
+        R2["Highest cost and risk"]
+        R3["Unpredictable downtime"]
+    end
+    
+    subgraph Scheduled["Scheduled Maintenance"]
+        S1["Fixed intervals"]
+        S2["Inefficient timing"]
+        S3["Misses developing faults"]
+    end
+    
+    subgraph Predictive["AIMS Predictive"]
+        P1["AI-driven predictions"]
+        P2["24-72 hour early warning"]
+        P3["Root cause diagnosis"]
+    end
+    
+    Reactive --> |"Evolution"| Scheduled --> |"Evolution"| Predictive
+```
 
-3. **Threshold Alarms** (Simple sensor limits)
-   - High false positive rates
-   - No root cause identification
-   - Requires expert interpretation
+This evolution diagram shows how AIMS represents the next generation of maintenance strategies, moving from reactive to truly predictive approaches.
 
-### 2.2 The Solution: Predictive Maintenance with AI
+### 2.3 AIMS Solution Architecture
 
-AIMS implements **Predictive Maintenance** using machine learning to:
+```mermaid
+flowchart TB
+    subgraph Sensors["Sensor Network"]
+        direction LR
+        VIB["Vibration<br/>X, Y, Z"]
+        TEMP["Temperature<br/>Oil, Exhaust"]
+        PRESS["Pressure<br/>Oil, Air, Cylinder"]
+        FLOW["Flow<br/>Fuel"]
+    end
+    
+    subgraph Processing["Data Processing"]
+        COLLECT["Data Collection<br/>1 Hz sampling"]
+        SCALE["Feature Scaling<br/>StandardScaler"]
+        VALID["Validation<br/>Range checks"]
+    end
+    
+    subgraph AI["AI Engine"]
+        MODEL["LightGBM<br/>Classifier"]
+        SHAP["SHAP<br/>Explainer"]
+    end
+    
+    subgraph Output["Output"]
+        PRED["Fault Prediction<br/>8 categories"]
+        CONF["Confidence Score<br/>Probability %"]
+        EXPL["Explanation<br/>Feature contributions"]
+    end
+    
+    subgraph Action["Action"]
+        ALERT["Alert System"]
+        MAINT["Maintenance<br/>Scheduling"]
+        REPORT["Reporting<br/>Dashboard"]
+    end
+    
+    Sensors --> Processing --> AI --> Output --> Action
+```
 
-**Core Capabilities:**
-- **Early Fault Detection**: Identify developing issues 24-72 hours before failure
-- **Root Cause Diagnosis**: Classify specific fault types (not just "something is wrong")
-- **Explainable Predictions**: SHAP values show which sensors contributed to each diagnosis
-- **Confidence Scoring**: Probability distributions help prioritize maintenance actions
-- **Real-time Monitoring**: Continuous analysis of sensor streams for immediate alerts
+This architecture diagram shows the complete data flow from sensor collection through AI processing to actionable maintenance decisions.
 
-**Advantages Over Traditional Methods:**
 
-| Aspect | Traditional | AIMS Predictive |
-|--------|------------|-----------------|
-| **Detection Time** | After failure | 24-72 hours early |
-| **Accuracy** | 60-70% (expert-dependent) | 94% (consistent) |
-| **Root Cause** | Manual diagnosis | Automatic classification |
-| **Explainability** | Expert intuition | SHAP values |
-| **Cost** | High (reactive repairs) | Low (planned maintenance) |
-| **Downtime** | Unplanned (days) | Planned (hours) |
+### 2.4 Comparison: Traditional vs AIMS
 
-### 2.3 Project Relevance
-
-**Maritime Industry Context:**
-- **Market Size**: $150B global marine engine market
-- **Fleet Size**: 100,000+ commercial vessels worldwide
-- **Maintenance Costs**: 20-30% of total operating expenses
-- **Regulatory Pressure**: IMO 2030 emissions targets require optimal engine performance
-
-**Technology Trends:**
-- **IoT Adoption**: 70% of new vessels have sensor networks
-- **Digital Twins**: Virtual engine models for simulation
-- **Edge Computing**: Onboard AI processing for real-time decisions
-- **Autonomous Vessels**: Require robust fault detection without human oversight
-
-**Competitive Landscape:**
-- Traditional OEMs (Wärtsilä, MAN Energy Solutions) offer basic monitoring
-- Startups (Marorka, Opsealog) provide analytics but limited AI
-- **AIMS Differentiator**: Open-source, explainable AI with full-stack implementation
+| Aspect             | Traditional               | AIMS Predictive           |
+| ------------------ | ------------------------- | ------------------------- |
+| **Detection Time** | After failure             | 24-72 hours early         |
+| **Accuracy**       | 60-70% (expert-dependent) | 94% (consistent)          |
+| **Root Cause**     | Manual diagnosis          | Automatic classification  |
+| **Explainability** | Expert intuition          | SHAP values               |
+| **Cost**           | High (reactive repairs)   | Low (planned maintenance) |
+| **Downtime**       | Unplanned (days)          | Planned (hours)           |
 
 ---
 
@@ -121,650 +180,420 @@ AIMS implements **Predictive Maintenance** using machine learning to:
 - **Engine Type**: 4-cylinder marine diesel engine
 - **File Format**: CSV (marine_engine_fault_dataset.csv, ~2.5 MB)
 
-**Sensor Instrumentation:**
-The dataset simulates a comprehensive sensor network typical of modern marine engines:
-- **Mechanical Sensors**: RPM, vibration (3-axis accelerometers)
-- **Thermal Sensors**: Oil temperature, exhaust temperatures (4 cylinders)
-- **Pressure Sensors**: Oil pressure, air pressure, cylinder pressures (4 cylinders)
-- **Flow Sensors**: Fuel flow rate
-- **Environmental Sensors**: Ambient temperature
+### 3.2 Sensor Feature Organization
 
-### 3.2 Feature Descriptions (18 Sensors)
+The 18 sensors are organized into functional categories for better understanding:
 
-#### Operational Parameters
+```mermaid
+graph TB
+    subgraph Dataset["Marine Engine Dataset<br/>10,000 records x 18 features"]
+        direction TB
+        
+        subgraph Operational["Operational (3)"]
+            OP1["Shaft_RPM<br/>800-1200 RPM"]
+            OP2["Engine_Load<br/>0-100%"]
+            OP3["Fuel_Flow<br/>80-200 L/h"]
+        end
+        
+        subgraph Pressure["Pressure (5)"]
+            PR1["Air_Pressure<br/>1.5-3.5 bar"]
+            PR2["Oil_Pressure<br/>2.0-5.0 bar"]
+            PR3["Cylinder1-4_Pressure<br/>120-160 bar"]
+        end
+        
+        subgraph Thermal["Thermal (6)"]
+            TH1["Ambient_Temp<br/>15-35C"]
+            TH2["Oil_Temp<br/>60-110C"]
+            TH3["Cylinder1-4_Exhaust_Temp<br/>350-550C"]
+        end
+        
+        subgraph Vibration["Vibration (3)"]
+            VB1["Vibration_X<br/>0-0.5 mm/s"]
+            VB2["Vibration_Y<br/>0-0.5 mm/s"]
+            VB3["Vibration_Z<br/>0-0.5 mm/s"]
+        end
+    end
+    
+    Dataset --> TARGET["Target: Fault_Label<br/>8 classes (0-7)"]
+```
 
-**1. Shaft_RPM (Revolutions Per Minute)**
-- **Description**: Engine crankshaft rotation speed
-- **Range**: 800-1200 RPM
-- **Unit**: Revolutions per minute
-- **Normal Value**: 950 ± 50 RPM
-- **Fault Indicators**: 
-  - Low RPM + high load → Bearing wear, lubrication issues
-  - Unstable RPM → Fuel injection problems
-- **Physical Significance**: Primary indicator of engine operating mode (idle, cruise, full power)
+This diagram organizes the 18 sensor features into logical groups, showing their typical operating ranges.
 
-**2. Engine_Load (%)**
-- **Description**: Percentage of maximum engine capacity being utilized
-- **Range**: 0-100%
-- **Unit**: Percentage
-- **Normal Value**: 60-80% (cruise), 20-40% (maneuvering)
-- **Fault Indicators**:
-  - High load + low RPM → Mechanical resistance (bearing wear)
-  - Load fluctuations → Fuel system instability
-- **Physical Significance**: Determines stress on all engine components
+### 3.3 Target Variable: Fault Classification
 
-**3. Fuel_Flow (L/h)**
-- **Description**: Rate of fuel consumption
-- **Range**: 80-200 liters per hour
-- **Unit**: Liters per hour
-- **Normal Value**: 120 ± 20 L/h at 70% load
-- **Fault Indicators**:
-  - High flow + low power → Fuel injection fault, incomplete combustion
-  - Low flow + high load → Air intake restriction
-- **Physical Significance**: Efficiency indicator; deviations signal combustion issues
+```mermaid
+pie title Dataset Class Distribution
+    "Normal (65%)" : 65
+    "Fuel Injection (5%)" : 5
+    "Cooling System (5%)" : 5
+    "Turbocharger (5%)" : 5
+    "Bearing Wear (5%)" : 5
+    "Lubrication (5%)" : 5
+    "Air Intake (5%)" : 5
+    "Vibration (5%)" : 5
+```
 
-#### Pressure Sensors
+This pie chart shows the class imbalance in the dataset - Normal operation dominates at 65%, while each fault type represents approximately 5% of the data. This imbalance reflects real-world conditions where engines operate normally most of the time.
 
-**4. Air_Pressure (bar)**
-- **Description**: Intake manifold air pressure (turbocharger output)
-- **Range**: 1.5-3.5 bar
-- **Unit**: Bar (atmospheric pressure)
-- **Normal Value**: 2.5 ± 0.5 bar at 70% load
-- **Fault Indicators**:
-  - Low pressure → Turbocharger fault, air intake restriction
-  - High pressure + high exhaust temp → Cooling system fault
-- **Physical Significance**: Determines combustion efficiency and power output
+### 3.4 Fault Types and Indicators
 
-**5. Oil_Pressure (bar)**
-- **Description**: Lubrication system pressure
-- **Range**: 2.0-5.0 bar
-- **Unit**: Bar
-- **Normal Value**: 3.5 ± 0.5 bar
-- **Fault Indicators**:
-  - Low pressure → Oil pump failure, leaks, bearing wear
-  - High pressure → Oil filter clogging, cold oil
-- **Physical Significance**: Critical for preventing metal-to-metal contact in bearings
+| Code  | Fault Type                  | Prevalence | Key Indicators                                 | Severity |
+| ----- | --------------------------- | ---------- | ---------------------------------------------- | -------- |
+| **0** | Normal                      | 65.06%     | All sensors within normal ranges               | N/A      |
+| **1** | Fuel Injection Fault        | 4.97%      | Abnormal fuel flow, uneven cylinder pressures  | Medium   |
+| **2** | Cooling System Fault        | 4.98%      | High oil/exhaust temps, low cooling efficiency | High     |
+| **3** | Turbocharger Fault          | 4.99%      | Low air pressure, high exhaust temps           | High     |
+| **4** | Bearing Wear                | 5.00%      | High vibration (all axes), low oil pressure    | Critical |
+| **5** | Lubrication Oil Degradation | 5.00%      | High oil temp, low oil pressure                | High     |
+| **6** | Air Intake Restriction      | 5.00%      | Low air pressure, reduced engine load          | Medium   |
+| **7** | Vibration Anomaly           | 5.00%      | Extreme vibration in one or more axes          | Critical |
 
-**6-9. Cylinder Pressures (Cylinder1-4_Pressure, bar)**
-- **Description**: Peak combustion pressure in each cylinder
-- **Range**: 120-160 bar
-- **Unit**: Bar
-- **Normal Value**: 145 ± 10 bar (consistent across cylinders)
-- **Fault Indicators**:
-  - Low pressure in one cylinder → Fuel injection fault, valve leakage
-  - Uneven pressures → Imbalanced combustion
-  - All cylinders low → Air intake restriction, turbocharger fault
-- **Physical Significance**: Direct measure of combustion quality and power generation
 
-#### Thermal Sensors
+### 3.5 Fault-Sensor Relationship Map
 
-**10. Ambient_Temp (°C)**
-- **Description**: Environmental temperature around the engine
-- **Range**: 15-35°C
-- **Unit**: Degrees Celsius
-- **Normal Value**: 25 ± 5°C
-- **Fault Indicators**: Affects cooling system performance (not a direct fault indicator)
-- **Physical Significance**: Baseline for thermal management calculations
+```mermaid
+flowchart LR
+    subgraph Faults["Fault Types"]
+        F1["Fuel Injection"]
+        F2["Cooling System"]
+        F3["Turbocharger"]
+        F4["Bearing Wear"]
+        F5["Lubrication"]
+        F6["Air Intake"]
+        F7["Vibration"]
+    end
+    
+    subgraph Sensors["Key Sensors"]
+        S1["Fuel_Flow"]
+        S2["Oil_Temp"]
+        S3["Air_Pressure"]
+        S4["Vibration_X/Y/Z"]
+        S5["Oil_Pressure"]
+        S6["Exhaust_Temps"]
+        S7["Cylinder_Pressures"]
+    end
+    
+    F1 --> S1
+    F1 --> S7
+    F2 --> S2
+    F2 --> S6
+    F3 --> S3
+    F3 --> S6
+    F4 --> S4
+    F4 --> S5
+    F5 --> S2
+    F5 --> S5
+    F6 --> S3
+    F7 --> S4
+```
 
-**11. Oil_Temp (°C)**
-- **Description**: Lubrication oil temperature
-- **Range**: 60-110°C
-- **Unit**: Degrees Celsius
-- **Normal Value**: 75 ± 5°C
-- **Fault Indicators**:
-  - High temp (>95°C) → Lubrication oil degradation, cooling system fault
-  - Very high temp (>105°C) → Imminent bearing failure
-  - Low temp (<65°C) → Engine not warmed up, thermostat failure
-- **Physical Significance**: Oil viscosity depends on temperature; too hot = thin oil, too cold = thick oil
-
-**12-15. Cylinder Exhaust Temperatures (Cylinder1-4_Exhaust_Temp, °C)**
-- **Description**: Exhaust gas temperature exiting each cylinder
-- **Range**: 350-550°C
-- **Unit**: Degrees Celsius
-- **Normal Value**: 420 ± 30°C (consistent across cylinders)
-- **Fault Indicators**:
-  - High temp in all cylinders → Turbocharger fault, cooling system fault
-  - High temp in one cylinder → Fuel injection fault, valve leakage
-  - Uneven temps → Imbalanced combustion
-  - Very high temp (>500°C) → Risk of thermal damage
-- **Physical Significance**: Indicates combustion efficiency and thermal stress
-
-#### Vibration Sensors
-
-**16-18. Vibration_X, Vibration_Y, Vibration_Z (mm/s)**
-- **Description**: Vibration amplitude in three orthogonal axes
-- **Range**: 0-0.5 mm/s (normal operation)
-- **Unit**: Millimeters per second (velocity)
-- **Normal Value**: <0.1 mm/s in all axes
-- **Fault Indicators**:
-  - High X-axis → Radial bearing wear, imbalance
-  - High Y-axis → Misalignment, foundation issues
-  - High Z-axis → Axial thrust bearing wear
-  - All axes high → Severe mechanical fault, looseness
-- **Physical Significance**: Most sensitive indicator of mechanical health; vibration increases exponentially with bearing wear
-
-### 3.3 Target Variable: Fault_Label
-
-The dataset includes 8 fault categories (0-7):
-
-| Code | Fault Type | Prevalence | Key Indicators | Severity |
-|------|-----------|------------|----------------|----------|
-| **0** | **Normal** | 65.06% | All sensors within normal ranges | N/A |
-| **1** | **Fuel Injection Fault** | 4.97% | Abnormal fuel flow, uneven cylinder pressures | Medium |
-| **2** | **Cooling System Fault** | 4.98% | High oil/exhaust temps, low cooling efficiency | High |
-| **3** | **Turbocharger Fault** | 4.99% | Low air pressure, high exhaust temps | High |
-| **4** | **Bearing Wear** | 5.00% | High vibration (all axes), low oil pressure | Critical |
-| **5** | **Lubrication Oil Degradation** | 5.00% | High oil temp, low oil pressure | High |
-| **6** | **Air Intake Restriction** | 5.00% | Low air pressure, reduced engine load | Medium |
-| **7** | **Vibration Anomaly** | 5.00% | Extreme vibration in one or more axes | Critical |
-
-**Class Imbalance:**
-- **Normal Operation**: 6,506 samples (65%)
-- **Each Fault Class**: ~500 samples (5% each)
-- **Imbalance Ratio**: 13:1 (majority to minority)
-- **Challenge**: Without balancing, models predict "Normal" for everything to achieve 65% accuracy
+This relationship map shows which sensors are most indicative of each fault type, helping engineers understand the diagnostic logic.
 
 ---
 
 ## 4. Data Cleaning and Preprocessing
 
-### 4.1 Data Exploration (Notebook 01)
+### 4.1 Data Exploration Pipeline
 
-**Objectives:**
-- Profile dataset structure and quality
-- Identify missing values and anomalies
-- Visualize distributions and correlations
-- Document cleaning decisions
-
-**Key Findings:**
-
-**1. Data Quality Assessment**
-```python
-# Missing values check
-df.isnull().sum()  # Result: 0 missing values across all columns
-
-# Data types verification
-df.dtypes
-# Timestamp: object (datetime string)
-# Sensors: float64 (18 features)
-# Fault_Label: int64 (target)
-
-# Duplicate check
-df.duplicated().sum()  # Result: 0 duplicates
+```mermaid
+flowchart TD
+    subgraph NB1["Notebook 01: Data Exploration"]
+        LOAD["Load Dataset<br/>10,000 x 20"]
+        PROFILE["Profile Structure<br/>Types, shapes"]
+        MISSING["Check Missing Values<br/>Result: 0 missing"]
+        DUPE["Check Duplicates<br/>Result: 0 duplicates"]
+        OUTLIER["Detect Outliers<br/>IQR method"]
+        CORR["Correlation Analysis<br/>18x18 matrix"]
+        DIST["Distribution Analysis<br/>Histograms, boxplots"]
+        
+        LOAD --> PROFILE --> MISSING --> DUPE --> OUTLIER --> CORR --> DIST
+    end
+    
+    DIST --> DECISION{"Cleaning<br/>Decision"}
+    DECISION --> |"Outliers = Fault Signatures"| KEEP["Keep All Data"]
+    DECISION --> |"High Correlation OK"| KEEP
 ```
 
-**Conclusion**: Dataset is clean with 100% completeness and no duplicates.
+This flowchart shows the systematic data exploration process, highlighting that outliers were retained as they represent valuable fault signatures.
 
-**2. Outlier Detection (IQR Method)**
+### 4.2 Preprocessing Pipeline
 
-```python
-# Interquartile Range method
-Q1 = df[sensor_features].quantile(0.25)
-Q3 = df[sensor_features].quantile(0.75)
-IQR = Q3 - Q1
-
-# Outlier thresholds
-lower_bound = Q1 - 1.5 * IQR
-upper_bound = Q3 + 1.5 * IQR
-
-# Count outliers per feature
-outliers = ((df[sensor_features] < lower_bound) | (df[sensor_features] > upper_bound)).sum()
+```mermaid
+flowchart LR
+    subgraph Input["Raw Data"]
+        RAW["10,000 samples<br/>18 features"]
+    end
+    
+    subgraph Split["Train-Test Split"]
+        TRAIN["Training Set<br/>8,000 (80%)"]
+        TEST["Test Set<br/>2,000 (20%)"]
+    end
+    
+    subgraph Scale["Feature Scaling"]
+        FIT["Fit Scaler<br/>on Train only"]
+        TRANS["Transform<br/>Both sets"]
+    end
+    
+    subgraph Balance["Class Balancing"]
+        SMOTE["SMOTE<br/>Synthetic samples"]
+        BAL["Balanced Training<br/>41,648 samples"]
+    end
+    
+    subgraph Save["Save Artifacts"]
+        SCALER["preprocessor.pkl"]
+        DATA["*.npy files"]
+    end
+    
+    RAW --> Split
+    TRAIN --> FIT --> TRANS
+    TEST --> TRANS
+    TRANS --> SMOTE --> BAL
+    FIT --> SCALER
+    BAL --> DATA
 ```
 
-**Results:**
-- Vibration_X: 487 outliers (4.87%)
-- Vibration_Y: 502 outliers (5.02%)
-- Vibration_Z: 495 outliers (4.95%)
-- Oil_Temp: 512 outliers (5.12%)
-- Cylinder Exhaust Temps: 300-400 outliers each
+This pipeline diagram shows the complete preprocessing flow, emphasizing that the scaler is fit only on training data to prevent data leakage.
 
-**Decision**: **Retain all outliers** because:
-- Outliers correlate with fault labels (not random errors)
-- Represent legitimate extreme operating conditions
-- Critical for training model to recognize faults
-- Removing them would eliminate fault signatures
 
-**3. Correlation Analysis**
+### 4.3 SMOTE Class Balancing
 
-```python
-# Compute correlation matrix
-correlation_matrix = df[sensor_features].corr()
-
-# Identify highly correlated pairs (|r| > 0.7)
-high_corr = correlation_matrix[(correlation_matrix > 0.7) & (correlation_matrix < 1.0)]
+```mermaid
+flowchart TD
+    subgraph Before["Before SMOTE"]
+        B0["Normal: 5,206"]
+        B1["Fuel Injection: ~400"]
+        B2["Cooling: ~400"]
+        B3["Turbo: ~400"]
+        B4["Bearing: ~400"]
+        B5["Lubrication: ~400"]
+        B6["Air Intake: ~400"]
+        B7["Vibration: ~400"]
+    end
+    
+    SMOTE["SMOTE<br/>Synthetic Minority<br/>Over-sampling"]
+    
+    subgraph After["After SMOTE"]
+        A0["Normal: 5,206"]
+        A1["Fuel Injection: 5,206"]
+        A2["Cooling: 5,206"]
+        A3["Turbo: 5,206"]
+        A4["Bearing: 5,206"]
+        A5["Lubrication: 5,206"]
+        A6["Air Intake: 5,206"]
+        A7["Vibration: 5,206"]
+    end
+    
+    Before --> SMOTE --> After
+    
+    SMOTE --> NOTE["Total: 8,000 to 41,648 samples"]
 ```
 
-**Strong Correlations Found:**
-- Vibration_X ↔ Vibration_Y: r = 0.73 (mechanical coupling)
-- Vibration_X ↔ Vibration_Z: r = 0.68
-- Cylinder1_Exhaust_Temp ↔ Cylinder2_Exhaust_Temp: r = 0.65 (thermal interdependence)
-- Cylinder3_Exhaust_Temp ↔ Cylinder4_Exhaust_Temp: r = 0.62
+This before/after diagram illustrates how SMOTE balances the training data by generating synthetic samples for minority classes.
 
-**Decision**: **Keep all features** because:
-- Tree-based models (LightGBM) handle multicollinearity well
-- Correlated features provide redundancy for robustness
-- Each sensor has physical significance
+### 4.4 StandardScaler Transformation
 
-### 4.2 Feature Engineering and Preprocessing (Notebook 02)
+The StandardScaler normalizes features to have zero mean and unit variance:
 
-**Pipeline Steps:**
-
-**Step 1: Feature-Target Separation**
-```python
-# Define 18 sensor features
-sensor_features = [
-    'Shaft_RPM', 'Engine_Load', 'Fuel_Flow', 'Air_Pressure', 'Ambient_Temp',
-    'Oil_Temp', 'Oil_Pressure', 'Vibration_X', 'Vibration_Y', 'Vibration_Z',
-    'Cylinder1_Pressure', 'Cylinder1_Exhaust_Temp',
-    'Cylinder2_Pressure', 'Cylinder2_Exhaust_Temp',
-    'Cylinder3_Pressure', 'Cylinder3_Exhaust_Temp',
-    'Cylinder4_Pressure', 'Cylinder4_Exhaust_Temp'
-]
-
-# Separate features and target
-X = df[sensor_features].copy()  # 10,000 × 18
-y = df['Fault_Label'].copy()    # 10,000 labels (0-7)
 ```
-
-**Step 2: Train-Test Split (Stratified)**
-```python
-from sklearn.model_selection import train_test_split
-
-X_train, X_test, y_train, y_test = train_test_split(
-    X, y,
-    test_size=0.2,      # 80% train, 20% test
-    random_state=42,    # Reproducibility
-    stratify=y          # Preserve class distribution
-)
-```
-
-**Results:**
-- Training set: 8,000 samples (80%)
-- Test set: 2,000 samples (20%)
-- Class distribution preserved in both splits
-
-**Why Stratification?**
-- Ensures each split contains same proportion of each fault class
-- Prevents biased evaluation (e.g., test set with no rare faults)
-- Critical for imbalanced datasets
-
-**Step 3: Feature Scaling (StandardScaler)**
-
-**Why Scale?**
-Sensors have vastly different units and ranges:
-- Shaft_RPM: 800-1200 (hundreds)
-- Vibration_X: 0-0.5 (decimals)
-- Oil_Pressure: 2-5 (single digits)
-
-Without scaling, high-magnitude features dominate distance calculations and gradient descent.
-
-**StandardScaler Formula:**
-```
-z = (x - μ) / σ
+z = (x - mean) / std
 
 Where:
 - x = original value
-- μ = mean of feature (computed on training set)
-- σ = standard deviation (computed on training set)
+- mean = mean of feature (from training set)
+- std = standard deviation (from training set)
 - z = scaled value (mean=0, std=1)
 ```
-
-**Implementation:**
-```python
-from sklearn.preprocessing import StandardScaler
-
-# Initialize scaler
-scaler = StandardScaler()
-
-# Fit on training data ONLY (prevent data leakage)
-X_train_scaled = scaler.fit_transform(X_train)
-
-# Transform test data using training statistics
-X_test_scaled = scaler.transform(X_test)
-
-# Save scaler for deployment
-import joblib
-joblib.dump(scaler, 'backend/artifacts/preprocessor.pkl')
-```
-
-**Critical Rule**: Fit scaler on training data only to prevent data leakage (test statistics must not influence training).
 
 **Example Transformation:**
 ```
 Original Shaft_RPM: 950.5
-Training mean (μ): 950.2
-Training std (σ): 45.3
+Training mean: 950.2
+Training std: 45.3
 Scaled value: (950.5 - 950.2) / 45.3 = 0.0066
 ```
-
-**Step 4: Class Imbalance Handling with SMOTE**
-
-**Problem:**
-Original training data has severe imbalance:
-- Normal (Class 0): 5,206 samples (65%)
-- Each fault class: ~400 samples (5% each)
-
-**Consequence:**
-Model learns to predict "Normal" for everything, achieving 65% accuracy while missing all faults (useless for predictive maintenance).
-
-**Solution: SMOTE (Synthetic Minority Over-sampling Technique)**
-
-**How SMOTE Works:**
-1. For each minority class sample:
-   - Find k nearest neighbors (default k=5) in feature space using Euclidean distance
-   - Select one neighbor randomly
-   - Generate synthetic sample along the line connecting them:
-     ```
-     x_new = x_i + λ × (x_neighbor - x_i)
-     where λ ~ Uniform(0, 1)
-     ```
-2. Repeat until all classes have equal samples (match majority class)
-
-**Implementation:**
-```python
-from imblearn.over_sampling import SMOTE
-
-# Calculate appropriate k_neighbors (must be < smallest class size)
-min_class_size = y_train.value_counts().min()  # ~400
-k_neighbors = min(5, min_class_size - 1)       # 5
-
-# Apply SMOTE
-smote = SMOTE(random_state=42, k_neighbors=k_neighbors)
-X_train_balanced, y_train_balanced = smote.fit_resample(X_train_scaled, y_train)
-```
-
-**Results:**
-- **Before SMOTE**: 8,000 samples (imbalanced)
-  - Class 0: 5,206 samples
-  - Classes 1-7: ~400 samples each
-- **After SMOTE**: 41,648 samples (balanced)
-  - All classes: 5,206 samples each (equal to majority class)
-
-**Why Not Balance Test Set?**
-Test set must reflect real-world distribution (65% normal, 5% faults) for unbiased evaluation.
-
-**Preprocessing Summary:**
-
-| Dataset | Samples | Balanced? | Purpose |
-|---------|---------|-----------|---------|
-| X_train_scaled | 8,000 | No | Original training data |
-| X_train_balanced | 41,648 | Yes | SMOTE-augmented for training |
-| X_test_scaled | 2,000 | No | Evaluation (real-world distribution) |
-
-**Artifacts Saved:**
-1. `preprocessor.pkl`: StandardScaler for production inference
-2. `X_train_balanced.npy`, `y_train_balanced.npy`: For model training
-3. `X_test_scaled.npy`, `y_test.npy`: For model evaluation
 
 ---
 
 ## 5. Data Analysis
 
-### 5.1 Exploratory Data Analysis
+### 5.1 Correlation Heatmap Insights
 
-**Distribution Analysis:**
-
-**1. Fault Label Distribution**
-```python
-fault_counts = y.value_counts().sort_index()
-fault_percentages = (fault_counts / len(y)) * 100
-
-# Visualization: Bar chart + Pie chart
+```mermaid
+graph TD
+    subgraph HighCorr["High Correlations (r > 0.6)"]
+        C1["Vibration_X to Vibration_Y<br/>r = 0.73"]
+        C2["Vibration_X to Vibration_Z<br/>r = 0.68"]
+        C3["Cyl1_Exhaust to Cyl2_Exhaust<br/>r = 0.65"]
+        C4["Cyl3_Exhaust to Cyl4_Exhaust<br/>r = 0.62"]
+    end
+    
+    subgraph Reason["Physical Explanation"]
+        R1["Mechanical coupling<br/>in vibration axes"]
+        R2["Thermal interdependence<br/>in exhaust system"]
+    end
+    
+    subgraph Decision["Decision"]
+        D1["Keep all features"]
+        D2["LightGBM handles<br/>multicollinearity well"]
+    end
+    
+    HighCorr --> Reason --> Decision
 ```
 
-**Findings:**
-- Severe class imbalance (13:1 ratio)
-- Normal operation dominates (realistic for well-maintained engines)
-- Each fault type has ~500 samples (sufficient for ML with SMOTE)
+This diagram explains the correlation patterns found in the data and justifies the decision to retain all features.
 
-**2. Sensor Feature Distributions**
 
-**Histograms Analysis:**
-- **Shaft_RPM**: Normal distribution (μ=950, σ=45) → Typical cruise operation
-- **Engine_Load**: Uniform distribution (0-100%) → Diverse operating conditions
-- **Vibration Sensors**: Right-skewed (most values near zero, outliers indicate faults)
-- **Oil_Temp**: Bimodal distribution (normal ~75°C, degraded ~95-110°C)
-- **Cylinder Pressures**: Consistent across cylinders in normal operation
-- **Exhaust Temps**: Wide range (350-550°C) with fault-specific patterns
+### 5.2 Fault-Specific Sensor Patterns
 
-**Boxplot Analysis:**
-- Outliers concentrated in fault classes (not random noise)
-- Vibration sensors show most extreme outliers (bearing wear, vibration anomalies)
-- Thermal sensors (Oil_Temp, Exhaust_Temps) show high-end outliers (cooling faults)
+```mermaid
+flowchart TB
+    subgraph BearingWear["Bearing Wear (Class 4)"]
+        BW1["Vibration_X: 0.35 mm/s<br/>(7x normal)"]
+        BW2["Vibration_Y: 0.32 mm/s"]
+        BW3["Oil_Pressure: 2.1 bar<br/>(40% below normal)"]
+    end
+    
+    subgraph Lubrication["Lubrication Degradation (Class 5)"]
+        LU1["Oil_Temp: 98C<br/>(31% above normal)"]
+        LU2["Oil_Pressure: 2.3 bar"]
+        LU3["Vibration_X: 0.12 mm/s<br/>(slightly elevated)"]
+    end
+    
+    subgraph Turbo["Turbocharger Fault (Class 3)"]
+        TU1["Air_Pressure: 1.2 bar<br/>(52% below normal)"]
+        TU2["Exhaust_Temps: 485C<br/>(15% above normal)"]
+        TU3["Engine_Load: 55%<br/>(reduced power)"]
+    end
+    
+    subgraph FuelInj["Fuel Injection Fault (Class 1)"]
+        FI1["Fuel_Flow: 145 L/h<br/>(21% above normal)"]
+        FI2["Cylinder Pressures: Uneven<br/>(std = 12 bar vs 5 bar)"]
+        FI3["Exhaust_Temps: Uneven"]
+    end
+```
 
-**3. Correlation Heatmap**
+This diagram shows the characteristic sensor signatures for each major fault type, helping engineers understand what patterns the model learns.
+
+### 5.3 Feature Importance Ranking
+
+```mermaid
+xychart-beta
+    title "Top 10 Feature Importance Scores"
+    x-axis ["Vib_X", "Vib_Y", "Oil_T", "Cyl1_Ex", "Cyl2_Ex", "Oil_P", "RPM", "Load", "Vib_Z", "Fuel"]
+    y-axis "Importance Score" 0 --> 0.15
+    bar [0.142, 0.128, 0.115, 0.098, 0.095, 0.087, 0.076, 0.072, 0.069, 0.064]
+```
+
+This bar chart shows the relative importance of each feature in the model's predictions. Vibration sensors dominate, accounting for nearly 40% of total importance.
 
 **Key Insights:**
-- **Vibration Triad**: X, Y, Z axes moderately correlated (0.65-0.75)
-  - Indicates mechanical coupling (one bearing affects others)
-  - Justifies keeping all three axes (each captures unique information)
-  
-- **Cylinder Exhaust Temps**: Moderate correlation (0.55-0.70)
-  - Thermal interdependence (shared cooling system)
-  - Deviations indicate cylinder-specific faults
-  
-- **Oil_Temp ↔ Ambient_Temp**: Weak correlation (0.45)
-  - Environmental influence on cooling
-  
-- **Shaft_RPM ↔ Engine_Load**: Weak correlation (0.38)
-  - Operational relationship (higher load → higher RPM)
-
-**4. Fault-Specific Patterns**
-
-**Bearing Wear (Class 4):**
-- Vibration_X: Mean = 0.35 mm/s (vs. 0.05 normal)
-- Vibration_Y: Mean = 0.32 mm/s
-- Vibration_Z: Mean = 0.28 mm/s
-- Oil_Pressure: Mean = 2.1 bar (vs. 3.5 normal)
-
-**Lubrication Oil Degradation (Class 5):**
-- Oil_Temp: Mean = 98°C (vs. 75°C normal)
-- Oil_Pressure: Mean = 2.3 bar (vs. 3.5 normal)
-- Vibration_X: Mean = 0.12 mm/s (slightly elevated)
-
-**Turbocharger Fault (Class 3):**
-- Air_Pressure: Mean = 1.2 bar (vs. 2.5 normal)
-- Exhaust_Temps: Mean = 485°C (vs. 420°C normal)
-- Engine_Load: Mean = 55% (reduced power output)
-
-**Fuel Injection Fault (Class 1):**
-- Fuel_Flow: Mean = 145 L/h (vs. 120 normal)
-- Cylinder Pressures: Uneven (std = 12 bar vs. 5 bar normal)
-- Exhaust_Temps: Uneven (std = 35°C vs. 15°C normal)
-
-**Cooling System Fault (Class 2):**
-- Oil_Temp: Mean = 92°C (vs. 75°C normal)
-- Exhaust_Temps: Mean = 475°C (vs. 420°C normal)
-- Ambient_Temp: Mean = 32°C (high environmental load)
-
-**Air Intake Restriction (Class 6):**
-- Air_Pressure: Mean = 1.5 bar (vs. 2.5 normal)
-- Engine_Load: Mean = 52% (reduced power)
-- Fuel_Flow: Mean = 105 L/h (reduced consumption)
-
-**Vibration Anomaly (Class 7):**
-- Vibration_Z: Mean = 0.48 mm/s (extreme axial vibration)
-- Vibration_X: Mean = 0.15 mm/s
-- Vibration_Y: Mean = 0.12 mm/s
-- Pattern: Dominant in one axis (vs. all axes in bearing wear)
-
-### 5.2 Statistical Insights
-
-**Variance Analysis:**
-- High-variance features: Vibration sensors, Exhaust temps (fault-sensitive)
-- Low-variance features: Ambient_Temp, Shaft_RPM (stable operating conditions)
-- Implication: High-variance features are most informative for fault detection
-
-**Separability Analysis:**
-- Classes are well-separated in feature space (good for ML)
-- Some overlap between similar faults (e.g., Cooling vs. Lubrication)
-- Requires non-linear decision boundaries (tree-based models ideal)
+- **Vibration Dominance**: Top 3 features (Vibration X, Y, Z) account for 38.5% of importance
+- **Thermal Indicators**: Oil_Temp and Exhaust_Temps are critical for multiple fault types
+- **Pressure Sensors**: Oil_Pressure directly indicates lubrication system health
+- **Operational Context**: RPM and Load help distinguish normal high-load operation from faults
 
 ---
 
 ## 6. Model Training
 
-### 6.1 Algorithm Selection: LightGBM
+### 6.1 LightGBM Algorithm Selection
 
-**Why LightGBM?**
+```mermaid
+mindmap
+  root((LightGBM<br/>Selection))
+    Speed
+      10-20x faster than XGBoost
+      Histogram-based learning
+      Leaf-wise growth
+    Accuracy
+      State-of-the-art on tabular data
+      92-95% on fault classification
+      Handles imbalance well
+    Features
+      Automatic feature interactions
+      Robust to outliers
+      No feature removal needed
+    Explainability
+      Tree structure
+      SHAP compatible
+      Feature importance built-in
+```
 
-**1. Gradient Boosting Framework**
-- Ensemble method: Combines multiple weak learners (decision trees) into strong predictor
-- Sequential learning: Each tree corrects errors of previous trees
-- Proven performance: State-of-the-art on tabular data (Kaggle competitions)
+This mindmap explains why LightGBM was chosen over other algorithms for this classification task.
 
-**2. Advantages for This Problem**
-- **Speed**: 10-20× faster than XGBoost, GBM (critical for real-time deployment)
-- **Accuracy**: Consistently achieves 92-95% on fault classification
-- **Handles Imbalance**: Works well with SMOTE and class weights
-- **Feature Interactions**: Automatically captures complex sensor relationships
-- **Robustness**: Handles outliers gracefully (no need to remove fault signatures)
-- **Explainability**: Tree structure compatible with SHAP
 
-**3. Technical Innovations**
-- **Leaf-wise Growth**: Splits leaf with maximum loss reduction (vs. level-wise in XGBoost)
-  - Faster convergence
-  - Better accuracy with fewer trees
-  - Risk of overfitting (mitigated by max_depth)
-  
-- **Histogram-based Learning**: Bins continuous features into discrete bins
-  - Reduces memory usage
-  - Speeds up split finding
-  - Minimal accuracy loss
-  
-- **Gradient-based One-Side Sampling (GOSS)**: Focuses on samples with large gradients
-  - Keeps all high-gradient samples (hard to classify)
-  - Randomly samples low-gradient samples (easy to classify)
-  - Reduces training time without accuracy loss
-  
-- **Exclusive Feature Bundling (EFB)**: Bundles mutually exclusive features
-  - Reduces dimensionality
-  - Speeds up training
-  - Not applicable here (all sensors are active)
+### 6.2 Hyperparameter Optimization with Optuna
 
-### 6.2 Hyperparameter Tuning with Optuna
-
-**Optuna Framework:**
-- **Algorithm**: Tree-structured Parzen Estimator (TPE) - Bayesian optimization
-- **Objective**: Maximize macro F1-score (balanced performance across all classes)
-- **Trials**: 50 iterations (balance between exploration and computation time)
-- **Pruning**: Early stopping of unpromising trials (saves time)
-
-**Search Space:**
-
-| Hyperparameter | Range | Description | Impact |
-|----------------|-------|-------------|--------|
-| `num_leaves` | 20-150 | Max leaves per tree | Complexity (higher = more complex) |
-| `learning_rate` | 0.01-0.3 | Shrinkage factor | Regularization (lower = more robust) |
-| `n_estimators` | 100-500 | Number of trees | Capacity (more trees = better fit) |
-| `max_depth` | 3-15 | Max tree depth | Overfitting control (lower = simpler) |
-| `min_child_samples` | 10-100 | Min samples per leaf | Regularization (higher = smoother) |
-| `subsample` | 0.6-1.0 | Fraction of samples per tree | Bagging (lower = more diverse) |
-| `colsample_bytree` | 0.6-1.0 | Fraction of features per tree | Feature randomness |
-
-**Optimization Code:**
-```python
-import optuna
-from sklearn.metrics import f1_score
-
-def objective(trial):
-    # Suggest hyperparameters
-    params = {
-        'objective': 'multiclass',
-        'num_class': 8,
-        'metric': 'multi_logloss',
-        'num_leaves': trial.suggest_int('num_leaves', 20, 150),
-        'learning_rate': trial.suggest_float('learning_rate', 0.01, 0.3, log=True),
-        'n_estimators': trial.suggest_int('n_estimators', 100, 500),
-        'max_depth': trial.suggest_int('max_depth', 3, 15),
-        'min_child_samples': trial.suggest_int('min_child_samples', 10, 100),
-        'subsample': trial.suggest_float('subsample', 0.6, 1.0),
-        'colsample_bytree': trial.suggest_float('colsample_bytree', 0.6, 1.0),
-        'random_state': 42,
-        'verbose': -1
-    }
+```mermaid
+flowchart TD
+    subgraph Search["Search Space"]
+        H1["num_leaves: 20-150"]
+        H2["learning_rate: 0.01-0.3"]
+        H3["n_estimators: 100-500"]
+        H4["max_depth: 3-15"]
+        H5["min_child_samples: 10-100"]
+        H6["subsample: 0.6-1.0"]
+        H7["colsample_bytree: 0.6-1.0"]
+    end
     
-    # Train model
-    model = lgb.LGBMClassifier(**params)
-    model.fit(X_train_balanced, y_train_balanced)
+    subgraph Optuna["Optuna TPE"]
+        TRIAL["50 Trials"]
+        TPE["Tree-structured<br/>Parzen Estimator"]
+        PRUNE["Early Pruning"]
+    end
     
-    # Evaluate on test set
-    y_pred = model.predict(X_test_scaled)
-    f1 = f1_score(y_test, y_pred, average='macro')
+    subgraph Best["Best Parameters"]
+        B1["num_leaves: 55"]
+        B2["learning_rate: 0.08"]
+        B3["n_estimators: 350"]
+        B4["max_depth: 7"]
+        B5["min_child_samples: 20"]
+        B6["subsample: 0.85"]
+        B7["colsample_bytree: 0.9"]
+    end
     
-    return f1
-
-# Run optimization
-study = optuna.create_study(direction='maximize')
-study.optimize(objective, n_trials=50, show_progress_bar=True)
-
-# Best parameters
-best_params = study.best_params
-best_f1 = study.best_value
+    Search --> Optuna --> Best
+    Best --> RESULT["F1-Score: 0.91-0.94"]
 ```
 
-**Typical Best Parameters Found:**
-```python
-{
-    'num_leaves': 55,
-    'learning_rate': 0.08,
-    'n_estimators': 350,
-    'max_depth': 7,
-    'min_child_samples': 20,
-    'subsample': 0.85,
-    'colsample_bytree': 0.9
-}
+This flowchart shows the hyperparameter optimization process, from the search space through Optuna's Bayesian optimization to the final best parameters.
+
+### 6.3 Training Pipeline
+
+```mermaid
+flowchart LR
+    subgraph Data["Data"]
+        BALANCED["Balanced Training<br/>41,648 samples"]
+        TEST["Test Set<br/>2,000 samples"]
+    end
+    
+    subgraph Train["Training"]
+        LGBM["LightGBM<br/>Classifier"]
+        CV["5-Fold<br/>Cross-Validation"]
+    end
+    
+    subgraph Eval["Evaluation"]
+        METRICS["Classification<br/>Report"]
+        CM["Confusion<br/>Matrix"]
+        FI["Feature<br/>Importance"]
+    end
+    
+    subgraph Save["Artifacts"]
+        MODEL["lgbm_model.pkl"]
+        FIMP["feature_importance.csv"]
+    end
+    
+    BALANCED --> LGBM
+    LGBM --> CV
+    CV --> |"Validate"| METRICS
+    TEST --> METRICS
+    METRICS --> CM
+    METRICS --> FI
+    LGBM --> MODEL
+    FI --> FIMP
 ```
 
-**Optimization Results:**
-- **Trials Run**: 50
-- **Best Trial**: Usually found between trial 30-45
-- **Best F1-Score**: 0.91-0.94 (macro-average)
-- **Optimization Time**: 10-20 minutes (depends on hardware)
-- **Improvement**: +5-8% over default parameters
-
-### 6.3 Final Model Training
-
-**Training Code:**
-```python
-import lightgbm as lgb
-
-# Train with best hyperparameters
-final_model = lgb.LGBMClassifier(
-    objective='multiclass',
-    num_class=8,
-    **best_params,
-    random_state=42
-)
-
-final_model.fit(X_train_balanced, y_train_balanced)
-
-# Save model
-joblib.dump(final_model, 'backend/artifacts/lgbm_model.pkl')
-```
-
-**5-Fold Cross-Validation (Robustness Check):**
-```python
-from sklearn.model_selection import cross_val_score
-
-cv_scores = cross_val_score(
-    final_model,
-    X_train_balanced,
-    y_train_balanced,
-    cv=5,
-    scoring='f1_macro'
-)
-
-print(f"CV F1-Score: {cv_scores.mean():.4f} ± {cv_scores.std():.4f}")
-# Typical result: 0.9150 ± 0.0080
-```
-
-**Interpretation:**
-- Mean F1-score: 0.9150 (excellent performance)
-- Standard deviation: 0.0080 (consistent across folds)
-- Low variance indicates model is not overfitting
-
-### 6.4 Model Evaluation
+### 6.4 Model Performance Results
 
 **Classification Report (Test Set):**
 
@@ -776,9 +605,9 @@ print(f"CV F1-Score: {cv_scores.mean():.4f} ± {cv_scores.std():.4f}")
           Cooling System Fault       0.91      0.89      0.90        99
             Turbocharger Fault       0.88      0.90      0.89       100
                   Bearing Wear       0.93      0.91      0.92       100
-Lubrication Oil Degradation       0.90      0.92      0.91       100
+Lubrication Oil Degradation          0.90      0.92      0.91       100
         Air Intake Restriction       0.87      0.89      0.88       100
-            Vibration Anomaly       0.94      0.93      0.94       100
+            Vibration Anomaly        0.94      0.93      0.94       100
 
                       accuracy                           0.94      2000
                      macro avg       0.91      0.91      0.91      2000
@@ -791,270 +620,95 @@ Lubrication Oil Degradation       0.90      0.92      0.91       100
 - **Weighted F1-Score**: 0.94 (accounts for class imbalance)
 - **Per-Class F1-Scores**: All > 0.88 (excellent fault detection)
 
-**Metric Definitions:**
-- **Precision**: TP / (TP + FP) - "Of all predicted faults, how many were correct?"
-- **Recall**: TP / (TP + FN) - "Of all actual faults, how many did we detect?"
-- **F1-Score**: 2 × (Precision × Recall) / (Precision + Recall) - Harmonic mean
-
-**Business Interpretation:**
-- **High Precision (0.87-0.96)**: Few false alarms (maintenance teams trust predictions)
-- **High Recall (0.87-0.98)**: Few missed faults (safety is maintained)
-- **Balanced F1**: No trade-off between precision and recall
-
-**Confusion Matrix Analysis:**
-
-```
-Predicted →     0     1     2     3     4     5     6     7
-Actual ↓
-0 (Normal)   1275    5     3     4     2     6     4     2
-1 (Fuel)        8   87     2     1     0     1     1     0
-2 (Cooling)     5    1    88     2     0     2     1     0
-3 (Turbo)       4    2     1    90     0     1     2     0
-4 (Bearing)     3    0     0     0    91     1     0     5
-5 (Lube Oil)    4    1     2     1     1    92     0     0
-6 (Air Int)     5    2     1     3     0     0    89     0
-7 (Vibration)   2    0     0     0     6     0     0    93
-```
-
-**Insights:**
-- **Strong Diagonal**: Most predictions are correct (true positives)
-- **Minimal Cross-Class Confusion**: <10% misclassification for all faults
-- **Normal Class**: 98% recall (only 26 false negatives out of 1,301)
-- **Bearing Wear vs. Vibration Anomaly**: Slight confusion (6 samples) - both involve vibration
-- **Fuel Injection vs. Normal**: 8 false positives - conservative (better than missing faults)
-
-### 6.5 Feature Importance Analysis
-
-**Top 10 Most Important Features:**
-
-| Rank | Feature | Importance Score | Cumulative | Fault Relevance |
-|------|---------|------------------|------------|-----------------|
-| 1 | Vibration_X | 0.142 | 14.2% | Bearing wear, vibration anomalies |
-| 2 | Vibration_Y | 0.128 | 27.0% | Mechanical imbalance |
-| 3 | Oil_Temp | 0.115 | 38.5% | Lubrication degradation, cooling faults |
-| 4 | Cylinder1_Exhaust_Temp | 0.098 | 48.3% | Turbocharger, cooling issues |
-| 5 | Cylinder2_Exhaust_Temp | 0.095 | 57.8% | Combustion health |
-| 6 | Oil_Pressure | 0.087 | 66.5% | Lubrication system integrity |
-| 7 | Shaft_RPM | 0.076 | 74.1% | Overall engine condition |
-| 8 | Engine_Load | 0.072 | 81.3% | Operational stress indicator |
-| 9 | Vibration_Z | 0.069 | 88.2% | Axial vibration anomalies |
-| 10 | Fuel_Flow | 0.064 | 94.6% | Fuel injection faults |
-
-**Insights:**
-- **Vibration Dominance**: Top 3 features account for 38.5% of importance
-  - Vibration sensors are most sensitive to mechanical faults
-  - Justifies investment in high-quality accelerometers
-  
-- **Thermal Indicators**: Oil_Temp and Exhaust_Temps critical (28% combined)
-  - Thermal management is key to engine health
-  - Multiple fault types manifest as temperature changes
-
-- **Pressure Sensors**: Oil_Pressure is 6th most important
-  - Direct indicator of lubrication system health
-  - Early warning for bearing failures
-  
-- **Operational Context**: RPM and Load provide context (15% combined)
-  - Help distinguish normal high-load operation from faults
-  - Enable load-adjusted fault thresholds
-
-**Feature Importance Visualization:**
-```python
-import matplotlib.pyplot as plt
-
-# Get feature importance
-importance = final_model.feature_importances_
-feature_names = sensor_features
-
-# Sort by importance
-indices = np.argsort(importance)[::-1]
-
-# Plot
-plt.figure(figsize=(12, 6))
-plt.bar(range(len(importance)), importance[indices])
-plt.xticks(range(len(importance)), [feature_names[i] for i in indices], rotation=45, ha='right')
-plt.xlabel('Feature')
-plt.ylabel('Importance Score')
-plt.title('LightGBM Feature Importance')
-plt.tight_layout()
-plt.show()
-```
 
 ---
 
 ## 7. Algorithm Details
 
-### 7.1 Gradient Boosting Mathematics
+### 7.1 Gradient Boosting Concept
 
-**Objective:**
-Minimize loss function L(y, F(x)) by building ensemble of trees.
-
-**Algorithm Steps:**
-
-**1. Initialize with Constant Prediction**
-```
-F₀(x) = argmin_γ Σᵢ L(yᵢ, γ)
-
-For classification: F₀(x) = log(p / (1-p)) where p = class prior
-```
-
-**2. For Each Iteration m = 1 to M:**
-
-**a. Compute Pseudo-Residuals (Negative Gradient)**
-```
-rᵢₘ = -[∂L(yᵢ, F(xᵢ)) / ∂F(xᵢ)]_{F=Fₘ₋₁}
-
-For multi-class log loss:
-rᵢₘ = yᵢ - softmax(Fₘ₋₁(xᵢ))
-```
-
-**b. Fit Decision Tree hₘ(x) to Residuals**
-```
-hₘ = argmin_h Σᵢ (rᵢₘ - h(xᵢ))²
-
-Tree splits to minimize squared error of residuals
+```mermaid
+flowchart TD
+    subgraph GB["Gradient Boosting Process"]
+        INIT["Initialize F0(x)<br/>Constant prediction"]
+        
+        subgraph Iteration["For m = 1 to M iterations"]
+            RESIDUAL["Compute pseudo-residuals<br/>rim = -dL/dF"]
+            FIT["Fit tree hm(x)<br/>to residuals"]
+            UPDATE["Update model<br/>Fm = Fm-1 + eta x hm"]
+            
+            RESIDUAL --> FIT --> UPDATE
+        end
+        
+        FINAL["Final prediction<br/>F(x) = F0 + Sum eta x hm"]
+    end
+    
+    INIT --> Iteration
+    Iteration --> |"Repeat 350 times"| FINAL
+    
+    FINAL --> SOFTMAX["Softmax for<br/>8-class probabilities"]
 ```
 
-**c. Update Model with Shrinkage**
-```
-Fₘ(x) = Fₘ₋₁(x) + η × hₘ(x)
+This diagram illustrates the iterative gradient boosting process where each tree corrects the errors of previous trees.
 
-where η = learning_rate (0.08 in our case)
-```
+### 7.2 LightGBM Innovations
 
-**3. Final Prediction**
-```
-F(x) = F₀(x) + Σₘ₌₁ᴹ η × hₘ(x)
-
-For classification: p(class k | x) = softmax(F(x))
-```
-
-### 7.2 Multi-Class Classification
-
-**Softmax Function:**
-```
-p(class k | x) = exp(Fₖ(x)) / Σⱼ exp(Fⱼ(x))
-
-where Fₖ(x) = raw score for class k
+```mermaid
+flowchart LR
+    subgraph Traditional["Traditional GBM"]
+        LEVEL["Level-wise<br/>Tree Growth"]
+        EXACT["Exact Split<br/>Finding"]
+    end
+    
+    subgraph LightGBM["LightGBM Innovations"]
+        LEAF["Leaf-wise Growth<br/>Split max-gain leaf"]
+        HIST["Histogram-based<br/>Binned features"]
+        GOSS["GOSS<br/>Focus on hard samples"]
+        EFB["EFB<br/>Bundle sparse features"]
+    end
+    
+    Traditional --> |"10-20x faster"| LightGBM
 ```
 
-**Multi-Class Log Loss (Cross-Entropy):**
-```
-L(y, F(x)) = -Σₖ yₖ × log(p(class k | x))
+LightGBM's innovations enable faster training without sacrificing accuracy.
 
-where yₖ = 1 if true class is k, else 0
-```
+### 7.3 Regularization Techniques
 
-**One-vs-Rest Strategy:**
-LightGBM trains 8 separate models (one per fault class):
-- Model 0: Normal vs. All Faults
-- Model 1: Fuel Injection vs. Others
-- Model 2: Cooling System vs. Others
-- ... (8 models total)
-
-Final prediction: argmax of all model scores after softmax.
-
-### 7.3 Decision Tree Splitting
-
-**Split Criterion: Gain (Information Gain)**
-```
-Gain = Loss_parent - (Loss_left + Loss_right)
-
-where Loss = Σᵢ (yᵢ - ŷᵢ)² for regression
-      Loss = -Σᵢ yᵢ log(pᵢ) for classification
-```
-
-**Best Split Selection:**
-1. For each feature:
-   - Sort samples by feature value
-   - Try all possible split points (or histogram bins)
-   - Compute gain for each split
-2. Select feature and split point with maximum gain
-3. Repeat recursively for left and right children
-
-**Leaf-wise Growth (LightGBM Innovation):**
-- Traditional (level-wise): Split all leaves at same depth
-- LightGBM (leaf-wise): Split leaf with maximum gain
-- **Advantage**: Faster convergence, better accuracy
-- **Risk**: Overfitting (mitigated by max_depth, min_child_samples)
-
-### 7.4 Regularization Techniques
-
-**1. Shrinkage (Learning Rate)**
-```
-η = 0.08 (our value)
-
-Lower η → More robust, requires more trees
-Higher η → Faster training, risk of overfitting
+```mermaid
+mindmap
+  root((Regularization))
+    Shrinkage
+      Learning rate eta = 0.08
+      Lower = more robust
+      Higher = faster but risky
+    Tree Complexity
+      max_depth = 7
+      num_leaves = 55
+      min_child_samples = 20
+    Subsampling
+      subsample = 0.85
+      85% samples per tree
+      Reduces overfitting
+    Feature Sampling
+      colsample_bytree = 0.9
+      90% features per tree
+      Increases diversity
 ```
 
-**2. Tree Complexity Penalties**
-```
-Ω(tree) = γ × T + (λ/2) × Σⱼ wⱼ²
+These regularization techniques prevent overfitting and ensure the model generalizes well to new data.
 
-where:
-- T = number of leaves
-- wⱼ = leaf weight (prediction value)
-- γ = complexity penalty (controlled by min_child_samples)
-- λ = L2 regularization (default = 0)
-```
+### 7.4 Computational Complexity
 
-**3. Subsampling (Bagging)**
-```
-subsample = 0.85 (our value)
+| Metric              | Value            | Notes                     |
+| ------------------- | ---------------- | ------------------------- |
+| **Training Time**   | O(n x m x d x T) | 2-5 minutes on modern CPU |
+| **Prediction Time** | O(m x d x T)     | <10 ms per sample         |
+| **Model Size**      | ~2-5 MB          | Compressed .pkl file      |
+| **RAM (Training)**  | ~500 MB          | Peak memory usage         |
+| **RAM (Inference)** | ~50 MB           | Runtime memory            |
 
-Each tree trained on 85% of samples (random selection)
-Reduces overfitting, increases diversity
-```
+Where: n = samples (41,648), m = features (18), d = depth (7), T = trees (350)
 
-**4. Feature Subsampling**
-```
-colsample_bytree = 0.9 (our value)
-
-Each tree uses 90% of features (random selection)
-Prevents over-reliance on single features
-```
-
-**5. Early Stopping**
-```python
-model.fit(
-    X_train, y_train,
-    eval_set=[(X_val, y_val)],
-    early_stopping_rounds=50
-)
-
-Stop training if validation loss doesn't improve for 50 rounds
-Prevents overfitting to training data
-```
-
-### 7.5 Computational Complexity
-
-**Training Time Complexity:**
-```
-O(n × m × d × T)
-
-where:
-- n = number of samples (41,648 after SMOTE)
-- m = number of features (18)
-- d = max tree depth (7)
-- T = number of trees (350)
-
-Typical training time: 2-5 minutes on modern CPU
-```
-
-**Prediction Time Complexity:**
-```
-O(m × d × T)
-
-Independent of training set size
-Typical inference time: <10 ms per sample
-```
-
-**Memory Complexity:**
-```
-Model size: ~2-5 MB (compressed .pkl file)
-RAM during training: ~500 MB
-RAM during inference: ~50 MB
-```
 
 ---
 
@@ -1062,502 +716,306 @@ RAM during inference: ~50 MB
 
 ### 8.1 Why Explainability Matters
 
-**Trust and Adoption:**
-- Engineers need to understand **why** the model predicts a fault
-- "Black box" predictions are rejected in safety-critical applications
-- Explainability enables **validation** against domain expertise
-- Builds confidence in AI-assisted decision-making
-
-**Regulatory Compliance:**
-- Maritime regulations (IMO, classification societies) require **auditable** decisions
-- Insurance companies demand **transparency** for risk assessment
-- Legal liability requires **justifiable** maintenance actions
-
-**Debugging and Improvement:**
-- Identify when model relies on **spurious correlations**
-- Guide **feature engineering** priorities
-- Inform **sensor placement** and **data collection** strategies
-- Detect **data quality issues** (e.g., faulty sensors)
-
-### 8.2 SHAP (SHapley Additive exPlanations)
-
-**Theoretical Foundation:**
-
-SHAP values are based on **Shapley values** from cooperative game theory (Nobel Prize 2012).
-
-**Shapley Value Formula:**
-```
-φᵢ(f) = Σ_{S⊆F\{i}} [|S|! × (|F|-|S|-1)!] / |F|! × [f(S∪{i}) - f(S)]
-
-where:
-- φᵢ = SHAP value for feature i
-- F = set of all features (18 sensors)
-- S = subset of features
-- f(S) = model prediction using only features in S
-- f(S∪{i}) = prediction with feature i added
+```mermaid
+flowchart TD
+    subgraph Trust["Trust and Adoption"]
+        T1["Engineers understand<br/>WHY predictions made"]
+        T2["Validate against<br/>domain expertise"]
+        T3["Build confidence in<br/>AI-assisted decisions"]
+    end
+    
+    subgraph Compliance["Regulatory Compliance"]
+        C1["Maritime regulations<br/>require auditable decisions"]
+        C2["Insurance companies<br/>demand transparency"]
+        C3["Legal liability<br/>requires justification"]
+    end
+    
+    subgraph Debug["Debugging and Improvement"]
+        D1["Identify spurious<br/>correlations"]
+        D2["Guide feature<br/>engineering"]
+        D3["Detect data<br/>quality issues"]
+    end
+    
+    Trust --> SHAP["SHAP<br/>Explainability"]
+    Compliance --> SHAP
+    Debug --> SHAP
 ```
 
-**Intuition:**
-- Consider all possible coalitions of features
-- Measure marginal contribution of feature i to each coalition
-- Average contributions weighted by coalition size
-- Result: Fair attribution of prediction to each feature
+This diagram shows the three main reasons why explainability is critical for AIMS deployment.
 
-**Key Properties:**
+### 8.2 SHAP Value Concept
 
-**1. Additivity (Local Accuracy)**
+```mermaid
+flowchart LR
+    subgraph Input["Input"]
+        SAMPLE["Single Prediction<br/>18 sensor values"]
+    end
+    
+    subgraph SHAP["SHAP Analysis"]
+        BASE["Base Value<br/>E[f(X)]"]
+        CONTRIB["Feature Contributions<br/>phi1, phi2, ... phi18"]
+    end
+    
+    subgraph Output["Output"]
+        PRED["Final Prediction<br/>f(x)"]
+        EXPL["Explanation<br/>Which features pushed<br/>toward/away from class"]
+    end
+    
+    Input --> SHAP
+    SHAP --> Output
+    
+    BASE --> |"+ Sum(phi)"| PRED
 ```
-f(x) = E[f(X)] + Σᵢ φᵢ(x)
+
+**SHAP Additivity Property:**
+```
+f(x) = E[f(X)] + Sum of phi_i(x)
 
 Prediction = Base value + Sum of SHAP values
 ```
 
-**2. Consistency**
-```
-If feature i becomes more important, φᵢ increases
-```
+### 8.3 SHAP Interpretation Example
 
-**3. Missingness**
-```
-If feature i is not used, φᵢ = 0
-```
-
-**4. Symmetry**
-```
-If features i and j contribute equally, φᵢ = φⱼ
-```
-
-### 8.3 SHAP Implementation
-
-**TreeExplainer (Optimized for LightGBM):**
-```python
-import shap
-
-# Initialize explainer with trained model
-explainer = shap.TreeExplainer(final_model)
-
-# Compute SHAP values for test set
-shap_values = explainer.shap_values(X_test_scaled)
-
-# Shape: (2000 samples, 18 features, 8 classes)
-```
-
-**TreeExplainer Advantages:**
-- **Fast**: Polynomial time O(TLD²) vs. exponential O(2^M) for exact Shapley
-  - T = number of trees (350)
-  - L = max leaves per tree (55)
-  - D = max depth (7)
-  - M = number of features (18)
-- **Exact**: Provides exact SHAP values for tree ensembles (not approximations)
-- **Scalable**: Handles large datasets efficiently
-
-**Computation Time:**
-- Training explainer: ~5 seconds
-- Computing SHAP values for 2,000 samples: ~30 seconds
-- Per-sample inference: ~15 ms
-
-### 8.4 SHAP Visualizations
-
-**1. Summary Plot (Beeswarm)**
-```python
-shap.summary_plot(shap_values, X_test_scaled, feature_names=sensor_features)
+```mermaid
+flowchart TD
+    subgraph Scenario["Scenario: Lubrication Oil Degradation (87% confidence)"]
+        INPUT["Input Readings:<br/>Oil_Temp: 98C (high)<br/>Oil_Pressure: 2.1 bar (low)<br/>Vibration_X: 0.12 mm/s"]
+    end
+    
+    subgraph SHAP["SHAP Values"]
+        S1["Oil_Temp: +0.45<br/>Strong positive"]
+        S2["Oil_Pressure: +0.32<br/>Positive"]
+        S3["Vibration_X: +0.18<br/>Moderate positive"]
+        S4["Shaft_RPM: -0.12<br/>Negative (normal)"]
+    end
+    
+    subgraph Interpretation["Engineer's Interpretation"]
+        I1["Primary: Oil overheating<br/>suggests degraded thermal properties"]
+        I2["Confirming: Low pressure<br/>indicates reduced viscosity"]
+        I3["Secondary: Increased friction<br/>causing vibration"]
+    end
+    
+    subgraph Action["Recommended Actions"]
+        A1["Immediate: Sample oil for lab analysis"]
+        A2["Short-term: Inspect oil cooler"]
+        A3["Medium-term: Schedule oil change"]
+    end
+    
+    Scenario --> SHAP --> Interpretation --> Action
 ```
 
-**Interpretation:**
-- **Y-axis**: Features ranked by importance (top = most important)
-- **X-axis**: SHAP value (impact on prediction)
-- **Color**: Feature value (red = high, blue = low)
-- **Dots**: Individual predictions
+This example shows how SHAP values translate into actionable maintenance decisions.
 
-**Example Insights:**
-- High Vibration_X (red dots) → Large positive SHAP → Predicts vibration anomaly
-- Low Oil_Pressure (blue dots) → Large positive SHAP → Predicts lubrication fault
-- High Oil_Temp (red dots) → Positive SHAP → Predicts cooling/lubrication faults
-
-**2. Bar Plot (Mean Absolute SHAP)**
-```python
-shap.summary_plot(shap_values, X_test_scaled, plot_type='bar')
-```
-
-**Interpretation:**
-- Ranks features by average impact magnitude
-- Aggregates across all classes and samples
-- Matches feature importance from LightGBM
-
-**3. Waterfall Plot (Individual Prediction)**
-```python
-shap.waterfall_plot(shap.Explanation(
-    values=shap_values[sample_idx],
-    base_values=explainer.expected_value,
-    data=X_test_scaled[sample_idx],
-    feature_names=sensor_features
-))
-```
-
-**Interpretation:**
-- Shows how each feature contributes to a single prediction
-- Starts from base value (average prediction across all classes)
-- Each bar adds/subtracts to reach final prediction
-- Red bars push toward predicted class, blue bars push away
-
-### 8.5 Example SHAP Interpretation
-
-**Scenario**: Model predicts "Lubrication Oil Degradation" (Class 5) with 87% confidence
-
-**Input Sensor Readings:**
-```
-Oil_Temp: 98°C (high)
-Oil_Pressure: 2.1 bar (low)
-Vibration_X: 0.12 mm/s (slightly elevated)
-Shaft_RPM: 945 RPM (normal)
-Engine_Load: 75% (normal)
-Fuel_Flow: 125 L/h (normal)
-... (other sensors normal)
-```
-
-**SHAP Values for Class 5:**
-```
-Oil_Temp:           +0.45  (High temperature → Degradation)
-Oil_Pressure:       +0.32  (Low pressure → Degradation)
-Vibration_X:        +0.18  (Increased friction → Vibration)
-Shaft_RPM:          -0.12  (Normal RPM → Against degradation)
-Engine_Load:        +0.08  (High load → Stress)
-Fuel_Flow:          -0.05  (Normal flow → Against degradation)
-Air_Pressure:       -0.03  (Normal → Against degradation)
-... (other features near zero)
-```
-
-**Engineer's Interpretation:**
-
-**Primary Evidence (Strong Positive SHAP):**
-1. **Oil_Temp = 98°C (+0.45 SHAP)**
-   - 23°C above normal (75°C)
-   - Indicates oil is overheating
-   - Suggests degraded thermal properties
-
-2. **Oil_Pressure = 2.1 bar (+0.32 SHAP)**
-   - 1.4 bar below normal (3.5 bar)
-   - Indicates reduced oil viscosity (thinning)
-   - Confirms degradation hypothesis
-
-**Secondary Evidence (Moderate Positive SHAP):**
-3. **Vibration_X = 0.12 mm/s (+0.18 SHAP)**
-   - 2.4× normal (0.05 mm/s)
-   - Increased friction due to poor lubrication
-   - Early sign of bearing stress
-
-**Contradictory Evidence (Negative SHAP):**
-4. **Shaft_RPM = 945 RPM (-0.12 SHAP)**
-   - Within normal range
-   - Suggests engine is still operational
-   - Slightly reduces confidence in fault
-
-**Recommended Actions:**
-1. **Immediate**: Sample oil for lab analysis (viscosity, contamination, acidity)
-2. **Short-term**: Inspect oil cooler for fouling or leaks
-3. **Medium-term**: Schedule oil change within 24 hours
-4. **Monitoring**: Increase vibration monitoring frequency to detect bearing wear
-
-**Confidence Assessment:**
-- **87% confidence** is high enough to act
-- Multiple corroborating sensors (Oil_Temp, Oil_Pressure, Vibration_X)
-- Physical causality is clear (hot + thin oil → poor lubrication → vibration)
-- Low risk of false alarm
 
 ---
 
 ## 9. Real-World Application Potential
 
-### 9.1 Deployment Architecture
+### 9.1 Edge Deployment Architecture
 
-**Edge Computing Deployment:**
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    Vessel (Edge Device)                     │
-│  ┌────────────────────────────────────────────────────────┐ │
-│  │  Sensor Network (18 sensors)                           │ │
-│  │  • Accelerometers, thermocouples, pressure transducers │ │
-│  │  • Sampling rate: 1-10 Hz                              │ │
-│  │  • Data acquisition system (DAQ)                       │ │
-│  └────────────────────────────────────────────────────────┘ │
-│                           ↓                                 │
-│  ┌────────────────────────────────────────────────────────┐ │
-│  │  Edge AI Server (Raspberry Pi / Industrial PC)         │ │
-│  │  • AIMS Backend (FastAPI)                              │ │
-│  │  • LightGBM model inference (<10 ms latency)           │ │
-│  │  • Local data storage (time-series database)           │ │
-│  │  • Alert system (email, SMS, alarm)                    │ │
-│  └────────────────────────────────────────────────────────┘ │
-│                           ↓                                 │
-│  ┌────────────────────────────────────────────────────────┐ │
-│  │  Bridge Display (React Dashboard)                      │ │
-│  │  • Real-time fault predictions                         │ │
-│  │  • SHAP explanations                                   │ │
-│  │  • Historical trends                                   │ │
-│  └────────────────────────────────────────────────────────┘ │
-└─────────────────────────────────────────────────────────────┘
-                           ↓ (Satellite/4G)
-┌─────────────────────────────────────────────────────────────┐
-│                    Shore Operations Center                  │
-│  • Fleet-wide monitoring dashboard                          │
-│  • Maintenance scheduling system                            │
-│  • Model retraining pipeline                                │
-│  • Spare parts inventory management                         │
-└─────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph Vessel["Vessel (Edge Device)"]
+        subgraph Sensors["Sensor Network"]
+            ACC["Accelerometers"]
+            THERM["Thermocouples"]
+            PRESS["Pressure Transducers"]
+            FLOW["Flow Sensors"]
+        end
+        
+        subgraph Edge["Edge AI Server"]
+            DAQ["Data Acquisition"]
+            AIMS_BE["AIMS Backend<br/>(FastAPI)"]
+            DB["Time-series DB"]
+            ALERT["Alert System"]
+        end
+        
+        subgraph Display["Bridge Display"]
+            DASH["React Dashboard"]
+            TRENDS["Historical Trends"]
+        end
+        
+        Sensors --> Edge --> Display
+    end
+    
+    subgraph Shore["Shore Operations"]
+        FLEET["Fleet Monitoring"]
+        MAINT["Maintenance Planning"]
+        RETRAIN["Model Updates"]
+        PARTS["Parts Inventory"]
+    end
+    
+    Vessel --> |"Satellite/4G"| Shore
 ```
 
-### 9.2 Integration with Existing Systems
+This architecture shows how AIMS can be deployed on vessels with edge computing, while maintaining connectivity to shore operations.
 
-**1. SCADA (Supervisory Control and Data Acquisition)**
-- **Protocol**: Modbus TCP, OPC UA
-- **Integration**: AIMS reads sensor data from SCADA system
-- **Benefit**: No additional sensors needed, uses existing infrastructure
+### 9.2 Integration Points
 
-**2. Engine Management System (EMS)**
-- **Protocol**: CAN bus, J1939
-- **Integration**: AIMS receives engine parameters via CAN gateway
-- **Benefit**: Direct access to ECU data (fuel injection timing, turbo boost, etc.)
+```mermaid
+flowchart LR
+    subgraph External["External Systems"]
+        SCADA["SCADA<br/>Modbus/OPC UA"]
+        EMS["Engine Management<br/>CAN bus/J1939"]
+        CMMS["Maintenance System<br/>REST API"]
+        FLEET["Fleet Platform<br/>HTTPS/WebSocket"]
+    end
+    
+    subgraph AIMS["AIMS Platform"]
+        API["FastAPI<br/>Backend"]
+        MODEL["LightGBM<br/>Model"]
+        SHAP_E["SHAP<br/>Explainer"]
+    end
+    
+    SCADA --> |"Sensor Data"| API
+    EMS --> |"Engine Params"| API
+    API --> |"Predictions"| CMMS
+    API --> |"Analytics"| FLEET
+```
 
-**3. Maintenance Management System (CMMS)**
-- **Protocol**: REST API, MQTT
-- **Integration**: AIMS sends fault predictions to CMMS for work order generation
-- **Benefit**: Automated maintenance scheduling, parts ordering
-
-**4. Fleet Management Platform**
-- **Protocol**: HTTPS, WebSocket
-- **Integration**: AIMS uploads predictions to cloud dashboard
-- **Benefit**: Shore-based monitoring, fleet-wide analytics
+AIMS integrates with existing maritime systems through standard protocols.
 
 ### 9.3 Business Value Proposition
 
-**Cost Savings:**
+```mermaid
+pie title Annual Savings per Vessel ($K)
+    "Reduced Downtime" : 600
+    "Optimized Maintenance" : 200
+    "Extended Lifespan" : 150
+    "Reduced Inventory" : 100
+```
 
-**1. Reduced Unplanned Downtime**
-- **Current Cost**: $50K-$500K per incident (repair + lost revenue)
-- **AIMS Impact**: 60-80% reduction in unplanned failures
-- **Annual Savings**: $200K-$1M per vessel (assuming 2-4 incidents/year)
+**Total Annual Savings: $340K - $1.65M per vessel**
 
-**2. Optimized Maintenance Scheduling**
-- **Current Cost**: 20-30% of operating expenses on maintenance
-- **AIMS Impact**: 30-40% reduction in unnecessary maintenance
-- **Annual Savings**: $100K-$300K per vessel
-
-**3. Extended Equipment Lifespan**
-- **Current Lifespan**: 15-20 years (with reactive maintenance)
-- **AIMS Impact**: 20-30% lifespan extension (proactive care)
-- **Value**: $500K-$1M deferred capital expenditure
-
-**4. Reduced Spare Parts Inventory**
-- **Current Cost**: $200K-$500K in spare parts per vessel
-- **AIMS Impact**: 20-30% reduction (predictable demand)
-- **Annual Savings**: $40K-$150K per vessel
-
-**Total Annual Savings per Vessel: $340K-$1.65M**
+| Benefit            | Current Cost          | AIMS Impact      | Annual Savings     |
+| ------------------ | --------------------- | ---------------- | ------------------ |
+| Unplanned Downtime | $50K-$500K/incident   | 60-80% reduction | $200K-$1M          |
+| Maintenance        | 20-30% of OpEx        | 30-40% reduction | $100K-$300K        |
+| Equipment Lifespan | 15-20 years           | 20-30% extension | $500K-$1M deferred |
+| Spare Parts        | $200K-$500K inventory | 20-30% reduction | $40K-$150K         |
 
 **ROI Calculation:**
+- Implementation Cost: $50K-$100K
+- Payback Period: 1-4 months
+- 5-Year ROI: 1,700%-8,250%
+
+
+### 9.4 Market Opportunity
+
+```mermaid
+flowchart TD
+    subgraph TAM["Total Addressable Market"]
+        TAM_V["$150B<br/>Marine Engine Market"]
+    end
+    
+    subgraph SAM["Serviceable Addressable Market"]
+        SAM_V["$15B<br/>Predictive Maintenance"]
+    end
+    
+    subgraph SOM["Serviceable Obtainable Market"]
+        SOM_V["$1.5B<br/>10% penetration in 5 years"]
+    end
+    
+    TAM --> SAM --> SOM
+    
+    subgraph Segments["Target Segments"]
+        S1["Commercial Shipping<br/>100,000+ vessels"]
+        S2["Offshore Oil and Gas<br/>10,000+ platforms"]
+        S3["Naval Fleets<br/>5,000+ vessels"]
+        S4["Cruise Industry<br/>500+ ships"]
+    end
+    
+    SOM --> Segments
 ```
-Implementation Cost: $50K-$100K (sensors + hardware + software)
-Annual Savings: $340K-$1.65M
-Payback Period: 1-4 months
-5-Year ROI: 1,700%-8,250%
-```
-
-### 9.4 Safety and Environmental Benefits
-
-**Safety Improvements:**
-- **Reduced Crew Risk**: Fewer emergency repairs in hazardous conditions
-- **Prevented Catastrophic Failures**: Early detection of critical faults (bearing seizure, turbo explosion)
-- **Improved Reliability**: Predictable maintenance windows reduce stress on crew
-
-**Environmental Benefits:**
-- **Reduced Emissions**: Optimal engine performance (5-10% fuel savings)
-- **Prevented Oil Spills**: Early detection of lubrication leaks
-- **Compliance**: Meet IMO 2030 emissions targets through efficient operation
-
-### 9.5 Market Opportunity
-
-**Target Market:**
-- **Commercial Shipping**: 100,000+ vessels worldwide
-- **Offshore Oil & Gas**: 10,000+ platforms and support vessels
-- **Naval Fleets**: 5,000+ military vessels
-- **Cruise Industry**: 500+ cruise ships
-- **Fishing Fleets**: 50,000+ commercial fishing vessels
-
-**Market Size:**
-- **Total Addressable Market (TAM)**: $150B marine engine market
-- **Serviceable Addressable Market (SAM)**: $15B predictive maintenance market
-- **Serviceable Obtainable Market (SOM)**: $1.5B (10% penetration in 5 years)
-
-**Competitive Advantages:**
-- **Open Source**: Lower barrier to entry, community-driven improvements
-- **Explainable AI**: Regulatory compliance, engineer trust
-- **Full-Stack Solution**: End-to-end implementation (sensors to dashboard)
-- **Edge Deployment**: Works offline (critical for vessels at sea)
-- **Proven Performance**: 94% accuracy, validated on real-world data patterns
-
-### 9.6 Regulatory Compliance
-
-**International Maritime Organization (IMO):**
-- **SOLAS (Safety of Life at Sea)**: Requires reliable propulsion systems
-- **MARPOL (Pollution Prevention)**: Mandates efficient engine operation
-- **ISM Code (Safety Management)**: Requires documented maintenance procedures
-
-**Classification Societies:**
-- **Lloyd's Register, DNV, ABS**: Approve predictive maintenance systems
-- **AIMS Compliance**: Explainable predictions, audit trails, validation reports
-
-**Insurance Requirements:**
-- **P&I Clubs**: Require evidence of proactive maintenance
-- **AIMS Benefit**: Reduced premiums (10-20%) for vessels with predictive systems
 
 ---
 
 ## 10. Future Development Roadmap
 
-### 10.1 Phase 1: Enhanced Model Capabilities (0-6 months)
+### 10.1 Development Phases
 
-**1. Multi-Engine Support**
-- **Goal**: Extend to 6-cylinder, 8-cylinder, and 2-stroke engines
-- **Approach**: Transfer learning from 4-cylinder model
-- **Benefit**: Broader market applicability
+```mermaid
+gantt
+    title AIMS Development Roadmap
+    dateFormat  YYYY-MM
+    section Phase 1
+    Multi-Engine Support     :2025-01, 3M
+    RUL Prediction          :2025-02, 4M
+    Anomaly Detection       :2025-03, 3M
+    section Phase 2
+    Root Cause Analysis     :2025-06, 4M
+    Prescriptive Maintenance:2025-07, 4M
+    Digital Twin Integration:2025-09, 4M
+    section Phase 3
+    Federated Learning      :2026-01, 6M
+    Fleet-Wide Intelligence :2026-03, 6M
+    section Phase 4
+    Autonomous Operations   :2026-07, 6M
+```
 
-**2. Remaining Useful Life (RUL) Prediction**
-- **Goal**: Predict time-to-failure (e.g., "Bearing will fail in 48 hours")
-- **Approach**: Survival analysis, Weibull distribution fitting
-- **Benefit**: Precise maintenance scheduling
+### 10.2 Phase 1: Enhanced Model Capabilities (0-6 months)
 
-**3. Anomaly Detection (Unsupervised)**
-- **Goal**: Detect unknown fault types not in training data
-- **Approach**: Isolation Forest, Autoencoders
-- **Benefit**: Discover new failure modes
+```mermaid
+mindmap
+  root((Phase 1))
+    Multi-Engine
+      6-cylinder support
+      8-cylinder support
+      2-stroke engines
+      Transfer learning
+    RUL Prediction
+      Time-to-failure
+      Survival analysis
+      Weibull distribution
+    Anomaly Detection
+      Unknown fault types
+      Isolation Forest
+      Autoencoders
+    Time-Series
+      1-24 hour forecasting
+      LSTM models
+      Transformer models
+```
 
-**4. Time-Series Forecasting**
-- **Goal**: Predict sensor values 1-24 hours ahead
-- **Approach**: LSTM, Transformer models
-- **Benefit**: Early warning before faults manifest
+### 10.3 Phase 2: Advanced Analytics (6-12 months)
 
-### 10.2 Phase 2: Advanced Analytics (6-12 months)
+```mermaid
+flowchart LR
+    subgraph Current["Current AIMS"]
+        WHAT["WHAT is wrong<br/>(Fault classification)"]
+    end
+    
+    subgraph Phase2["Phase 2 Enhancements"]
+        WHY["WHY it happened<br/>(Root Cause Analysis)"]
+        HOW["HOW to fix it<br/>(Prescriptive Maintenance)"]
+        TWIN["WHAT-IF scenarios<br/>(Digital Twin)"]
+    end
+    
+    Current --> Phase2
+```
 
-**1. Root Cause Analysis (RCA)**
-- **Goal**: Identify underlying causes (e.g., "Cooling fault due to fouled heat exchanger")
-- **Approach**: Causal inference, Bayesian networks
-- **Benefit**: Actionable maintenance recommendations
+### 10.4 Technical Enhancements
 
-**2. Prescriptive Maintenance**
-- **Goal**: Recommend specific actions (e.g., "Clean turbocharger compressor")
-- **Approach**: Reinforcement learning, decision trees
-- **Benefit**: Reduce diagnostic time for crew
-
-**3. Multi-Sensor Fusion**
-- **Goal**: Integrate additional sensors (acoustic, oil analysis, thermal imaging)
-- **Approach**: Sensor fusion algorithms, ensemble models
-- **Benefit**: Higher accuracy, redundancy
-
-**4. Digital Twin Integration**
-- **Goal**: Combine AI predictions with physics-based engine models
-- **Approach**: Hybrid modeling (ML + thermodynamics)
-- **Benefit**: Validate predictions, simulate "what-if" scenarios
-
-### 10.3 Phase 3: Fleet-Wide Intelligence (12-24 months)
-
-**1. Federated Learning**
-- **Goal**: Train models across fleet without sharing raw data
-- **Approach**: Federated averaging, differential privacy
-- **Benefit**: Privacy-preserving, fleet-wide learning
-
-**2. Transfer Learning Across Vessels**
-- **Goal**: Adapt models to new vessels with minimal data
-- **Approach**: Fine-tuning, domain adaptation
-- **Benefit**: Faster deployment, lower data requirements
-
-**3. Predictive Spare Parts Management**
-- **Goal**: Forecast parts demand across fleet
-- **Approach**: Time-series forecasting, inventory optimization
-- **Benefit**: Reduced inventory costs, faster repairs
-
-**4. Automated Model Retraining**
-- **Goal**: Continuously improve models with new data
-- **Approach**: Online learning, active learning
-- **Benefit**: Adapt to changing operating conditions, new fault types
-
-### 10.4 Phase 4: Autonomous Operations (24+ months)
-
-**1. Autonomous Fault Response**
-- **Goal**: Automatically adjust engine parameters to mitigate faults
-- **Approach**: Reinforcement learning, model predictive control
-- **Benefit**: Reduce crew workload, prevent fault escalation
-
-**2. Predictive Route Optimization**
-- **Goal**: Adjust routes based on engine health predictions
-- **Approach**: Multi-objective optimization (fuel, time, reliability)
-- **Benefit**: Avoid breakdowns in remote areas
-
-**3. Autonomous Vessel Integration**
-- **Goal**: Enable unmanned vessels with AI-driven maintenance
-- **Approach**: Edge AI, satellite communication
-- **Benefit**: Support autonomous shipping industry
-
-### 10.5 Technical Enhancements
-
-**1. Model Compression**
-- **Goal**: Reduce model size for edge deployment (target: <1 MB)
-- **Approach**: Pruning, quantization, knowledge distillation
-- **Benefit**: Deploy on low-power devices (Raspberry Pi, microcontrollers)
-
-**2. Real-Time Inference Optimization**
-- **Goal**: Achieve <1 ms latency for real-time control
-- **Approach**: ONNX Runtime, TensorRT, hardware acceleration
-- **Benefit**: Enable closed-loop control systems
-
-**3. Explainability Enhancements**
-- **Goal**: Generate natural language explanations (e.g., "High oil temperature suggests cooling system fault")
-- **Approach**: Large language models (LLMs), template-based generation
-- **Benefit**: Improve usability for non-technical crew
-
-**4. Multi-Modal Learning**
-- **Goal**: Integrate sensor data with images (thermal cameras, oil analysis photos)
-- **Approach**: Vision transformers, multi-modal fusion
-- **Benefit**: Richer fault diagnostics
-
-### 10.6 Data Collection and Labeling
-
-**1. Active Learning**
-- **Goal**: Identify most informative samples for labeling
-- **Approach**: Uncertainty sampling, query-by-committee
-- **Benefit**: Reduce labeling costs by 50-70%
-
-**2. Weak Supervision**
-- **Goal**: Use noisy labels (maintenance logs, alarm data) for training
-- **Approach**: Snorkel, data programming
-- **Benefit**: Scale to millions of samples without manual labeling
-
-**3. Synthetic Data Generation**
-- **Goal**: Augment training data with simulated faults
-- **Approach**: Physics-based simulation, GANs
-- **Benefit**: Cover rare fault types, improve robustness
-
-### 10.7 Deployment and Operations
-
-**1. Containerization**
-- **Goal**: Package AIMS as Docker containers for easy deployment
-- **Approach**: Docker, Kubernetes
-- **Benefit**: Consistent deployment across vessels, easy updates
-
-**2. CI/CD Pipeline**
-- **Goal**: Automated testing and deployment of model updates
-- **Approach**: GitHub Actions, MLflow
-- **Benefit**: Faster iteration, reduced deployment errors
-
-**3. Monitoring and Alerting**
-- **Goal**: Track model performance in production (accuracy drift, latency)
-- **Approach**: Prometheus, Grafana, custom metrics
-- **Benefit**: Detect model degradation, trigger retraining
-
-**4. A/B Testing**
-- **Goal**: Compare new models against baseline in production
-- **Approach**: Multi-armed bandits, statistical testing
-- **Benefit**: Validate improvements before full rollout
+```mermaid
+flowchart TD
+    subgraph Optimization["Performance Optimization"]
+        COMPRESS["Model Compression<br/>Target: less than 1 MB"]
+        LATENCY["Inference Optimization<br/>Target: less than 1 ms"]
+        EDGE["Edge Deployment<br/>Raspberry Pi compatible"]
+    end
+    
+    subgraph UX["User Experience"]
+        NLP["Natural Language<br/>Explanations"]
+        MULTI["Multi-Modal Learning<br/>Images + Sensors"]
+        VOICE["Voice Alerts<br/>Bridge integration"]
+    end
+    
+    subgraph MLOps["MLOps"]
+        DOCKER["Containerization<br/>Docker/Kubernetes"]
+        CICD["CI/CD Pipeline<br/>Automated deployment"]
+        MONITOR["Model Monitoring<br/>Drift detection"]
+    end
+```
 
 ---
 
@@ -1578,7 +1036,13 @@ The system achieves **94% accuracy** and **91% macro F1-score**, enabling:
 - **$340K-$1.65M annual savings** per vessel
 - **Improved safety** and **environmental compliance**
 
-With a clear roadmap for future development, AIMS is positioned to become the industry standard for intelligent marine engine diagnostics, supporting the transition to autonomous and sustainable maritime operations.
+```mermaid
+flowchart LR
+    DATA["Quality Data"] --> MODEL["Smart Model"]
+    MODEL --> EXPLAIN["Clear Explanations"]
+    EXPLAIN --> ACTION["Right Actions"]
+    ACTION --> VALUE["Business Value"]
+```
 
 ---
 
@@ -1590,8 +1054,8 @@ With a clear roadmap for future development, AIMS is positioned to become the in
 - Chawla, N. V., et al. (2002). SMOTE: Synthetic minority over-sampling technique. *JAIR*.
 
 **Predictive Maintenance:**
-- Lee, J., et al. (2014). Prognostics and health management design for rotary machinery systems. *Mechanical Systems and Signal Processing*.
-- Jardine, A. K., et al. (2006). A review on machinery diagnostics and prognostics. *Mechanical Systems and Signal Processing*.
+- Lee, J., et al. (2014). Prognostics and health management design for rotary machinery systems.
+- Jardine, A. K., et al. (2006). A review on machinery diagnostics and prognostics.
 
 **Marine Engineering:**
 - Woodyard, D. (2009). *Pounder's Marine Diesel Engines and Gas Turbines*. Elsevier.
@@ -1599,7 +1063,7 @@ With a clear roadmap for future development, AIMS is positioned to become the in
 
 ---
 
-**Document Version**: 1.0  
-**Last Updated**: November 18, 2025  
+**Document Version**: 2.0  
+**Last Updated**: January 2026  
 **Authors**: AIMS Development Team  
 **License**: MIT License

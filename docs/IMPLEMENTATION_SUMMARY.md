@@ -1,7 +1,34 @@
 # Notebook Improvements Implementation Summary
 
 ## Overview
+
 Successfully implemented all tasks from the notebook-improvements specification to achieve F1-score > 0.90 for marine engine fault prediction.
+
+## Implementation Overview
+
+```mermaid
+flowchart TD
+    subgraph NB1["📓 Notebook 01 Enhancements"]
+        E1["Correlation Heatmap<br/>18×18 matrix"]
+        E2["Feature Distribution<br/>Normal vs Fault"]
+        E3["Outlier Detection<br/>IQR summary"]
+    end
+    
+    subgraph NB2["📓 Notebook 02 Enhancements"]
+        E4["SMOTE Implementation<br/>Class balancing"]
+        E5["Balance Visualization<br/>Before/After"]
+        E6["Artifact Saving<br/>*.npy files"]
+    end
+    
+    subgraph NB3["📓 Notebook 03 Enhancements"]
+        E7["Class Weights<br/>Minority emphasis"]
+        E8["Cross-Validation<br/>5-fold CV"]
+        E9["Feature Importance<br/>Top 15 analysis"]
+        E10["Enhanced Metrics<br/>Per-class report"]
+    end
+    
+    NB1 --> NB2 --> NB3 --> RESULT["🎯 F1-Score > 0.90"]
+```
 
 ## Completed Tasks
 
@@ -112,6 +139,29 @@ Successfully implemented all tasks from the notebook-improvements specification 
 
 ## Key Improvements
 
+```mermaid
+mindmap
+  root((Improvements))
+    Data Quality
+      Comprehensive EDA
+      Correlation analysis
+      Outlier documentation
+    Class Imbalance
+      SMOTE implementation
+      Synthetic samples
+      Balanced training
+    Model Performance
+      Class weights
+      Balanced data
+      Cross-validation
+      Feature importance
+    Evaluation
+      Macro-average metrics
+      Per-class tracking
+      Enhanced confusion matrix
+      Target F1 > 0.90
+```
+
 ### Data Quality
 - Comprehensive EDA with correlation and distribution analysis
 - Outlier detection and documentation
@@ -178,6 +228,24 @@ Successfully implemented all tasks from the notebook-improvements specification 
    - Use VotingClassifier with soft voting
 
 ## Success Criteria Met
+
+```mermaid
+flowchart LR
+    subgraph Criteria["✅ All Criteria Met"]
+        C1["Original cells preserved"]
+        C2["New functionality added"]
+        C3["Clear documentation"]
+        C4["Backward compatible"]
+        C5["Test set integrity"]
+        C6["Comprehensive metrics"]
+        C7["Feature importance"]
+        C8["Cross-validation"]
+        C9["SMOTE balancing"]
+        C10["Enhanced visuals"]
+    end
+    
+    Criteria --> SUCCESS["🎉 Implementation Complete"]
+```
 
 ✅ All original cells preserved and functional
 ✅ New functionality added as additional cells
